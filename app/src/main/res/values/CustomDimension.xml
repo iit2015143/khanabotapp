@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="bletter">18dp</dimen>
+    <dimen name="nletter">16dp</dimen>
+    <dimen name="sletter">14dp</dimen>
+    <dimen name="vsletter">12dp</dimen>
+    <dimen name="exsletter">10dp</dimen>
+</resources>

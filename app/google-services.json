@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "385113839466",
+    "firebase_url": "https://khanabot-207210.firebaseio.com",
+    "project_id": "khanabot-207210",
+    "storage_bucket": "khanabot-207210.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:385113839466:android:6c3baeae3a0b1709",
+        "android_client_info": {
+          "package_name": "com.anuragmalti.iamroot.khanabot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "385113839466-7uf144fr27bv31qsqevp3jiukgdt2cae.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "385113839466-7uf144fr27bv31qsqevp3jiukgdt2cae.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfBSUaCJAQqotZu8ONN2neyo3cgqByB8c"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

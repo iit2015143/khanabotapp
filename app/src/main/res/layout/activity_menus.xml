@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/facebook"
+    tools:context=".Menus">
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="?attr/actionBarSize"
+        >
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusableInTouchMode="true">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:id="@+id/topToolbar"
+            android:text="Title"
+            android:textColor="@color/white"
+            android:textSize="@dimen/bletter"
+            android:background="@color/primary"
+            android:gravity="center_vertical"
+            android:paddingLeft="8dp">
+        </TextView>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/catmenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false">
+
+        </android.support.v7.widget.RecyclerView>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <android.support.design.widget.BottomNavigationView
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_gravity="bottom"
+        android:background="@color/primary"
+        android:id="@+id/bnv"
+        app:menu="@menu/nav_menu"
+        app:itemIconTint="@drawable/navmenucolor"
+        app:itemTextColor="@drawable/navmenucolor">
+        <RelativeLayout
+            android:layout_width="165dp"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:padding="2dp">
+            <TextView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:text="10"
+                android:textSize="@dimen/exsletter"
+                android:textColor="@color/white"
+                android:gravity="center_horizontal|center_vertical"
+                android:background="@drawable/roundedcornercarttext"
+                android:id="@+id/carttext"/>
+        </RelativeLayout>
+    </android.support.design.widget.BottomNavigationView>
+
+
+
+</android.support.design.widget.CoordinatorLayout>

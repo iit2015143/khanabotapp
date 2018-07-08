@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:layout_marginBottom="1dp">
+    <RadioGroup
+        android:id="@+id/radiovisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp">
+
+        <RadioButton
+            android:id="@+id/full"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="full"
+            android:textSize="@dimen/vsletter"
+            android:textColor="@color/moan"
+            android:checked="true"
+            android:buttonTint="@color/moan"/>
+
+        <RadioButton
+            android:id="@+id/half"
+            android:textColor="@color/moan"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/vsletter"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/moan"
+            android:text="half" />
+
+    </RadioGroup>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/upbar"
+        android:padding="8dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Food Name"
+            android:textColor="@color/moan"
+            android:id="@+id/foodname"
+            android:textSize="@dimen/sletter"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/monsoon"
+            android:text="Restaurant Name"
+            android:id="@+id/resname"
+            android:textSize="@dimen/exsletter"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/upbar"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:paddingTop="8dp"
+        android:paddingLeft="8dp"
+        android:layout_marginTop="-12dp">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/nletter"
+            android:textColor="@color/primary"
+            android:layout_weight="3"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="price"
+                android:id="@+id/price"
+                android:textSize="@dimen/nletter"
+                android:textColor="@color/primary"
+                android:paddingLeft="8dp"/>
+
+        </LinearLayout>
+        <include layout="@layout/pluminusbtn"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="bottom"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

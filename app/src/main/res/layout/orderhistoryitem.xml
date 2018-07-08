@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:layout_marginBottom="1dp"
+    android:padding="4dp"
+    android:elevation="2dp"
+    android:layout_margin="2dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/upbar"
+        android:padding="1dp"
+        android:weightSum="5">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Order Id :"
+            android:textColor="@color/moan"
+            android:textSize="@dimen/sletter" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:text="Order Id :"
+            android:textColor="@color/monsoon"
+            android:layout_marginLeft="4dp"
+            android:id="@+id/orderid"
+            android:textSize="@dimen/sletter" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/upbar"
+        android:padding="1dp"
+        android:id="@+id/summarybar"
+        android:weightSum="5">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Summary"
+            android:textColor="@color/monsoon"
+            android:textSize="@dimen/sletter" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:layout_marginLeft="4dp"
+            android:text="SummarySummarySummarySummarySummarySummarySummarySummary:"
+            android:id="@+id/summary"
+            android:textColor="@color/monsoon"
+            android:textSize="@dimen/sletter" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/summarybar"
+        android:id="@+id/bar"
+        android:padding="1dp"
+        android:weightSum="5">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Total"
+            android:textColor="@color/monsoon"
+            android:textSize="@dimen/sletter" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:layout_marginLeft="4dp"
+            android:text="Rs 275"
+            android:id="@+id/total"
+            android:textColor="@color/moan"
+            android:textSize="@dimen/sletter" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bar"
+        android:id="@+id/totalbar"
+        android:padding="1dp"
+        android:weightSum="5">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/resname"
+            android:text="Restaurant name"
+            android:gravity="center_horizontal"
+            android:textColor="@color/monsoon"
+            android:textSize="@dimen/sletter" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/totalbar"
+        android:id="@+id/numcontainer"
+        android:padding="1dp"
+        android:weightSum="4">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Contact"
+            android:textColor="@color/monsoon"
+            android:textSize="@dimen/vsletter"
+            android:gravity="center_horizontal"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_marginLeft="4dp"
+            android:text="Pending"
+            android:id="@+id/number"
+            android:gravity="center_horizontal"
+            android:textColor="@color/monsoon"
+            android:textSize="@dimen/vsletter" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/numcontainer"
+        android:id="@+id/statusbar"
+        android:padding="1dp"
+        android:weightSum="4">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Status"
+            android:textColor="@color/moan"
+            android:textSize="@dimen/sletter"
+            android:gravity="center_horizontal"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_marginLeft="4dp"
+            android:text="Pending"
+            android:id="@+id/status"
+            android:gravity="center_horizontal"
+            android:textColor="@color/primary_dark"
+            android:textSize="@dimen/sletter" />
+    </LinearLayout>
+</RelativeLayout>

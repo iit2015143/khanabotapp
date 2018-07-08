@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".AddtoCart">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.Dark">
+
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="Cart">
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/facebook">
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/cartItems"
+                android:nestedScrollingEnabled="false">
+
+            </android.support.v7.widget.RecyclerView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:layout_margin="8dp"
+                android:padding="8dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Payment :"
+                    android:textSize="@dimen/nletter"
+                    android:textColor="@color/primary_dark"
+                    android:layout_marginBottom="12dp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Total sums to :"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/sletter"
+                        android:textColor="@color/primary"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="$$$"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:textSize="@dimen/nletter"
+                        android:id="@+id/total"
+                        android:textColor="@color/primary_dark"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <RadioGroup
+                android:id="@+id/radiovisible"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center_horizontal">
+
+                <RadioButton
+                    android:id="@+id/cod"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="COD"
+                    android:textSize="@dimen/vsletter"
+                    android:textColor="@color/monsoon"
+                    android:checked="true"
+                    android:buttonTint="@color/iron"/>
+
+                <RadioButton
+                    android:id="@+id/booktable"
+                    android:textColor="@color/monsoon"
+                    android:layout_width="wrap_content"
+                    android:textSize="@dimen/vsletter"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/iron"
+                    android:text="Book Table" />
+
+
+            </RadioGroup>
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/listDivider" />
+
+            <RadioGroup
+                android:id="@+id/timevisible"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="invisible"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center_horizontal">
+
+                <RadioButton
+                    android:id="@+id/min20"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="20min"
+                    android:textSize="@dimen/vsletter"
+                    android:textColor="@color/monsoon"
+                    android:checked="true"
+                    android:buttonTint="@color/iron"/>
+
+                <RadioButton
+                    android:id="@+id/min40"
+                    android:textColor="@color/monsoon"
+                    android:layout_width="wrap_content"
+                    android:textSize="@dimen/vsletter"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/iron"
+                    android:text="40min" />
+
+                <RadioButton
+                    android:id="@+id/min60"
+                    android:textColor="@color/monsoon"
+                    android:layout_width="wrap_content"
+                    android:textSize="@dimen/vsletter"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/iron"
+                    android:text="1hr" />
+
+
+            </RadioGroup>
+
+
+            <Button
+                android:id="@+id/requestorder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="-8dp"
+                android:text="Request Order"
+                android:onClick="requestorder"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="clearorder"
+                android:layout_centerHorizontal="true"
+                android:layout_above="@+id/saveAddress"
+                style="?android:attr/borderlessButtonStyle"
+                android:text="Clear Cart"
+                android:textColor="@color/primary"
+                android:layout_gravity="center_horizontal"/>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+</android.support.design.widget.CoordinatorLayout>
