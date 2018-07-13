@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,7 +44,7 @@ public class HomePage extends AppCompatActivity {
     public RecyclerView restaurants;
     public JSONArray responseArray=new JSONArray();
     public static JSONArray mycart;
-    public String address;
+    public static String address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +57,7 @@ public class HomePage extends AppCompatActivity {
         }
         context = this;
 
-        address = getIntent().getStringExtra("address");
+        //address = getIntent().getStringExtra("address");
         ((TextView)findViewById(R.id.location)).setText(address);
         notifychange();
 
@@ -75,7 +76,7 @@ public class HomePage extends AppCompatActivity {
         }
 
         viewPager = (ViewPager)findViewById(R.id.viewPager);
-        viewPager.setAdapter(new CustomPageAdapter(context));
+        viewPager.setAdapter(new CustomPageAdapter(context,new JSONArray()));
 
 
         hotdeal = (RecyclerView)findViewById(R.id.hotdeals);
@@ -248,10 +249,6 @@ public class HomePage extends AppCompatActivity {
                     mycart.put(cartItem);
                 }
             }
-
-            for(int i=0; i<mycart.length();i++){
-                //Log.e("error arraystring",mycart.getJSONObject(i).toString());
-            }
             ////Log.e("error cartlen",mycart.length()+"");
 
         } catch (JSONException e) {
@@ -286,6 +283,11 @@ public class HomePage extends AppCompatActivity {
     }
     public void notifychange(){
         ((TextView)findViewById(R.id.carttext)).setText(HomePage.mycart.length()+"");
+        if(HomePage.mycart.length()==0)
+            ((RelativeLayout)findViewById(R.id.cartcontainer)).setVisibility(View.INVISIBLE);
+        else
+            ((RelativeLayout)findViewById(R.id.cartcontainer)).setVisibility(View.VISIBLE);
+
     }
 
     @Override
@@ -344,6 +346,7 @@ public class HomePage extends AppCompatActivity {
         JSONArray hotdeals = new JSONArray();
         JSONArray toprateds = new JSONArray();
         ArrayList<String> categori = new ArrayList<String>();
+        JSONArray Offers = new JSONArray();
 
         for(int i=0; i<responseArray.length();i++){
             try {
@@ -351,6 +354,11 @@ public class HomePage extends AppCompatActivity {
                 JSONArray HotDeals = null;
                 JSONArray TopRateds = restaurantobj.getJSONArray("TopRated");
                 HotDeals = restaurantobj.getJSONArray("HotDeals");
+                JSONArray offers = restaurantobj.getJSONArray("Offers");
+                for(int j=0;j<offers.length();j++){
+                    JSONObject offer = offers.getJSONObject(j);
+                    Offers.put(offer);
+                }
                 for (int j = 0; j < HotDeals.length(); j++) {
                     JSONObject hotdeal = null;
                     hotdeal = HotDeals.getJSONObject(j);
@@ -362,42 +370,53 @@ public class HomePage extends AppCompatActivity {
                 }
                 for(int j=0;j<TopRateds.length();j++){
                     JSONObject TopRated = TopRateds.getJSONObject(j);
-                    //Log.e("error toprated",TopRated.toString());
+                    int index = TopRated.getInt("Ind");
+                    Log.e("error toprated",TopRated.toString());
                     JSONObject myTopRated = new JSONObject();
                     JSONObject menu = restaurantobj.getJSONObject("menu");
                     myTopRated.put("name", TopRated.getString("SubCategory"));
                     myTopRated.put("price",new JSONArray().put(menu.getJSONObject(TopRated.
-                            getString("Category")).getJSONArray(TopRated.getString("SubCategory")).
-                            getString(0)));
+                            getString("Category")).getJSONObject(TopRated.getString("SubCategory")).
+                            getJSONArray("price").getInt(index)));
                     myTopRated.put("resname",restaurantobj.getString("name"));
                     myTopRated.put("number",restaurantobj.getString("number"));
                     myTopRated.put("levelone","menu");
                     myTopRated.put("leveltwo",TopRated.getString("Category"));
-                    myTopRated.put("levelthree",TopRated.getString("SubCategory"));
-                    myTopRated.put("index",0);
+                    myTopRated.put("index",index);
+                    myTopRated.put("image",menu.getJSONObject(TopRated.
+                            getString("Category")).getJSONObject(TopRated.getString("SubCategory")).
+                            getString("image"));
                     toprateds.put(myTopRated);
                 }
-                JSONArray menuNames = restaurantobj.getJSONObject("menu").names();
                 JSONObject menu = restaurantobj.getJSONObject("menu");
+                JSONArray menuNames = menu.names();
+
                 for(int j=0; j<menuNames.length();j++){
                     JSONObject leveltwo = menu.getJSONObject(menuNames.getString(j));
-                    JSONArray Category = leveltwo.getJSONArray("Category");
-                    for(int l=0; l<Category.length();l++) {
-                        if(categori.indexOf(Category.getString(l))==-1){
-                            categori.add(Category.getString(l));
+                    JSONArray leveltwonames = leveltwo.names();
+                    for(int k =0; k<leveltwonames.length();k++) {
+                        JSONObject item = leveltwo.getJSONObject(leveltwonames.getString(k));
+                        Log.e("item",item.toString());
+                        JSONArray Category = item.getJSONArray("category");
+                        for (int l = 0; l < Category.length(); l++) {
+                            if (categori.indexOf(Category.getString(l)) == -1) {
+                                categori.add(Category.getString(l));
+                            }
                         }
                     }
                 }
             }
             catch (JSONException e) {
                 e.printStackTrace();
-                ////Log.e("error catch",e.toString());
+                Log.e("error catch",e.toString());
+                Log.e("category",categori.toString());
             }
         }
         hotdeal.setAdapter(new HorizontalHotDeal(context,hotdeals));
         toprated.setAdapter(new HorizontalHotDeal(context,toprateds));
         restaurants.setAdapter(new HorizontalRestaurants(context,responseArray));
         category.setAdapter(new HorizontalCategory(context,categori));
+        viewPager.setAdapter(new CustomPageAdapter(context,Offers));
     }
 
 }

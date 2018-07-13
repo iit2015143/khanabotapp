@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -40,7 +41,7 @@ public class MenuGrid extends AppCompatActivity {
         initialize();
 
         pager = (ViewPager)findViewById(R.id.pager);
-        pager.setAdapter(new CustomPageAdapter(this));
+        pager.setAdapter(new CustomPageAdapter(this,new JSONArray()));
 
         android.support.v7.widget.SearchView searchView = (android.support.v7.widget.SearchView) findViewById(R.id.searchview);
         EditText searchEditText = (EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);

@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
@@ -56,6 +57,8 @@ public class Menus extends AppCompatActivity {
                         startActivity(intent);
                         break;
                     case R.id.home:
+                        Intent intent2=new Intent(context,HomePage.class);
+                        startActivity(intent2);
                         break;
                     case R.id.orderstatus:
                         selectme(2);
@@ -89,6 +92,10 @@ public class Menus extends AppCompatActivity {
     }
     public void notifychange(){
         ((TextView)findViewById(R.id.carttext)).setText(HomePage.mycart.length()+"");
+        if(HomePage.mycart.length()==0)
+            ((RelativeLayout)findViewById(R.id.cartcontainer)).setVisibility(View.INVISIBLE);
+        else
+            ((RelativeLayout)findViewById(R.id.cartcontainer)).setVisibility(View.VISIBLE);
     }
     @Override
     public void onResume(){

@@ -15,6 +15,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.json.JSONObject;
@@ -127,6 +129,11 @@ public class RestaurantProfile extends AppCompatActivity {
 
     public void notifychange(){
         ((TextView)findViewById(R.id.carttext)).setText(HomePage.mycart.length()+"");
+
+        if(HomePage.mycart.length()==0)
+            ((RelativeLayout)findViewById(R.id.cartcontainer)).setVisibility(View.INVISIBLE);
+        else
+            ((RelativeLayout)findViewById(R.id.cartcontainer)).setVisibility(View.VISIBLE);
     }
 
     @Override

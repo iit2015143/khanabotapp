@@ -450,7 +450,7 @@ public class MapFragment extends FragmentActivity implements GoogleMap.OnCameraI
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+        HomePage.address = address;
         Intent intent = new Intent(this,HomePage.class);
         intent.putExtra("address",address);
         startActivity(intent);

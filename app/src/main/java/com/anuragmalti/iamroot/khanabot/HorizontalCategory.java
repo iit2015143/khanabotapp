@@ -8,8 +8,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,22 +53,19 @@ public class HorizontalCategory extends RecyclerView.Adapter<HorizontalCategory.
                         JSONArray menunames = menu.names();
                         for(int j=0; j<menunames.length();j++){
                             JSONObject leveltwo = menu.getJSONObject(menunames.getString(j));
-                            JSONArray Category = leveltwo.getJSONArray("Category");
-                            for(int k=0; k<Category.length();k++){
-                                if(Category.getString(k).equals(category.get(position))){
-                                    JSONArray leveltwonames = leveltwo.names();
-                                    for(int l=0; l<leveltwonames.length();l++){
-                                        if(!(leveltwonames.getString(l).equals("Category"))){
-                                            JSONObject item = new JSONObject();
-                                            item.put("name",leveltwonames.getString(l));
-                                            item.put("price",leveltwo.getJSONArray(leveltwonames.getString(l)));
-                                            item.put("resname",restaurantobj.getString("name"));
-                                            item.put("number",restaurantobj.getString("number"));
-                                            item.put("levelone","menu");
-                                            item.put("leveltwo",menunames.getString(j));
-                                            item.put("leveltwo",leveltwonames.getString(l));
-                                            catmenu.put(item);
-                                        }
+                            JSONArray leveltwonames = leveltwo.names();
+                            for(int l=0; l<leveltwonames.length();l++){
+                                JSONObject item = new JSONObject(leveltwo.getJSONObject(leveltwonames.getString(l)).toString());
+                                JSONArray Category = item.getJSONArray("category");
+                                for(int k=0; k<Category.length();k++){
+                                    if(Category.getString(k).equals(category.get(position))){
+
+                                        item.put("name",leveltwonames.getString(l));
+                                        item.put("resname",restaurantobj.getString("name"));
+                                        item.put("number",restaurantobj.getString("number"));
+                                        item.put("levelone","menu");
+                                        item.put("leveltwo",menunames.getString(j));
+                                        catmenu.put(item);
                                     }
                                 }
                             }
@@ -83,6 +83,8 @@ public class HorizontalCategory extends RecyclerView.Adapter<HorizontalCategory.
             }
         });
         holder.category.setText(category.get(position));
+        Picasso.with(context).load(RestClient.BASE_URL+"/"+category.get(position)+".jpg").into(holder.image);
+
     }
 
     @Override
@@ -93,9 +95,11 @@ public class HorizontalCategory extends RecyclerView.Adapter<HorizontalCategory.
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView category;
         public View view;
+        public ImageView image;
         public MyViewHolder(View view) {
             super(view);
             category = (TextView) view.findViewById(R.id.category);
+            image = (ImageView) view.findViewById(R.id.image);
             this.view = view;
         }
     }

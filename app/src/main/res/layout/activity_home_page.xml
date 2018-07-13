@@ -18,19 +18,30 @@
         android:layout_height="wrap_content"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="?attr/actionBarSize">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
             <android.support.v7.widget.Toolbar
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:id="@+id/topToolbar"
-                app:layout_scrollFlags="scroll"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+                android:background="@color/primary">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:id="@+id/locationbar"
-                    android:onClick="locationBarClicked">
+                    android:id="@+id/locationbar">
 
                     <ImageView
                         android:layout_width="24dp"
@@ -45,21 +56,10 @@
                         android:textSize="@dimen/nletter"/>
                 </LinearLayout>
             </android.support.v7.widget.Toolbar>
-    </android.support.design.widget.AppBarLayout>
-
-    <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="?attr/actionBarSize">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
 
             <android.support.v4.view.ViewPager
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="100dp"
                 android:id="@+id/viewPager"></android.support.v4.view.ViewPager>
             <LinearLayout
                 style="@style/ParentLinearLayout">
@@ -88,6 +88,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingRight="8dp"
+                            android:visibility="invisible"
                             android:text="View All"
                             android:textColor="@color/primary_dark" />
                     </LinearLayout>
@@ -126,6 +127,7 @@
                             android:layout_height="wrap_content"
                             android:paddingRight="8dp"
                             android:text="View All"
+                            android:visibility="invisible"
                             android:textColor="@color/primary_dark" />
                     </LinearLayout>
                 </LinearLayout>
@@ -187,6 +189,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingRight="8dp"
+                            android:visibility="invisible"
                             android:text="View All"
                             android:textColor="@color/primary_dark" />
                     </LinearLayout>
@@ -212,7 +215,8 @@
             android:layout_width="165dp"
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
-            android:padding="2dp">
+            android:padding="2dp"
+            android:id="@+id/cartcontainer">
             <TextView
                 android:layout_width="20dp"
                 android:layout_height="20dp"

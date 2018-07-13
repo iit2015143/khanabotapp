@@ -11,9 +11,11 @@ import android.util.JsonReader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,12 +36,16 @@ public class Overviewfrag extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = (View) inflater.inflate(
                 R.layout.fragment_overviewfrag, container, false);
+        ImageView image = rootView.findViewById(R.id.image);
+
         context= getActivity();
 
         recyclerView = (RecyclerView)(rootView.findViewById(R.id.mymenu));
 
         try {
             String resname = RestaurantProfile.restaurantobj.getString("name");
+            Picasso.with(context).load(RestClient.BASE_URL+"/"+RestaurantProfile.restaurantobj.getString("image")).into(image);
+
             ((TextView)rootView.findViewById(R.id.resname)).setText(resname);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -70,17 +76,17 @@ public class Overviewfrag extends Fragment {
                 JSONObject leveltwo = menu.getJSONObject(menunames.getString(j));
                 JSONArray leveltwonames = leveltwo.names();
                 for(int l=0; l<leveltwonames.length();l++){
-                    if(!(leveltwonames.getString(l).equals("Category"))){
-                        JSONObject item = new JSONObject();
+                    //if(!(leveltwonames.getString(l).equals("Category"))){
+                        JSONObject item = new JSONObject(leveltwo.getJSONObject(leveltwonames.getString(l)).toString());
                         item.put("name",leveltwonames.getString(l));
-                        item.put("price",leveltwo.getJSONArray(leveltwonames.getString(l)));
+                        //item.put("price",leveltwo.getJSONArray(leveltwonames.getString(l)));
                         item.put("resname",restaurantobj.getString("name"));
                         item.put("number",restaurantobj.getString("number"));
                         item.put("levelone","menu");
                         item.put("leveltwo",menunames.getString(j));
-                        item.put("leveltwo",leveltwonames.getString(l));
+                        //item.put("leveltwo",leveltwonames.getString(l));
                         childList.add(new MenuChild(item));
-                    }
+                    //}
                 }
                 menuuu.setChildObjectList(childList);
                 crimes.add(menuuu);

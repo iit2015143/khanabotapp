@@ -9,6 +9,7 @@
     <!-- TODO: Update blank fragment layout -->
     <ImageView
         android:layout_width="match_parent"
+        android:id="@+id/image"
         android:layout_height="200dp"
         android:src="@drawable/food"
         android:scaleType="centerCrop"/>
@@ -66,7 +67,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/rating"
-                    android:text="4"
+                    android:text="3.5"
                     android:textSize="@dimen/nletter"
                     android:paddingLeft="4dp"
                     android:textColor="@color/moan"/>
@@ -85,7 +86,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="11AM-5AM"
+                    android:text="11AM-10PM"
                     android:id="@+id/opentime"
                     android:textColor="@color/moan"
                     android:paddingLeft="4dp"
@@ -121,6 +122,8 @@
                     android:textColor="@color/moan"
                     android:textSize="@dimen/sletter"
                     android:id="@+id/number"
+                    android:autoLink="phone"
+                    android:textColorLink="@color/monsoon"
                     android:paddingLeft="4dp"/>
             </LinearLayout>
             <LinearLayout
@@ -136,7 +139,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="IIIT Chauraha, Jhalwa, Allahabad"
+                    android:text="Jhalwa, Allahabad"
                     android:textColor="@color/moan"
                     android:textSize="@dimen/sletter"
                     android:paddingLeft="4dp"

@@ -32,6 +32,7 @@ public class AddtoCart extends AppCompatActivity {
     public String mode="cod";
     public String time="";
     public Button requestorder;
+    public Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +43,7 @@ public class AddtoCart extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        context = this;
          cartItems = (RecyclerView)findViewById(R.id.cartItems);
         cartItems.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         cartItems.setAdapter(new VerticalMenuAdapter(this,HomePage.mycart,"AddtoCart"));
@@ -128,6 +130,8 @@ public class AddtoCart extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(),"Order Requested",Toast.LENGTH_SHORT).show();
                             clearorder(null);
                             requestorder.setEnabled(true);
+                            Intent intent = new Intent(context,UserProfile.class);
+                            startActivity(intent);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

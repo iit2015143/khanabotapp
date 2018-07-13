@@ -23,11 +23,19 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="4"
+            android:layout_weight="3"
             android:text="Order Id :"
             android:textColor="@color/monsoon"
             android:layout_marginLeft="4dp"
             android:id="@+id/orderid"
+            android:textSize="@dimen/sletter" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/time"
+            android:text="Time"
+            android:textColor="@color/monsoon"
             android:textSize="@dimen/sletter" />
     </LinearLayout>
     <LinearLayout
@@ -111,16 +119,24 @@
             android:textColor="@color/monsoon"
             android:textSize="@dimen/vsletter"
             android:gravity="center_horizontal"/>
-        <TextView
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:layout_marginLeft="4dp"
-            android:text="Pending"
-            android:id="@+id/number"
             android:gravity="center_horizontal"
             android:textColor="@color/monsoon"
-            android:textSize="@dimen/vsletter" />
+            android:textSize="@dimen/vsletter" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pending"
+                android:textColorLink="@color/monsoon"
+                android:id="@+id/number"
+                android:autoLink="phone"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp" />
+        </LinearLayout>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"

@@ -11,9 +11,11 @@ import android.util.JsonReader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,8 +34,11 @@ public class TrueOverview extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = (View) inflater.inflate(
                 R.layout.fragment_true_overview, container, false);
+        ImageView image = rootView.findViewById(R.id.image);
+
         Context context= getActivity();
         try {
+            Picasso.with(context).load(RestClient.BASE_URL+"/"+RestaurantProfile.restaurantobj.getString("image")).into(image);
             String resname = RestaurantProfile.restaurantobj.getString("name");
             ((TextView)rootView.findViewById(R.id.resname)).setText(resname);
             String number = RestaurantProfile.restaurantobj.getString("number");

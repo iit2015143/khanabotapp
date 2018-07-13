@@ -21,6 +21,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.concurrent.TimeUnit;
+
 public class OrderhistoryAdapter extends RecyclerView.Adapter<OrderhistoryAdapter.MyViewHolder>{
 
     public Context context;
@@ -41,14 +43,21 @@ public class OrderhistoryAdapter extends RecyclerView.Adapter<OrderhistoryAdapte
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
         try {
+
             JSONObject perorder = orderhistory.getJSONObject(position);
+            long time = perorder.getLong("id");
+            time = time/10000;
+            int hours = (int) TimeUnit.MILLISECONDS.toHours(time);
+            hours = hours%24;
+            int minutes = (int) (TimeUnit.MILLISECONDS.toMinutes(time) -
+                                TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(time)));
             holder.status.setText(perorder.getString("status"));
             holder.summary.setText(perorder.getString("summary"));
             holder.orderid.setText(perorder.getString("id"));
             holder.total.setText(perorder.getString("total"));
             holder.number.setText(perorder.getString("tonumber"));
             holder.resname.setText(perorder.getJSONArray("order").getJSONObject(0).getString("resname"));
-
+            holder.time.setText(hours + ":" + minutes);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -60,7 +69,7 @@ public class OrderhistoryAdapter extends RecyclerView.Adapter<OrderhistoryAdapte
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView orderid,summary,total,status,number,resname;
+        public TextView orderid,summary,total,status,number,resname,time;
         public View view;
         public MyViewHolder(View view) {
             super(view);
@@ -71,6 +80,7 @@ public class OrderhistoryAdapter extends RecyclerView.Adapter<OrderhistoryAdapte
             status = (TextView)(view.findViewById(R.id.status));
             number =(TextView)(view.findViewById(R.id.number));
             resname = (TextView)(view.findViewById(R.id.resname));
+            time = (TextView)(view.findViewById(R.id.time));
         }
 
     }

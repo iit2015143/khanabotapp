@@ -43,7 +43,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="55m"
+                android:text="30m"
                 android:textColor="@color/white" />
         </LinearLayout>
 

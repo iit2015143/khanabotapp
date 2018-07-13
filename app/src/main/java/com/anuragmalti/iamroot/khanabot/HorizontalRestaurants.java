@@ -6,8 +6,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,6 +50,7 @@ public class HorizontalRestaurants extends RecyclerView.Adapter<HorizontalRestau
         });
         try {
             JSONObject Restaurant = restaurantArray.getJSONObject(position);
+            Picasso.with(context).load(RestClient.BASE_URL + "/"+Restaurant.getString("image")).into(holder.image);
             holder.resname.setText(Restaurant.getString("name"));
             holder.rating.setText(Restaurant.getString("rating"));
         } catch (JSONException e) {
@@ -61,6 +65,7 @@ public class HorizontalRestaurants extends RecyclerView.Adapter<HorizontalRestau
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView price,resname,specifics,rating;
+        public ImageView image;
         public View view;
         public MyViewHolder(View view) {
             super(view);
@@ -69,6 +74,7 @@ public class HorizontalRestaurants extends RecyclerView.Adapter<HorizontalRestau
             resname =(TextView)(view.findViewById(R.id.resname));
             specifics=(TextView)(view.findViewById(R.id.specifics));
             rating=(TextView)(view.findViewById(R.id.rating));
+            image = (ImageView)(view.findViewById(R.id.image));
         }
     }
 }

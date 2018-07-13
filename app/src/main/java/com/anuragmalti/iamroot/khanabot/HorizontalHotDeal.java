@@ -38,10 +38,14 @@ public class HorizontalHotDeal extends RecyclerView.Adapter<HorizontalHotDeal.My
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
 
-        Picasso.with(context).load("http://192.168.0.54:8000/launcher.png").resize(400, 300).into(holder.image);
-
         try {
             final JSONObject HotDeal = hotdeals.getJSONObject(position);
+            if(HotDeal.has("image")){
+                Picasso.with(context).load(RestClient.BASE_URL+"/"+HotDeal.getString("image")).into(holder.image);
+            }
+            else
+                Picasso.with(context).load(RestClient.BASE_URL+"/launcher.png").into(holder.image);
+
             holder.foodname.setText(HotDeal.getString("name"));
             holder.nameofrest.setText(HotDeal.getString("resname"));
             holder.price.setText("Rs "+ HotDeal.getJSONArray("price").getString(0));
