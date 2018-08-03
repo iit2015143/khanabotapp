@@ -114,7 +114,7 @@ public class Fill_address extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Toast.makeText(context,response.toString(),Toast.LENGTH_SHORT).show();
-                //Log.e("Error makerequest","request completed");
+                ////Log.e("Error makerequest","request completed");
             }
 
             @Override

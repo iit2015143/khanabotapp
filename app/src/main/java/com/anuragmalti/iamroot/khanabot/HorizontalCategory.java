@@ -45,7 +45,7 @@ public class HorizontalCategory extends RecyclerView.Adapter<HorizontalCategory.
             public void onClick(View v) {
                 JSONArray responseArray = ((HomePage)context).responseArray;
                 JSONArray catmenu=new JSONArray();
-                //Log.e("error category",responseArray.toString());
+                ////Log.e("error category",responseArray.toString());
                 for(int i=0; i<responseArray.length();i++){
                     try {
                         JSONObject restaurantobj = responseArray.getJSONObject(i);
@@ -53,6 +53,9 @@ public class HorizontalCategory extends RecyclerView.Adapter<HorizontalCategory.
                         JSONArray menunames = menu.names();
                         for(int j=0; j<menunames.length();j++){
                             JSONObject leveltwo = menu.getJSONObject(menunames.getString(j));
+                            if(leveltwo.length()==0)
+                                continue;
+                            //Log.e("leveltwo",leveltwo.toString());
                             JSONArray leveltwonames = leveltwo.names();
                             for(int l=0; l<leveltwonames.length();l++){
                                 JSONObject item = new JSONObject(leveltwo.getJSONObject(leveltwonames.getString(l)).toString());
@@ -74,10 +77,10 @@ public class HorizontalCategory extends RecyclerView.Adapter<HorizontalCategory.
                     }
                     catch (JSONException e) {
                         e.printStackTrace();
-                        //Log.e("error catch",e.toString());
+                        ////Log.e("error catch",e.toString());
                     }
                 }
-                //Log.e("error cat",catmenu.toString());
+                ////Log.e("error cat",catmenu.toString());
                 Menus.adapterArray=catmenu;
                 ((HomePage)context).categoryclicked(category.get(position));
             }

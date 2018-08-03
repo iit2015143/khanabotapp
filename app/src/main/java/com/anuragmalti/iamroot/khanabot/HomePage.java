@@ -45,6 +45,7 @@ public class HomePage extends AppCompatActivity {
     public JSONArray responseArray=new JSONArray();
     public static JSONArray mycart;
     public static String address;
+    public int currenttime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,14 +64,14 @@ public class HomePage extends AppCompatActivity {
 
         String location = getprefsvalue("location");
         if(location.equals("")){
-            ////Log.e("Fatal error","location not found");
+            //////Log.e("Fatal error","location not found");
         }
         try {
             JSONObject Location = new JSONObject(location.toString());
             double lat = Location.getDouble("lat");
             double longitude = Location.getDouble("long");
-            makerequest(new LatLng(lat,longitude));
-            ////Log.e("Fatal error","request made");
+            getcurrenttime(lat,longitude);
+            //////Log.e("Fatal error","request made");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -146,9 +147,38 @@ public class HomePage extends AppCompatActivity {
         }
     }
 
+    public void getcurrenttime(final double lat, final double longitude){
+
+
+        RestClient.get("/currenttime", null, new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                if(response.has("currenttime")){
+                    try {
+                        currenttime = response.getInt("currenttime");
+                        //Log.e("currenttime",currenttime+"");
+                        makerequest(new LatLng(lat,longitude));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                //onLoginSuccess();
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
+                //Toast.makeText(context,throwable.toString(),Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
     public void makerequest(LatLng latLng){
 
-        ////Log.e("Error ",""+latLng.latitude+ " "+latLng.longitude);
+        //////Log.e("Error ",""+latLng.latitude+ " "+latLng.longitude);
 
         RequestParams params = new RequestParams();
         params.put("lat",latLng.latitude + "");
@@ -158,10 +188,16 @@ public class HomePage extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 responseArray = response;
+                if(responseArray.length()==0){
+                    ((ViewPager)findViewById(R.id.viewPager)).setBackground(getResources().getDrawable(R.drawable.notavailable));
+                }
+                else
+                    ((ViewPager)findViewById(R.id.viewPager)).setBackground(getResources().getDrawable(R.drawable.nooffer));
+
                 setmyadapters();
-//                //Log.e("errror category",category.toString());
-//                //Log.e("Error hotdeal",hotdeals.toString());
-//                //Log.e("Error toprateds",toprateds.toString());
+//                ////Log.e("errror category",category.toString());
+//                ////Log.e("Error hotdeal",hotdeals.toString());
+//                ////Log.e("Error toprateds",toprateds.toString());
 
             }
 
@@ -203,7 +239,7 @@ public class HomePage extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        //Log.e("coming object",cartItem.toString());
+        ////Log.e("coming object",cartItem.toString());
 
         boolean found = false;
         int index=0;
@@ -211,17 +247,17 @@ public class HomePage extends AppCompatActivity {
         try {
             for(int i=0; i<mycart.length();i++){
                     JSONObject cartobject = mycart.getJSONObject(i);
-                    ////Log.e("error in loop out if",cartobject.toString());
+                    //////Log.e("error in loop out if",cartobject.toString());
                     if(cartobject.getString("number").equals(cartItem.getString("number"))
                             && cartobject.getString("name").equals(cartItem.getString("name"))
                             && cartobject.getString("index").equals(cartItem.getString("index"))
                             && cartobject.getString("levelone").equals(cartItem.getString("levelone"))){
-                        ////Log.e("error in loop in if",cartobject.toString());
+                        //////Log.e("error in loop in if",cartobject.toString());
                         found = true;
                         index = i;
                         quantity = Integer.parseInt(cartobject.getString("quantity"));
-//                        //Log.e("error cartobject",cartobject.toString());
-//                        //Log.e("error cartItem",cartItem.toString());
+//                        ////Log.e("error cartobject",cartobject.toString());
+//                        ////Log.e("error cartItem",cartItem.toString());
                         break;
                     }
             }
@@ -249,7 +285,7 @@ public class HomePage extends AppCompatActivity {
                     mycart.put(cartItem);
                 }
             }
-            ////Log.e("error cartlen",mycart.length()+"");
+            //////Log.e("error cartlen",mycart.length()+"");
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -266,7 +302,7 @@ public class HomePage extends AppCompatActivity {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(key,cartstring);
         editor.commit();
-        ////Log.e("preferences",key+cartstring);
+        //////Log.e("preferences",key+cartstring);
     }
 
     public void checknotificationstatus(){
@@ -317,7 +353,7 @@ public class HomePage extends AppCompatActivity {
                         String value = response.getString("notificationid");
                         if (value.equals("updated")) {
                             ((HomePage)context).addtosharedpreferences("notificationstatus","updated");
-                            ////Log.e("Sent ","notificationid sent to server");
+                            //////Log.e("Sent ","notificationid sent to server");
                         }
                     }
 
@@ -333,7 +369,7 @@ public class HomePage extends AppCompatActivity {
             }
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
-                ////Log.e("error failure","connection failed in notificationid updation");
+                //////Log.e("error failure","connection failed in notificationid updation");
             }
 
         });
@@ -342,6 +378,7 @@ public class HomePage extends AppCompatActivity {
     public String getprefsvalue(String key){
         return getSharedPreferences("com.example.root.khanabot",Context.MODE_PRIVATE).getString(key,"");
     }
+
     public void setmyadapters(){
         JSONArray hotdeals = new JSONArray();
         JSONArray toprateds = new JSONArray();
@@ -349,8 +386,41 @@ public class HomePage extends AppCompatActivity {
         JSONArray Offers = new JSONArray();
 
         for(int i=0; i<responseArray.length();i++){
+            int uptime=0;
+            int downtime=0;
             try {
                 JSONObject restaurantobj = responseArray.getJSONObject(i);
+                if(restaurantobj.has("availability")){
+                    uptime = restaurantobj.getJSONObject("availability").getInt("uptime");
+                    downtime = restaurantobj.getJSONObject("availability").getInt("downtime");
+
+                    if(uptime<downtime){
+                        if(currenttime>=uptime && currenttime<downtime){
+
+                        }
+                        else{
+                            responseArray.remove(i);
+                            i--;
+                            //Log.e("responsearraylength",responseArray.length()+"");
+                            continue;
+                        }
+                    }
+                    else{
+                        if(currenttime>=uptime){
+
+                        }
+                        else if(currenttime<downtime){
+
+                        }
+                        else{
+                            responseArray.remove(i);
+                            i--;
+                            //Log.e("responsearraylength",responseArray.length()+"");
+                            continue;
+                        }
+                    }
+                }
+
                 JSONArray HotDeals = null;
                 JSONArray TopRateds = restaurantobj.getJSONArray("TopRated");
                 HotDeals = restaurantobj.getJSONArray("HotDeals");
@@ -371,7 +441,7 @@ public class HomePage extends AppCompatActivity {
                 for(int j=0;j<TopRateds.length();j++){
                     JSONObject TopRated = TopRateds.getJSONObject(j);
                     int index = TopRated.getInt("Ind");
-                    Log.e("error toprated",TopRated.toString());
+                    //Log.e("error toprated",TopRated.toString());
                     JSONObject myTopRated = new JSONObject();
                     JSONObject menu = restaurantobj.getJSONObject("menu");
                     myTopRated.put("name", TopRated.getString("SubCategory"));
@@ -393,10 +463,42 @@ public class HomePage extends AppCompatActivity {
 
                 for(int j=0; j<menuNames.length();j++){
                     JSONObject leveltwo = menu.getJSONObject(menuNames.getString(j));
+                    if(leveltwo.length()==0)
+                        continue;
                     JSONArray leveltwonames = leveltwo.names();
                     for(int k =0; k<leveltwonames.length();k++) {
                         JSONObject item = leveltwo.getJSONObject(leveltwonames.getString(k));
-                        Log.e("item",item.toString());
+                        if(item.has("availability")){
+                            uptime = item.getJSONObject("availability").getInt("uptime");
+                            downtime = item.getJSONObject("availability").getInt("downtime");
+
+                            if(uptime<downtime){
+                                if(currenttime>=uptime && currenttime<downtime){
+
+                                }
+                                else{
+                                    leveltwo.remove(leveltwonames.getString(k));
+                                    //Log.e("leveltwolength",leveltwo.length()+"");
+                                    continue;
+                                }
+                            }
+                            else{
+                                if(currenttime>=uptime){
+
+                                }
+                                else if(currenttime<downtime){
+
+                                }
+                                else{
+                                    leveltwo.remove(leveltwonames.getString(k));
+                                    //Log.e("leveltwolength",leveltwo.length()+"");
+                                    continue;
+                                }
+                            }
+                        }
+
+
+                        //Log.e("item",item.toString());
                         JSONArray Category = item.getJSONArray("category");
                         for (int l = 0; l < Category.length(); l++) {
                             if (categori.indexOf(Category.getString(l)) == -1) {
@@ -408,8 +510,8 @@ public class HomePage extends AppCompatActivity {
             }
             catch (JSONException e) {
                 e.printStackTrace();
-                Log.e("error catch",e.toString());
-                Log.e("category",categori.toString());
+                //Log.e("error catch",e.toString());
+                //Log.e("category",categori.toString());
             }
         }
         hotdeal.setAdapter(new HorizontalHotDeal(context,hotdeals));

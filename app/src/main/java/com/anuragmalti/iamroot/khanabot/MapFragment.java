@@ -82,7 +82,7 @@ public class MapFragment extends FragmentActivity implements GoogleMap.OnCameraI
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
         context = this;
-        //Log.e("Error : " ,"This hell is not loading motherfucker");
+        ////Log.e("Error : " ,"This hell is not loading motherfucker");
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         obtainfragandapiclient();
 
@@ -117,13 +117,13 @@ public class MapFragment extends FragmentActivity implements GoogleMap.OnCameraI
                 LatLng latlng = place.getLatLng();
                 //animatelowbar(0);
                 showMarker(latlng);
-                //Log.e(TAG, "Place: " + place.getName());
+                ////Log.e(TAG, "Place: " + place.getName());
             }
 
             @Override
             public void onError(Status status) {
                 // TODO: Handle the error.
-                //Log.e(TAG, "An error occurred: " + status);
+                ////Log.e(TAG, "An error occurred: " + status);
             }
         });
         autocompleteFragment.getView().setBackgroundColor(0xBBFFFFFF);
@@ -142,7 +142,7 @@ public class MapFragment extends FragmentActivity implements GoogleMap.OnCameraI
         lowbar = (Button)findViewById(R.id.confirm);
         upbar = (LinearLayout)findViewById(R.id.upbar);
         //lowbar.setVisibility(View.INVISIBLE);
-        ////Log.e("error in oncreate","Height : "+lowbar.getHeight());
+        //////Log.e("error in oncreate","Height : "+lowbar.getHeight());
         //settoastmsgtoall();
     }
 
@@ -180,11 +180,11 @@ public class MapFragment extends FragmentActivity implements GoogleMap.OnCameraI
         }
         else {
             Toast.makeText(this, "Map is ready", Toast.LENGTH_SHORT).show();
-            //Log.e("Error: ", "Why the hell this does not get called");
+            ////Log.e("Error: ", "Why the hell this does not get called");
             googleMap = gMap;
             initListeners();
         }
-        //Log.e("error in onmapready","Height : "+lowbar.getHeight());
+        ////Log.e("error in onmapready","Height : "+lowbar.getHeight());
     }
 
     @Override
@@ -234,7 +234,7 @@ public class MapFragment extends FragmentActivity implements GoogleMap.OnCameraI
     public void onStart() {
         super.onStart();
         mGoogleApiClient.connect();
-        ////Log.e("error in onstart","Height : "+lowbar.getHeight());
+        //////Log.e("error in onstart","Height : "+lowbar.getHeight());
     }
 
     @Override
@@ -263,12 +263,12 @@ public class MapFragment extends FragmentActivity implements GoogleMap.OnCameraI
             @Override
             public void onFinish() {
 
-                //Log.e("error : ","on finish inside animatecamera called");
+                ////Log.e("error : ","on finish inside animatecamera called");
             }
 
             @Override
             public void onCancel() {
-                //Log.e("error","am i getting cancelled");
+                ////Log.e("error","am i getting cancelled");
             }
         });
 
@@ -276,8 +276,8 @@ public class MapFragment extends FragmentActivity implements GoogleMap.OnCameraI
         googleMap.setTrafficEnabled( true );
         googleMap.setMyLocationEnabled( true );
         googleMap.getUiSettings().setZoomControlsEnabled( true );
-        ////Log.e("error : ","inside init camera function");
-        ////Log.e("error in initcamera","Height : "+lowbar.getHeight());
+        //////Log.e("error : ","inside init camera function");
+        //////Log.e("error in initcamera","Height : "+lowbar.getHeight());
 
     }
 
@@ -297,7 +297,7 @@ public class MapFragment extends FragmentActivity implements GoogleMap.OnCameraI
 
     public void showMarker(LatLng latLng){
 
-        //Log.e("Error in showmarker : ",""+latLng.latitude+" "+latLng.longitude);
+        ////Log.e("Error in showmarker : ",""+latLng.latitude+" "+latLng.longitude);
 
         if (marker != null) {
             marker.remove();
@@ -315,10 +315,10 @@ public class MapFragment extends FragmentActivity implements GoogleMap.OnCameraI
 //            public void run() {
 //                if(lowbar.getVisibility()==View.INVISIBLE) {
 //                    lowbar.setAlpha(0.0f);
-//                    //Log.e("error",lowbar.getHeight()+"");
-//                    //Log.e("error in transy",lowbar.getTranslationY()+"");
+//                    ////Log.e("error",lowbar.getHeight()+"");
+//                    ////Log.e("error in transy",lowbar.getTranslationY()+"");
 //                    lowbar.setTranslationY(lowbar.getHeight());
-//                    //Log.e("error in transy",lowbar.getTranslationY()+"");
+//                    ////Log.e("error in transy",lowbar.getTranslationY()+"");
 //                    lowbar.setVisibility(View.VISIBLE);
 //                }
 //                animatelowbar(1);
@@ -328,7 +328,7 @@ public class MapFragment extends FragmentActivity implements GoogleMap.OnCameraI
         int temp = rqstsync;
 
         //makerequest(temp,latLng);
-        //Log.e("Error ",""+latLng.latitude+ " "+latLng.longitude);
+        ////Log.e("Error ",""+latLng.latitude+ " "+latLng.longitude);
 
         initCamera(latLng);
     }
@@ -414,8 +414,8 @@ public class MapFragment extends FragmentActivity implements GoogleMap.OnCameraI
     @Override
     public void onCameraIdle() {
         //Toast.makeText(context,"camera idle fired",Toast.LENGTH_SHORT).show();
-        //Log.e("Error: ","Camera stopped");
-        ////Log.e("error in cameraidle","Height : "+lowbar.getHeight());
+        ////Log.e("Error: ","Camera stopped");
+        //////Log.e("error in cameraidle","Height : "+lowbar.getHeight());
 
     }
 
@@ -431,7 +431,7 @@ public class MapFragment extends FragmentActivity implements GoogleMap.OnCameraI
     @Override
     public boolean onMyLocationButtonClick() {
         Toast.makeText(context,"gps button clicked",Toast.LENGTH_SHORT).show();
-        ////Log.e("Error : ", "gps butto clicked");
+        //////Log.e("Error : ", "gps butto clicked");
         //animatelowbar(0);
         //animateupbar(0);
         idle = 0;

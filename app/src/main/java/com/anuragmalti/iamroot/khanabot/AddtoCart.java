@@ -83,13 +83,13 @@ public class AddtoCart extends AppCompatActivity {
     }
 
     public void addtosharedpreferences(String cartstring){
-        //Log.e("error str","cartstring");
+        ////Log.e("error str","cartstring");
         SharedPreferences prefs = getSharedPreferences("com.example.root.khanabot", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("mycart",cartstring);
         editor.commit();
-        //Log.e("error onpause","saved to preferences");
-        //Log.e("error str",getSharedPreferences("com.example.root.khanabot", Context.MODE_PRIVATE).
+        ////Log.e("error onpause","saved to preferences");
+        ////Log.e("error str",getSharedPreferences("com.example.root.khanabot", Context.MODE_PRIVATE).
                 //getString("mycart",""));
     }
 
@@ -100,9 +100,9 @@ public class AddtoCart extends AppCompatActivity {
             JSONArray price = cartitem.getJSONArray("price");
             int quantity = cartitem.getInt("quantity");
             ans += Integer.parseInt(price.getString(cartitem.getInt("index")))*quantity;
-            //Log.e("in cart",cartitem.toString());
+            ////Log.e("in cart",cartitem.toString());
         }
-        //Log.e("error addtocart","I have been called");
+        ////Log.e("error addtocart","I have been called");
         ((TextView)findViewById(R.id.total)).setText("Rs "+ans);
     }
 
@@ -123,7 +123,7 @@ public class AddtoCart extends AppCompatActivity {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                //Log.e("cartresponse",response.toString());
+                ////Log.e("cartresponse",response.toString());
                 if(response.has("orders")){
                     try {
                         if(response.getString("orders").equals("requested")){

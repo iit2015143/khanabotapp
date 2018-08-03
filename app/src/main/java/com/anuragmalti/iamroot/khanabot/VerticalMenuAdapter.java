@@ -29,11 +29,6 @@ public class VerticalMenuAdapter extends RecyclerView.Adapter<VerticalMenuAdapte
 
     public VerticalMenuAdapter(Context context,JSONArray hot,String decider){
         this.context = context;
-//        try {
-//            nothotdeals = new JSONArray(hot.toString());
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
         nothotdeals = hot;
         this.decider = decider;
         verticalMenuAdapter = this;
@@ -60,35 +55,39 @@ public class VerticalMenuAdapter extends RecyclerView.Adapter<VerticalMenuAdapte
                     holder.change.setText(nothotdeal.getInt("quantity")+"");
                     holder.price.setText("Rs "+ price.getString(nothotdeal.getInt("index")));
                     break;
-            }
-            nothotdeal.put("index",price.length()-1);
-            if(price.length()==1){
-                holder.radiovisible.setVisibility(View.GONE);
-            }
-            else{
-                holder.radiovisible.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(RadioGroup group, int checkedId) {
-                        if(checkedId==R.id.full) {
-                            try {
-                                holder.price.setText("Rs "+ price.getString(price.length()-1));
-                                nothotdeal.put("index",price.length()-1);
-                                holder.change.setText(0+"");
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        else if(checkedId ==R.id.half){
-                            try {
-                                holder.price.setText("Rs "+ price.getString(0));
-                                nothotdeal.put("index",0);
-                                holder.change.setText(0+"");
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
+                case "Menus":
+                    nothotdeal.put("index",price.length()-1);
+                    holder.radiovisible.setVisibility(View.VISIBLE);
+                    if(price.length()==1){
+                        holder.radiovisible.setVisibility(View.GONE);
                     }
-                });
+                    else{
+                        holder.radiovisible.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                                if(checkedId==R.id.full) {
+                                    try {
+                                        holder.price.setText("Rs "+ price.getString(price.length()-1));
+                                        nothotdeal.put("index",price.length()-1);
+                                        holder.change.setText(0+"");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                else if(checkedId ==R.id.half){
+                                    try {
+                                        holder.price.setText("Rs "+ price.getString(0));
+                                        nothotdeal.put("index",0);
+                                        holder.change.setText(0+"");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        });
+                    }
+
+
             }
 
             holder.add.setOnClickListener(new View.OnClickListener() {
@@ -98,7 +97,7 @@ public class VerticalMenuAdapter extends RecyclerView.Adapter<VerticalMenuAdapte
                     value++;
                     holder.change.setText(value.toString());
                     HomePage.updatecart(true,nothotdeal);
-                    //Log.e("error nothot",nothotdeal.toString());
+                    ////Log.e("error nothot",nothotdeal.toString());
                     switch (decider){
                         case "AddtoCart":
                             try {
@@ -122,7 +121,7 @@ public class VerticalMenuAdapter extends RecyclerView.Adapter<VerticalMenuAdapte
                         value--;
                         holder.change.setText(value.toString());
                         HomePage.updatecart(false,nothotdeal);
-                        //Log.e("error nothot",nothotdeal.toString());
+                        ////Log.e("error nothot",nothotdeal.toString());
                     }
                     switch (decider){
                         case "AddtoCart":

@@ -74,6 +74,8 @@ public class Overviewfrag extends Fragment {
                 Menu menuuu = new Menu(menunames.getString(j));
                 ArrayList<Object> childList = new ArrayList<>();
                 JSONObject leveltwo = menu.getJSONObject(menunames.getString(j));
+                if(leveltwo.length()==0)
+                    continue;
                 JSONArray leveltwonames = leveltwo.names();
                 for(int l=0; l<leveltwonames.length();l++){
                     //if(!(leveltwonames.getString(l).equals("Category"))){

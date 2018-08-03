@@ -56,7 +56,7 @@ public class HorizontalHotDeal extends RecyclerView.Adapter<HorizontalHotDeal.My
                     value++;
                     holder.change.setText(value.toString());
                     HomePage.updatecart(true,HotDeal);
-                    ////Log.e("error cart",HomePage.mycart.toString());
+                    //////Log.e("error cart",HomePage.mycart.toString());
                     ((HomePage)context).notifychange();
                 }
             });
@@ -69,7 +69,7 @@ public class HorizontalHotDeal extends RecyclerView.Adapter<HorizontalHotDeal.My
                         value--;
                         holder.change.setText(value.toString());
                         HomePage.updatecart(false,HotDeal);
-                        ////Log.e("error cart",HomePage.mycart.toString());
+                        //////Log.e("error cart",HomePage.mycart.toString());
                         ((HomePage)context).notifychange();
                     }
                 }

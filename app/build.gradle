@@ -6,8 +6,8 @@ android {
         applicationId "com.anuragmalti.iamroot.khanabot"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 4
-        versionName "1.4"
+        versionCode 8
+        versionName "2.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

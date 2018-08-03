@@ -54,17 +54,20 @@ import cz.msebera.android.httpclient.Header;
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
 GoogleApiClient.OnConnectionFailedListener{
 
+    public LocationCallback mLocationCallback;
     public LocationRequest locationRequest;
     Context context;
     final int PERMISSION_ACCESS_FINE_LOCATION = 1;
     public static final int REQUEST_CHECK_SETTINGS = 0x1;
     public GoogleApiClient mGoogleApiClient;
     public Location mCurrentLocation;
+    public int flag = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         context = this;
+
         chekappversion();
     }
 
@@ -147,7 +150,7 @@ GoogleApiClient.OnConnectionFailedListener{
 //                            finish();
                         }
                         else{
-                            Toast.makeText(context,"This account is logged in on other device, log in again",Toast.LENGTH_LONG).show();
+                            Toast.makeText(context,"This account is //Log.ed in on other device, log in again",Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(context,LoginActivity.class);
                             startActivity(intent);
                             finish();
@@ -201,7 +204,7 @@ GoogleApiClient.OnConnectionFailedListener{
 
     public void permissionGranted(){
         checklocationservices();
-        Log.e("Error permgrant","inpermissiongranted");
+        //Log.e("Error permgrant","inpermissiongranted");
     }
 
     public void checklocationservices(){
@@ -217,7 +220,7 @@ GoogleApiClient.OnConnectionFailedListener{
         result.addOnCompleteListener(new OnCompleteListener<LocationSettingsResponse>() {
             @Override
             public void onComplete(@NonNull Task<LocationSettingsResponse> task) {
-                Log.e("error","task completed");
+                //Log.e("error","task completed");
                 try {
                     LocationSettingsResponse response =
                             task.getResult(ApiException.class);
@@ -226,7 +229,7 @@ GoogleApiClient.OnConnectionFailedListener{
                     switch (ex.getStatusCode()) {
                         case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
                             try {
-                                Log.e("error","resolution required");
+                                //Log.e("error","resolution required");
                                 ResolvableApiException resolvableApiException =
                                         (ResolvableApiException) ex;
                                 resolvableApiException
@@ -270,13 +273,16 @@ GoogleApiClient.OnConnectionFailedListener{
         mCurrentLocation = LocationServices
                 .FusedLocationApi
                 .getLastLocation( mGoogleApiClient );
-        //Log.e("error",mCurrentLocation.toString());
+        ////Log.e("error",mCurrentLocation.toString());
         if(mCurrentLocation!=null) {
-            //Log.e("Errorcurrentlocation", mCurrentLocation.toString());
+            ////Log.e("Errorcurrentlocation", mCurrentLocation.toString());
             JSONObject location = new JSONObject();
             location.put("lat", mCurrentLocation.getLatitude() + "");
             location.put("long", mCurrentLocation.getLongitude() + "");
             addtosharedpref("location", location.toString());
+
+            if(flag==1)
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient,mLocationCallback);
 
             String address = getAddressFromLatLng(new LatLng(mCurrentLocation.getLatitude(),mCurrentLocation.getLongitude()));
             Intent intent = new Intent(this,HomePage.class);
@@ -289,10 +295,10 @@ GoogleApiClient.OnConnectionFailedListener{
 //            Intent intent = new Intent(this,OnLocation.class);
 //            startActivity(intent);
 //            finish();
-            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, locationRequest, new LocationCallback() {
+            mLocationCallback = new LocationCallback() {
                 @Override
                 public void onLocationResult(LocationResult result) {
-                    Log.e("location",result.getLastLocation().toString());
+                    //Log.e("location",result.getLastLocation().toString());
                     try {
                         gotocurrentlocation();
                     } catch (JSONException e) {
@@ -302,7 +308,10 @@ GoogleApiClient.OnConnectionFailedListener{
 
                 @Override
                 public void onLocationAvailability(LocationAvailability locationAvailability) { }
-            }, null);
+            };
+            flag = 1;
+
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, locationRequest,mLocationCallback , null);
 
         }
 
@@ -314,7 +323,7 @@ GoogleApiClient.OnConnectionFailedListener{
             case REQUEST_CHECK_SETTINGS:
                 switch (resultCode) {
                     case Activity.RESULT_OK:
-                        Log.e("permissionresult", "User agreed to make required location settings changes.");
+                        //Log.e("permissionresult", "User agreed to make required location settings changes.");
                         connectgoogleclient();
                         break;
                     case Activity.RESULT_CANCELED:
@@ -341,7 +350,7 @@ GoogleApiClient.OnConnectionFailedListener{
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.e("MainActivity","connected");
+        //Log.e("MainActivity","connected");
     }
 
     @Override

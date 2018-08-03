@@ -47,7 +47,7 @@ public class CustomPageAdapter extends PagerAdapter {
 
         } catch (JSONException e) {
             e.printStackTrace();
-            Log.e("error",e.toString());
+            //Log.e("error",e.toString());
         }
 
         container.addView(view);

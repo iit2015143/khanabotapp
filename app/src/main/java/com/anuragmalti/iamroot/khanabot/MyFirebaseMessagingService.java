@@ -19,7 +19,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage){
 
-        //Log.e("Message ",remoteMessage.toString());
+        ////Log.e("Message ",remoteMessage.toString());
 
         Intent intent = new Intent(this,UserProfile.class);
         intent.setFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -40,7 +40,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         notificationBuilder.setPriority(Notification.PRIORITY_HIGH);
         NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(0,notificationBuilder.build());
-        //Log.e("notification","with id 123456789wala");
+        ////Log.e("notification","with id 123456789wala");
 
     }
 }

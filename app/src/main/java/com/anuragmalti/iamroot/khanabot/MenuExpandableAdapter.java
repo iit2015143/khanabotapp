@@ -49,7 +49,7 @@ public class MenuExpandableAdapter extends ExpandableRecyclerAdapter<MenuParentV
     @Override
     public void onBindChildViewHolder(final MenuChildViewHolder holder, int i, Object o) {
         MenuChild menuChild = (MenuChild) o;
-        //Log.e("childviewholder",menuChild.item.toString());
+        ////Log.e("childviewholder",menuChild.item.toString());
         try {
             final JSONObject nothotdeal = menuChild.item;
             holder.foodname.setText(nothotdeal.getString("name"));
@@ -106,7 +106,7 @@ public class MenuExpandableAdapter extends ExpandableRecyclerAdapter<MenuParentV
                         value--;
                         holder.change.setText(value.toString());
                         HomePage.updatecart(false,nothotdeal);
-                        //Log.e("error nothot",nothotdeal.toString());
+                        ////Log.e("error nothot",nothotdeal.toString());
                         ((RestaurantProfile)context).notifychange();
                     }
                 }

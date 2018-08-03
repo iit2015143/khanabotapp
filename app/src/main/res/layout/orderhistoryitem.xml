@@ -164,4 +164,17 @@
             android:textColor="@color/primary_dark"
             android:textSize="@dimen/sletter" />
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_below="@id/statusbar">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:text="Cancel Order"
+            android:id="@+id/cancel"/>
+    </LinearLayout>
 </RelativeLayout>

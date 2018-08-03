@@ -21,6 +21,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 public class OrderhistoryAdapter extends RecyclerView.Adapter<OrderhistoryAdapter.MyViewHolder>{
@@ -47,17 +51,17 @@ public class OrderhistoryAdapter extends RecyclerView.Adapter<OrderhistoryAdapte
             JSONObject perorder = orderhistory.getJSONObject(position);
             long time = perorder.getLong("id");
             time = time/10000;
-            int hours = (int) TimeUnit.MILLISECONDS.toHours(time);
-            hours = hours%24;
-            int minutes = (int) (TimeUnit.MILLISECONDS.toMinutes(time) -
-                                TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(time)));
+            Date date = new Date(time);
+            DateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+            formatter.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));
+            String dateFormatted = formatter.format(date);
             holder.status.setText(perorder.getString("status"));
             holder.summary.setText(perorder.getString("summary"));
             holder.orderid.setText(perorder.getString("id"));
             holder.total.setText(perorder.getString("total"));
             holder.number.setText(perorder.getString("tonumber"));
             holder.resname.setText(perorder.getJSONArray("order").getJSONObject(0).getString("resname"));
-            holder.time.setText(hours + ":" + minutes);
+            holder.time.setText(dateFormatted);
         } catch (JSONException e) {
             e.printStackTrace();
         }

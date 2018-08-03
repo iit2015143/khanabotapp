@@ -118,7 +118,7 @@ public class RestaurantProfile extends AppCompatActivity {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("mycart",cartstring);
         editor.commit();
-        //Log.e("error onpause","saved to preferences");
+        ////Log.e("error onpause","saved to preferences");
     }
 
     @Override

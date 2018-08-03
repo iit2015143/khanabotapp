@@ -1,6 +1,7 @@
 package com.anuragmalti.iamroot.khanabot;
 
 import android.content.Context;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,17 +18,19 @@ import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
 
-public class UserProfile extends AppCompatActivity {
+public class UserProfile extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     public Context context;
     public JSONArray adapterArray=new JSONArray();
     public RecyclerView catmenu;
-
+    public SwipeRefreshLayout swiper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
         context = this;
+        swiper = (SwipeRefreshLayout)(findViewById(R.id.swipeme));
+        swiper.setOnRefreshListener(this);
         String title = getIntent().getStringExtra("title");
         TextView textView=(TextView)findViewById(R.id.topToolbar);
         textView.setText(getSharedPreferences("com.example.root.khanabot",Context.MODE_PRIVATE).
@@ -35,6 +38,7 @@ public class UserProfile extends AppCompatActivity {
         catmenu =(RecyclerView)findViewById(R.id.orderstatus);
         catmenu.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         catmenu.setAdapter(new OrderhistoryAdapter(context,adapterArray));
+        swiper.setRefreshing(true);
         makerequest();
     }
 
@@ -45,13 +49,13 @@ public class UserProfile extends AppCompatActivity {
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 //Toast.makeText(context,response.toString(),Toast.LENGTH_SHORT).show();
                 try {
-                    for(int i=0;i<response.length();i++){
-                        JSONObject perorder = response.getJSONObject(i);
-                        //Log.e("orderhistory",perorder.toString());
-                    }
-
+                    swiper.setRefreshing(false);
+//                    for(int i=0;i<response.length();i++){
+//                        JSONObject perorder = response.getJSONObject(i);
+//                        ////Log.e("orderhistory",perorder.toString());
+//                    }
                     catmenu.setAdapter(new OrderhistoryAdapter(context,response));
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -63,9 +67,14 @@ public class UserProfile extends AppCompatActivity {
             }
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
-                //Log.e("error failure","connection failed in orderhistory");
+                ////Log.e("error failure","connection failed in orderhistory");
             }
 
         });
+    }
+
+    @Override
+    public void onRefresh() {
+        makerequest();
     }
 }

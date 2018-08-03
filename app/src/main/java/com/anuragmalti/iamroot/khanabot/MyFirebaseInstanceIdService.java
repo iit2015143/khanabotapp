@@ -22,7 +22,7 @@ public class MyFirebaseInstanceIdService extends FirebaseInstanceIdService {
     @Override
     public void onTokenRefresh(){
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-        //Log.e("Token ", "Refreshed token: " + refreshedToken);
+        ////Log.e("Token ", "Refreshed token: " + refreshedToken);
 
         sendRegistrationToServer(refreshedToken);
     }
@@ -32,13 +32,12 @@ public class MyFirebaseInstanceIdService extends FirebaseInstanceIdService {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(key,cartstring);
         editor.commit();
-        //Log.e("saved notificationid","saved to preferences");
+        ////Log.e("saved notificationid","saved to preferences");
     }
 
     public void sendRegistrationToServer(String token){
         addtosharedpreferences("notificationid",token);
-        //addtoserver(token);
-        ////Log.e("Sent ","sent to server");
+        addtosharedpreferences("notificationstatus","");
     }
 
 }

@@ -59,7 +59,7 @@ public class CustomAdapter extends BaseAdapter {
 //        holder.cat_name = (TextView)rowView.findViewById(R.id.cat_name) ;
 //        holder.cat_image=(LinearLayout) rowView.findViewById(R.id.cat_image);
         holder.cat_name.setText(get(position));
-        //Log.e("Object from list",get(position));
+        ////Log.e("Object from list",get(position));
 
 //        try {
 //            holder.messname.setText(messlist.getJSONObject(position).getString("messname"));
