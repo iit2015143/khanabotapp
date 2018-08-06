@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -47,8 +48,8 @@ public class OrderhistoryAdapter extends RecyclerView.Adapter<OrderhistoryAdapte
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
         try {
-
-            JSONObject perorder = orderhistory.getJSONObject(position);
+            holder.cancelorder.setVisibility(View.GONE);
+            final JSONObject perorder = orderhistory.getJSONObject(position);
             long time = perorder.getLong("id");
             time = time/10000;
             Date date = new Date(time);
@@ -56,6 +57,25 @@ public class OrderhistoryAdapter extends RecyclerView.Adapter<OrderhistoryAdapte
             formatter.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));
             String dateFormatted = formatter.format(date);
             holder.status.setText(perorder.getString("status"));
+            if(perorder.getString("status").equals("Pending")){
+                holder.cancelorder.setVisibility(View.VISIBLE);
+                holder.cancelorder.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String id = null;
+                        try {
+                            id = perorder.getString("id");
+                            String status = "Declined";
+                            String number = perorder.getString("fromnumber");
+                            String tonumber = perorder.getString("tonumber");
+                            ((UserProfile)context).sendrequest(id,status,number,tonumber);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
+            }
             holder.summary.setText(perorder.getString("summary"));
             holder.orderid.setText(perorder.getString("id"));
             holder.total.setText(perorder.getString("total"));
@@ -75,6 +95,7 @@ public class OrderhistoryAdapter extends RecyclerView.Adapter<OrderhistoryAdapte
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView orderid,summary,total,status,number,resname,time;
         public View view;
+        public Button cancelorder;
         public MyViewHolder(View view) {
             super(view);
             this.view = view;
@@ -85,6 +106,7 @@ public class OrderhistoryAdapter extends RecyclerView.Adapter<OrderhistoryAdapte
             number =(TextView)(view.findViewById(R.id.number));
             resname = (TextView)(view.findViewById(R.id.resname));
             time = (TextView)(view.findViewById(R.id.time));
+            cancelorder = (Button)(view.findViewById(R.id.cancel));
         }
 
     }

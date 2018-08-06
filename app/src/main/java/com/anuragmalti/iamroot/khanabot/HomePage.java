@@ -119,6 +119,11 @@ public class HomePage extends AppCompatActivity {
                         Intent intent1 = new Intent(context,UserProfile.class);
                         startActivity(intent1);
                         break;
+                    case R.id.search:
+                        selectme(3);
+                        Intent intent2 = new Intent(context,Search.class);
+                        startActivity(intent2);
+                        break;
 
                 }
                 return true;
@@ -519,6 +524,7 @@ public class HomePage extends AppCompatActivity {
         restaurants.setAdapter(new HorizontalRestaurants(context,responseArray));
         category.setAdapter(new HorizontalCategory(context,categori));
         viewPager.setAdapter(new CustomPageAdapter(context,Offers));
+        Search.responseArray = responseArray;
     }
 
 }

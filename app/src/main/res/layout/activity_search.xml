@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Search">
+
+    <android.support.v7.widget.SearchView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/searchbarbg"
+        android:id="@+id/searchview"
+        android:editTextColor="@color/aluminum"
+        android:layout_margin="8dp">
+    </android.support.v7.widget.SearchView>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/searchview"
+        android:id="@+id/recyclerView"
+        android:layout_marginBottom="?attr/actionBarSize">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <android.support.design.widget.BottomNavigationView
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentBottom="true"
+        android:background="@color/primary"
+        android:id="@+id/bnv"
+        app:menu="@menu/nav_menu"
+        app:itemIconTint="@drawable/navmenucolor"
+        app:itemTextColor="@drawable/navmenucolor">
+        <RelativeLayout
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:padding="2dp"
+            android:id="@+id/cartcontainer">
+            <TextView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:text="10"
+                android:textSize="@dimen/exsletter"
+                android:textColor="@color/white"
+                android:gravity="center_horizontal|center_vertical"
+                android:background="@drawable/roundedcornercarttext"
+                android:id="@+id/carttext"/>
+        </RelativeLayout>
+
+    </android.support.design.widget.BottomNavigationView>
+
+</RelativeLayout>

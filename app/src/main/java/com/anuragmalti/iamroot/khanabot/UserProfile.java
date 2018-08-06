@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -72,6 +73,47 @@ public class UserProfile extends AppCompatActivity implements SwipeRefreshLayout
 
         });
     }
+
+    public void sendrequest(final String orderid, final String status, String fromnumber,String tonumber){
+        RequestParams params = new RequestParams();
+        params.put("id",orderid);
+        params.put("status",status);
+        params.put("fromnumber",fromnumber);
+        params.put("tonumber",tonumber);
+
+        RestClient.get("/changeorderstatuscustomer",params,new JsonHttpResponseHandler(){
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                if(response.has("status")){
+                    try {
+                        if(response.getString("status").equals("changed")){
+
+                        }
+                        else{
+                            Toast.makeText(context,response.getString("status"),Toast.LENGTH_LONG).show();
+                        }
+                        swiper.setRefreshing(true);
+                        makerequest();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFinish() {
+                //onLoginSuccess();
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
+                Log.e("error failure","connection failed in orderhistory");
+            }
+
+        });
+    }
+
 
     @Override
     public void onRefresh() {

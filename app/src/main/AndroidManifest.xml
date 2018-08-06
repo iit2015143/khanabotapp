@@ -101,9 +101,11 @@
             android:name=".Update"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Dark" />
-        <activity android:name=".OnLocation"
-            android:theme="@style/AppTheme.Dark"
-            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".OnLocation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Dark" />
+        <activity android:name=".Search"></activity>
     </application>
 
 </manifest>

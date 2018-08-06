@@ -9,4 +9,7 @@
     <item android:title="orders"
         android:icon="@drawable/orderstatus"
         android:id="@+id/orderstatus"/>
+    <item android:title="search"
+        android:id="@+id/search"
+        android:icon="@drawable/searchbutton"/>
 </menu>
