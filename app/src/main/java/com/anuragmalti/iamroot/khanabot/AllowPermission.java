@@ -166,6 +166,10 @@ GoogleApiClient.OnConnectionFailedListener{
                 .FusedLocationApi
                 .getLastLocation( mGoogleApiClient );
 
+        if(flag==1)
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient,mLocationCallback);
+
+
         ////Log.e("Errorcurrentlocation","ingotocurrentlocation");
         if(mCurrentLocation!=null) {
             ////Log.e("Errorcurrentlocation", mCurrentLocation.toString());
@@ -173,8 +177,7 @@ GoogleApiClient.OnConnectionFailedListener{
             location.put("lat", mCurrentLocation.getLatitude() + "");
             location.put("long", mCurrentLocation.getLongitude() + "");
             addtosharedpref("location", location.toString());
-            if(flag==1)
-            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient,mLocationCallback);
+
             String address = getAddressFromLatLng(new LatLng(mCurrentLocation.getLatitude(),mCurrentLocation.getLongitude()));
             Intent intent = new Intent(this,HomePage.class);
             HomePage.address = address;

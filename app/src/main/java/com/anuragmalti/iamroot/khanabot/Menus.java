@@ -9,22 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.Toolbar;
-
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
-import org.w3c.dom.Text;
-
-import cz.msebera.android.httpclient.Header;
 
 public class Menus extends AppCompatActivity {
 
@@ -62,8 +52,13 @@ public class Menus extends AppCompatActivity {
                         break;
                     case R.id.orderstatus:
                         selectme(2);
-                        Intent intent1 = new Intent(context,UserProfile.class);
+                        Intent intent1 = new Intent(context,OrderHistory.class);
                         startActivity(intent1);
+                        break;
+                    case R.id.search:
+                        selectme(3);
+                        Intent intent3 = new Intent(context,Search.class);
+                        startActivity(intent3);
                         break;
 
                 }

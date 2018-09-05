@@ -141,12 +141,17 @@ implements Filterable{
 
                             // name match condition. this might differ depending on your requirement
                             // here we are looking for name or phone number match
+                            String[] splited = charString.split("\\s+");
+                            for(int j=0; j<splited.length; j++) {
 
-                                if (nothotdeals.getJSONObject(i).getString("name").toLowerCase().contains(charString.toLowerCase())) {
+                                if (nothotdeals.getJSONObject(i).getString("name").toLowerCase().contains(splited[j].toLowerCase())) {
+                                    if(j==splited.length -1)
                                     filteredList.put(nothotdeals.getJSONObject(i));
                                     //Log.e("filtering", filteredList.toString());
-
                                 }
+                                else
+                                    break;
+                            }
                         }
                         contactListFiltered = filteredList;
                     } catch (JSONException e) {

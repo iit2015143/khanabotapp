@@ -150,7 +150,8 @@ GoogleApiClient.OnConnectionFailedListener{
 //                            finish();
                         }
                         else{
-                            Toast.makeText(context,"This account is //Log.ed in on other device, log in again",Toast.LENGTH_LONG).show();
+                            Toast.makeText(context,"This account is logged in on other device, log in again",Toast.LENGTH_LONG).show();
+                            ((MainActivity)context).addtosharedpref("notificationstatus","notupdated");
                             Intent intent = new Intent(context,LoginActivity.class);
                             startActivity(intent);
                             finish();
@@ -273,6 +274,10 @@ GoogleApiClient.OnConnectionFailedListener{
         mCurrentLocation = LocationServices
                 .FusedLocationApi
                 .getLastLocation( mGoogleApiClient );
+
+        if(flag==1)
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient,mLocationCallback);
+
         ////Log.e("error",mCurrentLocation.toString());
         if(mCurrentLocation!=null) {
             ////Log.e("Errorcurrentlocation", mCurrentLocation.toString());
@@ -280,9 +285,6 @@ GoogleApiClient.OnConnectionFailedListener{
             location.put("lat", mCurrentLocation.getLatitude() + "");
             location.put("long", mCurrentLocation.getLongitude() + "");
             addtosharedpref("location", location.toString());
-
-            if(flag==1)
-            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient,mLocationCallback);
 
             String address = getAddressFromLatLng(new LatLng(mCurrentLocation.getLatitude(),mCurrentLocation.getLongitude()));
             Intent intent = new Intent(this,HomePage.class);

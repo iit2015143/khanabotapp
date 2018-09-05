@@ -43,6 +43,11 @@ public class Overviewfrag extends Fragment {
         recyclerView = (RecyclerView)(rootView.findViewById(R.id.mymenu));
 
         try {
+            if(RestaurantProfile.restaurantobj.has("deliversin")){
+                String deliversin = RestaurantProfile.restaurantobj.getString("deliversin")+
+                        "min";
+                ((TextView)rootView.findViewById(R.id.deliversin)).setText(deliversin);
+            }
             String resname = RestaurantProfile.restaurantobj.getString("name");
             Picasso.with(context).load(RestClient.BASE_URL+"/"+RestaurantProfile.restaurantobj.getString("image")).into(image);
 

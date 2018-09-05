@@ -45,7 +45,15 @@ public class TrueOverview extends Fragment {
             ((TextView)rootView.findViewById(R.id.number)).setText(number);
             String rating = RestaurantProfile.restaurantobj.getString("rating");
             ((TextView)rootView.findViewById(R.id.rating)).setText(rating);
-
+            if(RestaurantProfile.restaurantobj.has("address")){
+                String address = RestaurantProfile.restaurantobj.getString("address");
+                ((TextView)rootView.findViewById(R.id.location)).setText(address);
+            }
+            if(RestaurantProfile.restaurantobj.has("availability")){
+                String opentime = RestaurantProfile.restaurantobj.getJSONObject("availability").getString("uptime")+
+                        " - " + RestaurantProfile.restaurantobj.getJSONObject("availability").getString("downtime");
+                ((TextView)rootView.findViewById(R.id.opentime)).setText(opentime);
+            }
 
         } catch (JSONException e) {
             e.printStackTrace();

@@ -49,7 +49,7 @@
         app:itemIconTint="@drawable/navmenucolor"
         app:itemTextColor="@drawable/navmenucolor">
         <RelativeLayout
-            android:layout_width="165dp"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
             android:padding="2dp"

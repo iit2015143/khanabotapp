@@ -3,9 +3,8 @@ package com.anuragmalti.iamroot.khanabot;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.design.internal.BottomNavigationMenu;
-import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -18,7 +17,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -28,8 +26,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Random;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -46,6 +44,9 @@ public class HomePage extends AppCompatActivity {
     public static JSONArray mycart;
     public static String address;
     public int currenttime;
+    public Runnable runnable;
+    public Handler refresh;
+    public JSONArray Offers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +117,7 @@ public class HomePage extends AppCompatActivity {
                         break;
                     case R.id.orderstatus:
                         selectme(2);
-                        Intent intent1 = new Intent(context,UserProfile.class);
+                        Intent intent1 = new Intent(context,OrderHistory.class);
                         startActivity(intent1);
                         break;
                     case R.id.search:
@@ -139,6 +140,15 @@ public class HomePage extends AppCompatActivity {
         });
 
         checknotificationstatus();
+
+        refresh = new Handler();
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                refresh.postDelayed(runnable,10000);
+                pagerlooper();
+            }
+        };
     }
     public void addtocart(JSONObject jsonObject){
         Integer value = 1;
@@ -298,7 +308,7 @@ public class HomePage extends AppCompatActivity {
     }
     public void initializecart() throws JSONException {
         SharedPreferences prefs = getSharedPreferences("com.example.root.khanabot",Context.MODE_PRIVATE);
-        String cartstring = prefs.getString("mycart",new JSONArray().toString());
+        String cartstring = prefs.getString("mycart",(new JSONArray()).toString());
         mycart = new JSONArray(cartstring);
 
     }
@@ -321,6 +331,7 @@ public class HomePage extends AppCompatActivity {
     public void onPause() {
         super.onPause();
         addtosharedpreferences("mycart",mycart.toString());
+        refresh.removeCallbacks(runnable);
     }
     public void notifychange(){
         ((TextView)findViewById(R.id.carttext)).setText(HomePage.mycart.length()+"");
@@ -337,6 +348,7 @@ public class HomePage extends AppCompatActivity {
         selectme(1);
         notifychange();
         setmyadapters();
+        runnable.run();
     }
     public boolean notifstatusset(){
         SharedPreferences prefs = getSharedPreferences("com.example.root.khanabot",Context.MODE_PRIVATE);
@@ -388,7 +400,8 @@ public class HomePage extends AppCompatActivity {
         JSONArray hotdeals = new JSONArray();
         JSONArray toprateds = new JSONArray();
         ArrayList<String> categori = new ArrayList<String>();
-        JSONArray Offers = new JSONArray();
+        final JSONArray Offers = new JSONArray();
+
 
         for(int i=0; i<responseArray.length();i++){
             int uptime=0;
@@ -441,6 +454,10 @@ public class HomePage extends AppCompatActivity {
                     hotdeal.put("levelone","HotDeals");
                     hotdeal.put("index",0);
                     hotdeal.put("number",restaurantobj.getString("number"));
+                    if(restaurantobj.has("deliversin")){
+                        String deliversin = restaurantobj.getString("deliversin")+ "min";
+                        hotdeal.put("deliversin",deliversin);
+                    }
                     hotdeals.put(hotdeal);
                 }
                 for(int j=0;j<TopRateds.length();j++){
@@ -461,6 +478,10 @@ public class HomePage extends AppCompatActivity {
                     myTopRated.put("image",menu.getJSONObject(TopRated.
                             getString("Category")).getJSONObject(TopRated.getString("SubCategory")).
                             getString("image"));
+                    if(restaurantobj.has("deliversin")){
+                        String deliversin =restaurantobj.getString("deliversin")+ "min";
+                        myTopRated.put("deliversin",deliversin);
+                    }
                     toprateds.put(myTopRated);
                 }
                 JSONObject menu = restaurantobj.getJSONObject("menu");
@@ -515,7 +536,7 @@ public class HomePage extends AppCompatActivity {
             }
             catch (JSONException e) {
                 e.printStackTrace();
-                //Log.e("error catch",e.toString());
+                Log.e("error catch",e.toString());
                 //Log.e("category",categori.toString());
             }
         }
@@ -525,6 +546,17 @@ public class HomePage extends AppCompatActivity {
         category.setAdapter(new HorizontalCategory(context,categori));
         viewPager.setAdapter(new CustomPageAdapter(context,Offers));
         Search.responseArray = responseArray;
+        OrderHistory.responseArray = responseArray;
+        ((HomePage)context).Offers=Offers;
+        runnable.run();
+    }
+
+    public void pagerlooper(){
+
+        int num = viewPager.getCurrentItem();
+        if(num+1>=Offers.length())
+            num=-1;
+        viewPager.setCurrentItem(num+1);
     }
 
 }

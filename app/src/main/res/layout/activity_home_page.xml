@@ -61,7 +61,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:background="@drawable/loading"
-                android:id="@+id/viewPager"></android.support.v4.view.ViewPager>
+                android:id="@+id/viewPager">
+
+            </android.support.v4.view.ViewPager>
             <LinearLayout
                 style="@style/ParentLinearLayout">
                 <LinearLayout
@@ -213,7 +215,7 @@
         app:itemIconTint="@drawable/navmenucolor"
         app:itemTextColor="@drawable/navmenucolor">
         <RelativeLayout
-            android:layout_width="165dp"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
             android:padding="2dp"

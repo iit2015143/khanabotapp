@@ -46,8 +46,8 @@ public class VerticalMenuAdapter extends RecyclerView.Adapter<VerticalMenuAdapte
 
         try {
             final JSONObject nothotdeal = nothotdeals.getJSONObject(position);
-            holder.foodname.setText(nothotdeal.getString("name"));
-            holder.nameofrest.setText(nothotdeal.getString("resname"));
+            holder.foodname.setText(nothotdeal.getString("name").replaceAll("_"," "));
+            holder.nameofrest.setText(nothotdeal.getString("resname").replaceAll("_"," "));
             final JSONArray price = nothotdeal.getJSONArray("price");
             holder.price.setText("Rs "+ price.getString(price.length()-1));
             switch (decider){

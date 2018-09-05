@@ -50,8 +50,16 @@ public class HorizontalRestaurants extends RecyclerView.Adapter<HorizontalRestau
         });
         try {
             JSONObject Restaurant = restaurantArray.getJSONObject(position);
+            if(Restaurant.has("deliversin")){
+                String deliversin = Restaurant.getString("deliversin")+ "min";
+                holder.deliversin.setText(deliversin);
+            }
+            if(Restaurant.has("specifics")){
+                String specifics = Restaurant.getString("specifics");
+                holder.specifics.setText(specifics);
+            }
             Picasso.with(context).load(RestClient.BASE_URL + "/"+Restaurant.getString("image")).into(holder.image);
-            holder.resname.setText(Restaurant.getString("name"));
+            holder.resname.setText(Restaurant.getString("name").replaceAll("_"," "));
             holder.rating.setText(Restaurant.getString("rating"));
         } catch (JSONException e) {
             e.printStackTrace();
@@ -64,7 +72,7 @@ public class HorizontalRestaurants extends RecyclerView.Adapter<HorizontalRestau
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView price,resname,specifics,rating;
+        public TextView price,resname,specifics,rating,deliversin;
         public ImageView image;
         public View view;
         public MyViewHolder(View view) {
@@ -75,6 +83,7 @@ public class HorizontalRestaurants extends RecyclerView.Adapter<HorizontalRestau
             specifics=(TextView)(view.findViewById(R.id.specifics));
             rating=(TextView)(view.findViewById(R.id.rating));
             image = (ImageView)(view.findViewById(R.id.image));
+            deliversin = (TextView)(view.findViewById(R.id.deliversin));
         }
     }
 }

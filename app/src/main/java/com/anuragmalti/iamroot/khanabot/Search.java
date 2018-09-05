@@ -2,18 +2,17 @@ package com.anuragmalti.iamroot.khanabot;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,6 +24,7 @@ public class Search extends Activity {
     public FilterableSearchAdapter adapter;
     public RecyclerView recyclerView;
     public static JSONArray responseArray;
+    public BottomNavigationView bnv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +32,8 @@ public class Search extends Activity {
         setContentView(R.layout.activity_search);
         context = this;
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        bnv = (BottomNavigationView)findViewById(R.id.bnv);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
 
 
@@ -40,6 +42,33 @@ public class Search extends Activity {
             @Override
             public void onClick(View v) {
                 ((android.support.v7.widget.SearchView)v).onActionViewExpanded();
+            }
+        });
+
+        bnv.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch(item.getItemId()){
+                    case R.id.cart:
+                        selectme(0);
+                        Intent intent = new Intent(context,AddtoCart.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.home:
+                        selectme(1);
+                        Intent intent2 = new Intent(context,HomePage.class);
+                        startActivity(intent2);
+                        break;
+                    case R.id.orderstatus:
+                        selectme(2);
+                        Intent intent1 = new Intent(context,OrderHistory.class);
+                        startActivity(intent1);
+                        break;
+                    case R.id.search:
+                        selectme(3);
+                        break;
+                }
+                return true;
             }
         });
 
@@ -120,5 +149,12 @@ public class Search extends Activity {
             ((RelativeLayout)findViewById(R.id.cartcontainer)).setVisibility(View.VISIBLE);
     }
 
-
+    public void onResume(){
+        super.onResume();
+        notifychange();
+        selectme(3);
+    }
+    public void selectme(int id){
+        bnv.getMenu().getItem(id).setChecked(true);
+    }
 }

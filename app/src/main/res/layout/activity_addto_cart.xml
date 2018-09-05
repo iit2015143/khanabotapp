@@ -173,6 +173,7 @@
                 android:onClick="requestorder"/>
 
             <TextView
+                android:layout_marginTop="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="clearorder"
@@ -182,6 +183,24 @@
                 android:text="Clear Cart"
                 android:textColor="@color/primary"
                 android:layout_gravity="center_horizontal"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/moan"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:paddingLeft="@dimen/sletter"
+                android:text="For feedback or queries reach out to us at:\nkhanabot247@gmail.com"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/bletter"
+                android:layout_marginBottom="@dimen/sletter"
+                android:text="7488663497"
+                android:textColorLink="@color/moan"
+                android:textColor="@color/moan"
+                android:autoLink="phone"/>
+
 
         </LinearLayout>
 
