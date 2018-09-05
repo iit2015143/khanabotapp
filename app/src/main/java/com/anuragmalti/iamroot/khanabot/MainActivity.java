@@ -62,6 +62,7 @@ GoogleApiClient.OnConnectionFailedListener{
     public GoogleApiClient mGoogleApiClient;
     public Location mCurrentLocation;
     public int flag = 0;
+    public int GAC=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -250,7 +251,10 @@ GoogleApiClient.OnConnectionFailedListener{
     }
 
     public void connectgoogleclient(){
-        mGoogleApiClient=new GoogleApiClient.Builder(this, this,this).addApi(LocationServices.API).build();
+        if(GAC==0) {
+            GAC=1;
+            mGoogleApiClient = new GoogleApiClient.Builder(this, this, this).addApi(LocationServices.API).build();
+        }
         if(mGoogleApiClient!=null){
             mGoogleApiClient.connect();
         }
