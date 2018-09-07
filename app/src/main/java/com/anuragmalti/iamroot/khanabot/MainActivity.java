@@ -368,4 +368,10 @@ GoogleApiClient.OnConnectionFailedListener{
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        checkuuidandnumber();
+    }
 }

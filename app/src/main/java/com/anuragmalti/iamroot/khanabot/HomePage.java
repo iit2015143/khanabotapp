@@ -148,6 +148,8 @@ public class HomePage extends AppCompatActivity {
                 pagerlooper();
             }
         };
+        //for null pointer exception
+        Search.responseArray = responseArray;
     }
     public void addtocart(JSONObject jsonObject){
         Integer value = 1;

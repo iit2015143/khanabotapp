@@ -10,7 +10,6 @@
     <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="?attr/actionBarSize"
         android:id="@+id/swipeme">
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -66,6 +65,7 @@
     <android.support.design.widget.BottomNavigationView
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:visibility="gone"
         android:layout_gravity="bottom"
         android:background="@color/primary"
         android:id="@+id/bnv"
