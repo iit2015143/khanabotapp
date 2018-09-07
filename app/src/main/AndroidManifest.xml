@@ -44,7 +44,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".Menus"
+            android:name=".ItemsByCategory"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Dark" />
         <activity
@@ -60,7 +60,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Dark" />
         <activity
-            android:name=".AddtoCart"
+            android:name=".Cart"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Dark" />
         <activity

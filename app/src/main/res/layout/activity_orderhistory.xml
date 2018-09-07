@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white"
-    tools:context=".Menus">
+    tools:context=".ItemsByCategory">
     <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
                 android:layout_height="match_parent"
                 android:id="@+id/swipeme"
                 android:background="@color/facebook"
-                tools:context=".Overviewfrag"-->
+                tools:context=".RestaurantOneFrag"-->
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/orderstatus"

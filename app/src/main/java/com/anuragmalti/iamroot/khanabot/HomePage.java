@@ -26,7 +26,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
@@ -110,7 +109,7 @@ public class HomePage extends AppCompatActivity {
                 switch(item.getItemId()){
                     case R.id.cart:
                         selectme(0);
-                        Intent intent = new Intent(context,AddtoCart.class);
+                        Intent intent = new Intent(context,Cart.class);
                         startActivity(intent);
                         break;
                     case R.id.home:
@@ -233,7 +232,7 @@ public class HomePage extends AppCompatActivity {
     }
 
     public void categoryclicked(String str){
-        Intent intent=new Intent(context,Menus.class);
+        Intent intent=new Intent(context,ItemsByCategory.class);
         intent.putExtra("title",str);
         startActivity(intent);
     }
@@ -254,27 +253,26 @@ public class HomePage extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        ////Log.e("coming object",cartItem.toString());
-
+        //Log.e("coming object",cartItem.toString());
         boolean found = false;
         int index=0;
         Integer quantity = 0;
         try {
             for(int i=0; i<mycart.length();i++){
-                    JSONObject cartobject = mycart.getJSONObject(i);
-                    //////Log.e("error in loop out if",cartobject.toString());
-                    if(cartobject.getString("number").equals(cartItem.getString("number"))
-                            && cartobject.getString("name").equals(cartItem.getString("name"))
-                            && cartobject.getString("index").equals(cartItem.getString("index"))
-                            && cartobject.getString("levelone").equals(cartItem.getString("levelone"))){
-                        //////Log.e("error in loop in if",cartobject.toString());
-                        found = true;
-                        index = i;
-                        quantity = Integer.parseInt(cartobject.getString("quantity"));
-//                        ////Log.e("error cartobject",cartobject.toString());
-//                        ////Log.e("error cartItem",cartItem.toString());
-                        break;
-                    }
+                JSONObject cartobject = mycart.getJSONObject(i);
+                //Log.e("error in loop out if",cartobject.toString());
+                if(cartobject.getString("number").equals(cartItem.getString("number"))
+                        && cartobject.getString("name").equals(cartItem.getString("name"))
+                        && cartobject.getString("index").equals(cartItem.getString("index"))
+                        && cartobject.getString("levelone").equals(cartItem.getString("levelone"))){
+                    //Log.e("error in loop in if",cartobject.toString());
+                    found = true;
+                    index = i;
+                    quantity = Integer.parseInt(cartobject.getString("quantity"));
+                    //Log.e("error cartobject",cartobject.toString());
+                    //Log.e("error cartItem",cartItem.toString());
+                    break;
+                }
             }
 
             if(found){
@@ -300,7 +298,7 @@ public class HomePage extends AppCompatActivity {
                     mycart.put(cartItem);
                 }
             }
-            //////Log.e("error cartlen",mycart.length()+"");
+            //Log.e("error cartlen",mycart.length()+"");
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -558,5 +556,4 @@ public class HomePage extends AppCompatActivity {
             num=-1;
         viewPager.setCurrentItem(num+1);
     }
-
 }

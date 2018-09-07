@@ -101,7 +101,7 @@ public class MenuGrid extends AppCompatActivity {
     }
 
     public void addtocartclicked(View v){
-        Intent intent = new Intent(this,AddtoCart.class);
+        Intent intent = new Intent(this,Cart.class);
         startActivity(intent);
     }
     private void initialize() {

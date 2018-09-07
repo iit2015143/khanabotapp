@@ -1,12 +1,8 @@
 package com.anuragmalti.iamroot.khanabot;
 
-import android.app.Activity;
 import android.content.Context;
-import android.media.Image;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,11 +46,11 @@ public class VerticalMenuAdapter extends RecyclerView.Adapter<VerticalMenuAdapte
             final JSONArray price = nothotdeal.getJSONArray("price");
             holder.price.setText("Rs "+ price.getString(price.length()-1));
             switch (decider){
-                case "AddtoCart":
+                case "Cart":
                     holder.change.setText(nothotdeal.getInt("quantity")+"");
                     holder.price.setText("Rs "+ price.getString(nothotdeal.getInt("index")));
                     break;
-                case "Menus":
+                case "ItemsByCategory":
                     nothotdeal.put("index",price.length()-1);
                     holder.radiovisible.setVisibility(View.VISIBLE);
                     if(price.length()==1){
@@ -99,15 +94,15 @@ public class VerticalMenuAdapter extends RecyclerView.Adapter<VerticalMenuAdapte
                     HomePage.updatecart(true,nothotdeal);
                     ////Log.e("error nothot",nothotdeal.toString());
                     switch (decider){
-                        case "AddtoCart":
+                        case "Cart":
                             try {
-                                ((AddtoCart)context).notifychange();
+                                ((Cart)context).notifychange();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                             break;
-                        case "Menus":
-                            ((Menus)context).notifychange();
+                        case "ItemsByCategory":
+                            ((ItemsByCategory)context).notifychange();
                             break;
                     }
                 }
@@ -124,9 +119,9 @@ public class VerticalMenuAdapter extends RecyclerView.Adapter<VerticalMenuAdapte
                         ////Log.e("error nothot",nothotdeal.toString());
                     }
                     switch (decider){
-                        case "AddtoCart":
+                        case "Cart":
                             try {
-                                ((AddtoCart)context).notifychange();
+                                ((Cart)context).notifychange();
                                 if(value==0){
                                     //notifyDataSetChanged();
                                     notifyItemRemoved(position);
@@ -136,8 +131,8 @@ public class VerticalMenuAdapter extends RecyclerView.Adapter<VerticalMenuAdapte
                                 e.printStackTrace();
                             }
                             break;
-                        case "Menus":
-                            ((Menus)context).notifychange();
+                        case "ItemsByCategory":
+                            ((ItemsByCategory)context).notifychange();
                             break;
                     }
                 }
@@ -172,7 +167,7 @@ public class VerticalMenuAdapter extends RecyclerView.Adapter<VerticalMenuAdapte
             full = (RadioButton)(view.findViewById(R.id.full));
             radiovisible = (RadioGroup)(view.findViewById(R.id.radiovisible));
             switch (decider){
-                case "AddtoCart":
+                case "Cart":
                     radiovisible.setVisibility(View.GONE);
                     break;
             }

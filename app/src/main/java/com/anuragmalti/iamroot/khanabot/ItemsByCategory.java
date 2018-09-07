@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import org.json.JSONArray;
 
-public class Menus extends AppCompatActivity {
+public class ItemsByCategory extends AppCompatActivity {
 
     public Context context;
     public static JSONArray adapterArray;
@@ -26,7 +26,7 @@ public class Menus extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menus);
+        setContentView(R.layout.activity_itembycategory);
         context = this;
         notifychange();
         String title = getIntent().getStringExtra("title");
@@ -34,7 +34,7 @@ public class Menus extends AppCompatActivity {
         textView.setText(title);
         catmenu =(RecyclerView)findViewById(R.id.catmenu);
         catmenu.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
-        catmenu.setAdapter(new VerticalMenuAdapter(this,adapterArray,"Menus"));
+        catmenu.setAdapter(new VerticalMenuAdapter(this,adapterArray,"ItemsByCategory"));
 
         bnv = (BottomNavigationView)findViewById(R.id.bnv);
         bnv.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -43,7 +43,7 @@ public class Menus extends AppCompatActivity {
                 switch(item.getItemId()){
                     case R.id.cart:
                         selectme(0);
-                        Intent intent = new Intent(context,AddtoCart.class);
+                        Intent intent = new Intent(context,Cart.class);
                         startActivity(intent);
                         break;
                     case R.id.home:
@@ -97,7 +97,7 @@ public class Menus extends AppCompatActivity {
         super.onResume();
         notifychange();
         selectme(1);
-        catmenu.setAdapter(new VerticalMenuAdapter(this,adapterArray,"Menus"));
+        catmenu.setAdapter(new VerticalMenuAdapter(this,adapterArray,"ItemsByCategory"));
 
     }
 }

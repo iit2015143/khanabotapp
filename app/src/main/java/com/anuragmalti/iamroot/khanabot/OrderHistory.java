@@ -36,7 +36,7 @@ public class OrderHistory extends AppCompatActivity implements SwipeRefreshLayou
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_profile);
+        setContentView(R.layout.activity_orderhistory);
         context = this;
         bnv = (BottomNavigationView)findViewById(R.id.bnv);
 
@@ -58,7 +58,7 @@ public class OrderHistory extends AppCompatActivity implements SwipeRefreshLayou
                 switch(item.getItemId()){
                     case R.id.cart:
                         selectme(0);
-                        Intent intent = new Intent(context,AddtoCart.class);
+                        Intent intent = new Intent(context,Cart.class);
                         startActivity(intent);
                         break;
                     case R.id.home:

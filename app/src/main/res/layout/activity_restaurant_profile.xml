@@ -44,8 +44,7 @@
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:layout_marginBottom="?attr/actionBarSize"/>
+            android:background="@color/white" />
 
         <!--LinearLayout
             android:layout_width="match_parent"
@@ -65,6 +64,7 @@
         android:layout_height="?attr/actionBarSize"
         android:layout_gravity="bottom"
         android:background="@color/primary"
+        android:visibility="gone"
         android:id="@+id/bnv"
         app:menu="@menu/nav_menu"
         app:itemIconTint="@drawable/navmenucolor"

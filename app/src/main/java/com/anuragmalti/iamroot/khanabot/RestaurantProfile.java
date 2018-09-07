@@ -52,7 +52,7 @@ public class RestaurantProfile extends AppCompatActivity {
                 switch(item.getItemId()){
                     case R.id.cart:
                         selectme(0);
-                        Intent intent = new Intent(context,AddtoCart.class);
+                        Intent intent = new Intent(context,Cart.class);
                         startActivity(intent);
                         break;
                     case R.id.home:
@@ -88,8 +88,8 @@ public class RestaurantProfile extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new Overviewfrag(), "Menu");
-        adapter.addFragment(new TrueOverview(), "Overview");
+        adapter.addFragment(new RestaurantOneFrag(), "Menu");
+        adapter.addFragment(new RestaurantTwoFrag(), "Overview");
         viewPager.setAdapter(adapter);
     }
 
