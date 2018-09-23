@@ -19,7 +19,7 @@
             android:value="AIzaSyBfBSUaCJAQqotZu8ONN2neyo3cgqByB8c" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".NewCart"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Dark">
@@ -56,10 +56,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Dark" />
         <activity
-            android:name=".MenuGrid"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Dark" />
-        <activity
             android:name=".Cart"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Dark" />
@@ -91,21 +87,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Dark" />
         <activity
-            android:name=".Test"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".OrderHistory"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Dark" />
-        <activity
-            android:name=".Update"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Dark" />
-        <activity
-            android:name=".OnLocation"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Dark" />
-        <activity android:name=".Search"></activity>
+        <activity android:name=".Search" />
+        <activity android:name=".MainActivity"></activity>
     </application>
 
 </manifest>

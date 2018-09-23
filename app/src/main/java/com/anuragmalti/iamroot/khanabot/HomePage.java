@@ -144,7 +144,7 @@ public class HomePage extends AppCompatActivity {
         runnable = new Runnable() {
             @Override
             public void run() {
-                refresh.postDelayed(runnable,10000);
+                refresh.postDelayed(runnable,3000);
                 pagerlooper();
             }
         };
