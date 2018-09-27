@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".NewCart">
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="?attr/actionBarSize"
@@ -15,8 +15,10 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
             <android.support.design.widget.AppBarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -48,13 +50,23 @@
 
                 <TextView
                     android:layout_width="match_parent"
+                    android:id="@+id/address"
                     android:layout_height="wrap_content"
                     android:text="I am a big delivery address spanning over more than two lines tell me motherfucker do you hav any problem?"
                     android:textSize="@dimen/bletter"
                     android:textColor="@color/iron"
                     android:paddingLeft="@dimen/nletter"
                     android:paddingRight="@dimen/exsletter"
-                    android:paddingBottom="0dp"/>
+                    android:paddingBottom="0dp"
+                    android:visibility="gone"/>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:id="@+id/editAddress"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/nletter"
+                    android:layout_marginRight="@dimen/exsletter"
+                    android:hint="Enter Address"
+                    android:visibility="visible"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -64,18 +76,19 @@
                     <Button
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Change"/>
+                        android:text="Add"/>.
                 </LinearLayout>
             </android.support.design.widget.AppBarLayout>
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/restaurantcont">
+                android:layout_height="wrap_content"
+                android:id="@+id/restaurantcont"
+                android:nestedScrollingEnabled="false">
 
             </android.support.v7.widget.RecyclerView>
         </LinearLayout>
 
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -102,6 +115,7 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_weight="1"
+                    android:id="@+id/requestorder"
                     android:layout_height="wrap_content"
                     android:text="Request order" />
             </LinearLayout>

@@ -91,7 +91,9 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Dark" />
         <activity android:name=".Search" />
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
+        <activity android:name=".PopUpActivity"
+            android:theme="@style/Theme_Dialog"></activity>
     </application>
 
 </manifest>
