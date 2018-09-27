@@ -1,3 +1,6 @@
+//I am somveer want to send pull request.
+//Writing in somveer branch
+
 package com.anuragmalti.iamroot.khanabot;
 
 import android.content.Context;
