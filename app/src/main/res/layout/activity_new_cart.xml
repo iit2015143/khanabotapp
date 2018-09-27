@@ -58,7 +58,7 @@
                     android:paddingLeft="@dimen/nletter"
                     android:paddingRight="@dimen/exsletter"
                     android:paddingBottom="0dp"
-                    android:visibility="gone"/>
+                    android:visibility="visible"/>
                 <EditText
                     android:layout_width="match_parent"
                     android:id="@+id/editAddress"
@@ -66,17 +66,20 @@
                     android:layout_marginLeft="@dimen/nletter"
                     android:layout_marginRight="@dimen/exsletter"
                     android:hint="Enter Address"
-                    android:visibility="visible"/>
+                    android:visibility="gone"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:paddingBottom="4dp"
                     android:paddingRight="4dp">
+
                     <Button
+                        android:id="@+id/changeAdd"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Add"/>.
+                        android:onClick="onClick"
+                        android:text="Change" />.
                 </LinearLayout>
             </android.support.design.widget.AppBarLayout>
             <android.support.v7.widget.RecyclerView
