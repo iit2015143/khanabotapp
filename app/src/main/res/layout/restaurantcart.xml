@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/exsletter">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="@dimen/exsletter">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/exsletter"
+            android:text="Rockk Onn"
+            android:textColor="@color/black"
+            android:textSize="@dimen/bletter"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="5">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/moan"
+                android:text="Summary :"/>
+            <View
+                android:layout_width="2dp"
+                android:layout_height="fill_parent"
+                android:background="@color/monsoon"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:paddingLeft="@dimen/exsletter"
+                android:textColor="@color/moan"
+                android:layout_height="wrap_content"
+                android:text="This is a really big text and i guess no one gives
+                a fuck about this and i dont care too. Why would I? do that"/>
+        </LinearLayout>
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:baselineAligned="false"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/exsletter">
+
+            <RadioButton
+                android:id="@+id/cod"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/monsoon"
+                android:checked="true"
+                android:text="COD"
+                android:textColor="@color/moan"
+                android:textSize="@dimen/vsletter" />
+
+            <RadioButton
+                android:id="@+id/booktable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/exsletter"
+                android:buttonTint="@color/monsoon"
+                android:text="Book"
+                android:textColor="@color/moan"
+                android:textSize="@dimen/vsletter" />
+
+            <Spinner
+                android:id="@+id/spinner1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/btn_dropdown"
+                android:spinnerMode="dropdown"/>
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Apply offer "
+            android:textSize="20dp"
+            android:selectAllOnFocus="false"
+            android:onClick="openOffer"
+            android:textColor="@color/moan"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Rs 1091"
+                android:textColor="@color/oil"
+                android:textSize="@dimen/nletter"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/editOrder"
+                android:layout_width="77dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:onClick="editOrder"
+                android:text="Edit" />
+
+            <Button
+                android:id="@+id/orderRequest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Request order"
+                android:onClick="orderRequest"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>
