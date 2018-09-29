@@ -79,4 +79,19 @@ public class NewCart extends AppCompatActivity {
         }
 
     }
+
+    public void orderRequest(View view) {
+
+
+    }
+
+    public void editOrder(View view) {
+        Intent intent = new Intent(context,PopUpActivity.class);
+        startActivity(intent);
+    }
+
+    public void openOffer(View view) {
+        Intent intent = new Intent(context,PopUpActivity.class);
+        startActivity(intent);
+    }
 }
