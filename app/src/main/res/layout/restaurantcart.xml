@@ -81,11 +81,13 @@
                 android:spinnerMode="dropdown"/>
         </RadioGroup>
 
-        <EditText
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Apply offer "
+            android:textSize="20dp"
             android:selectAllOnFocus="false"
+            android:onClick="openOffer"
             android:textColor="@color/moan"/>
 
         <LinearLayout
@@ -104,10 +106,23 @@
                 android:textStyle="bold" />
 
             <Button
+                android:id="@+id/editOrder"
+                android:layout_width="77dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:onClick="editOrder"
+                android:text="Edit" />
+
+            <Button
+                android:id="@+id/orderRequest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Request order" />
+                android:text="Request order"
+                android:onClick="orderRequest"/>
+
         </LinearLayout>
 
     </LinearLayout>
