@@ -3,6 +3,7 @@ package com.anuragmalti.iamroot.khanabot;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -92,7 +94,8 @@ public class VerticalMenuAdapter extends RecyclerView.Adapter<VerticalMenuAdapte
                     value++;
                     holder.change.setText(value.toString());
                     HomePage.updatecart(true,nothotdeal);
-                    ////Log.e("error nothot",nothotdeal.toString());
+                    Log.e("error cart","update cart request made");
+                    Toast.makeText(context,"why aint u printing",Toast.LENGTH_SHORT).show();
                     switch (decider){
                         case "Cart":
                             try {
