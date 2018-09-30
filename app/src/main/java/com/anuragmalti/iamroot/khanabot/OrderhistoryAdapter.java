@@ -1,22 +1,14 @@
 package com.anuragmalti.iamroot.khanabot;
 
-import android.app.Activity;
 import android.content.Context;
-import android.media.Image;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.Toolbar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,7 +18,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
-import java.util.concurrent.TimeUnit;
 
 public class OrderhistoryAdapter extends RecyclerView.Adapter<OrderhistoryAdapter.MyViewHolder>{
 
@@ -56,9 +47,27 @@ public class OrderhistoryAdapter extends RecyclerView.Adapter<OrderhistoryAdapte
             DateFormat formatter = new SimpleDateFormat("HH:mm:ss");
             formatter.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));
             String dateFormatted = formatter.format(date);
+            DateFormat curdate = new SimpleDateFormat("dd-MM-yy");
+            String curdatestr = curdate.format(date);
+            dateFormatted += ("\n" + curdatestr);
             holder.status.setText(perorder.getString("status"));
+            switch (perorder.getString("status")){
+                case "Pending":
+                    holder.view.setBackground(ContextCompat.getDrawable(context, R.drawable.orderbackground));
+                    break;
+                case "Accepted":
+                    holder.view.setBackground(ContextCompat.getDrawable(context, R.drawable.orderbackgroundgreen));
+                    break;
+                case "Outfordelivery":
+                    holder.view.setBackground(ContextCompat.getDrawable(context, R.drawable.orderbackgrounddarkgreen));
+                    break;
+                case "Declined":
+                    holder.view.setBackground(ContextCompat.getDrawable(context, R.drawable.orderbackgroundred));
+                    break;
+            }
             if(perorder.getString("status").equals("Pending")){
                 holder.cancelorder.setVisibility(View.VISIBLE);
+                holder.cancelorder.setEnabled(true);
                 holder.cancelorder.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -68,7 +77,8 @@ public class OrderhistoryAdapter extends RecyclerView.Adapter<OrderhistoryAdapte
                             String status = "Declined";
                             String number = perorder.getString("fromnumber");
                             String tonumber = perorder.getString("tonumber");
-                            ((UserProfile)context).sendrequest(id,status,number,tonumber);
+                            holder.cancelorder.setEnabled(false);
+                            ((OrderHistory)context).sendrequest(id,status,number,tonumber);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

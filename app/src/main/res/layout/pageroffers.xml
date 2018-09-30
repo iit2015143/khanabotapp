@@ -12,12 +12,6 @@
         android:src="@drawable/food"
         android:id="@+id/image"
         android:scaleType="centerCrop"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#55000000">
-
-    </LinearLayout>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

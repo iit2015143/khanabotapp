@@ -6,12 +6,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/facebook"
-    tools:context=".Menus">
+    tools:context=".ItemsByCategory">
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="?attr/actionBarSize"
-        >
+        android:layout_height="match_parent">
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -49,7 +47,7 @@
         app:itemIconTint="@drawable/navmenucolor"
         app:itemTextColor="@drawable/navmenucolor">
         <RelativeLayout
-            android:layout_width="165dp"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
             android:padding="2dp"

@@ -3,9 +3,8 @@ package com.anuragmalti.iamroot.khanabot;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.design.internal.BottomNavigationMenu;
-import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -18,7 +17,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -29,7 +27,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -46,6 +43,9 @@ public class HomePage extends AppCompatActivity {
     public static JSONArray mycart;
     public static String address;
     public int currenttime;
+    public Runnable runnable;
+    public Handler refresh;
+    public JSONArray Offers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,14 +109,14 @@ public class HomePage extends AppCompatActivity {
                 switch(item.getItemId()){
                     case R.id.cart:
                         selectme(0);
-                        Intent intent = new Intent(context,AddtoCart.class);
+                        Intent intent = new Intent(context,NewCart.class);
                         startActivity(intent);
                         break;
                     case R.id.home:
                         break;
                     case R.id.orderstatus:
                         selectme(2);
-                        Intent intent1 = new Intent(context,UserProfile.class);
+                        Intent intent1 = new Intent(context,OrderHistory.class);
                         startActivity(intent1);
                         break;
                     case R.id.search:
@@ -139,6 +139,17 @@ public class HomePage extends AppCompatActivity {
         });
 
         checknotificationstatus();
+
+        refresh = new Handler();
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                refresh.postDelayed(runnable,3000);
+                pagerlooper();
+            }
+        };
+        //for null pointer exception
+        Search.responseArray = responseArray;
     }
     public void addtocart(JSONObject jsonObject){
         Integer value = 1;
@@ -223,7 +234,7 @@ public class HomePage extends AppCompatActivity {
     }
 
     public void categoryclicked(String str){
-        Intent intent=new Intent(context,Menus.class);
+        Intent intent=new Intent(context,ItemsByCategory.class);
         intent.putExtra("title",str);
         startActivity(intent);
     }
@@ -238,67 +249,166 @@ public class HomePage extends AppCompatActivity {
 
     public static void updatecart(Boolean add, JSONObject cart){
 
+        Log.e("error cart","update cart processed");
+
         JSONObject cartItem  = null;
         try {
             cartItem = new JSONObject(cart.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        ////Log.e("coming object",cartItem.toString());
 
-        boolean found = false;
-        int index=0;
-        Integer quantity = 0;
+
         try {
-            for(int i=0; i<mycart.length();i++){
+            if(add) {
+                boolean foundrest = false;
+                for (int i = 0; i < mycart.length(); i++) {
                     JSONObject cartobject = mycart.getJSONObject(i);
-                    //////Log.e("error in loop out if",cartobject.toString());
-                    if(cartobject.getString("number").equals(cartItem.getString("number"))
-                            && cartobject.getString("name").equals(cartItem.getString("name"))
-                            && cartobject.getString("index").equals(cartItem.getString("index"))
-                            && cartobject.getString("levelone").equals(cartItem.getString("levelone"))){
-                        //////Log.e("error in loop in if",cartobject.toString());
-                        found = true;
-                        index = i;
-                        quantity = Integer.parseInt(cartobject.getString("quantity"));
-//                        ////Log.e("error cartobject",cartobject.toString());
-//                        ////Log.e("error cartItem",cartItem.toString());
+
+                    if (cartobject.getString("tonumber").equals(cartItem.getString("number"))) {
+
+                        foundrest = true;
+
+                        int total = cartobject.getInt("total");
+                        total += cartItem.getJSONArray("price").getInt(cartItem.getInt("index"));
+                        cartobject.put("total", total);
+
+                        JSONArray order = cartobject.getJSONArray("order");
+                        boolean founditem = false;
+                        for (int j = 0; j < order.length(); j++) {
+                            JSONObject cartObjectItem = order.getJSONObject(j);
+                            if (cartObjectItem.getString("name").equals(cartItem.getString("name"))
+                                    && cartObjectItem.getInt("index") == cartItem.getInt("index")
+                                    && cartObjectItem.getInt("price") ==
+                                    cartItem.getJSONArray("price").getInt(cartItem.getInt("index"))) {
+
+                                founditem = true;
+
+                                int quantity = cartObjectItem.getInt("quantity");
+                                quantity++;
+                                cartObjectItem.put("quantity", quantity);
+                                break;
+
+                            }
+                        }
+                        if(!founditem){
+                            JSONObject item = new JSONObject();
+                            item.put("name", cartItem.getString("name"));
+                            item.put("index", cartItem.getInt("index"));
+                            item.put("length", cartItem.getJSONArray("price").length());
+                            item.put("quantity", 1);
+                            item.put("price", cartItem.getJSONArray("price").getInt(cartItem.getInt("index")));
+                            order.put(item);
+                        }
+
                         break;
                     }
-            }
 
-            if(found){
-                if(add){
-                    quantity++;
-                    cartItem.put("quantity",quantity);
-                    mycart.put(index,cartItem);
+                    //Log.e("error in loop out if",cartobject.toString());
+//                if(cartobject.getString("number").equals(cartItem.getString("number"))
+//                        && cartobject.getString("name").equals(cartItem.getString("name"))
+//                        && cartobject.getString("index").equals(cartItem.getString("index"))
+//                        && cartobject.getString("levelone").equals(cartItem.getString("levelone"))){
+//                    //Log.e("error in loop in if",cartobject.toString());
+//                    found = true;
+//                    index = i;
+//                    quantity = Integer.parseInt(cartobject.getString("quantity"));
+//                    //Log.e("error cartobject",cartobject.toString());
+//                    //Log.e("error cartItem",cartItem.toString());
+//                    break;
+//                }
                 }
-                else{
-                    quantity--;
-                    if(quantity>0) {
-                        cartItem.put("quantity", quantity);
-                        mycart.put(index, cartItem);
-                    }
-                    else if(quantity==0){
-                        mycart.remove(index);
-                    }
+                if(!foundrest){
+                    JSONObject restObject = new JSONObject();
+                    restObject.put("resname", cartItem.getString("resname"));
+                    restObject.put("tonumber", cartItem.getString("number"));
+                    restObject.put("total", cartItem.getJSONArray("price").getInt(cartItem.getInt("index")));
+                    JSONArray order = new JSONArray();
+                    JSONObject item = new JSONObject();
+                    item.put("name", cartItem.getString("name"));
+                    item.put("index", cartItem.getInt("index"));
+                    item.put("length", cartItem.getJSONArray("price").length());
+                    item.put("quantity", 1);
+                    item.put("price", cartItem.getJSONArray("price").getInt(cartItem.getInt("index")));
+                    order.put(item);
+                    restObject.put("order", order);
+                    mycart.put(restObject);
                 }
             }
             else{
-                if(add){
-                    cartItem.put("quantity",1);
-                    mycart.put(cartItem);
+                for (int i = 0; i < mycart.length(); i++) {
+                    JSONObject cartobject = mycart.getJSONObject(i);
+
+                    if (cartobject.getString("tonumber").equals(cartItem.getString("number"))) {
+
+                        int total = cartobject.getInt("total");
+                        total += cartItem.getJSONArray("price").getInt(cartItem.getInt("index"));
+                        cartobject.put("total", total);
+
+                        JSONArray order = cartobject.getJSONArray("order");
+                        for (int j = 0; j < order.length(); j++) {
+                            JSONObject cartObjectItem = order.getJSONObject(j);
+                            if (cartObjectItem.getString("name").equals(cartItem.getString("name"))
+                                    && cartObjectItem.getInt("index") == cartItem.getInt("index")
+                                    && cartObjectItem.getInt("price") ==
+                                    cartItem.getJSONArray("price").getInt(cartItem.getInt("index"))) {
+
+                                int quantity = cartObjectItem.getInt("quantity");
+                                quantity--;
+                                //condition if quantity == 0 remove item
+
+                                if(quantity == 0){
+                                    order.remove(j);
+                                }
+
+                                cartObjectItem.put("quantity", quantity);
+                                break;
+
+                            }
+                        }
+                        //if order remains zero;
+                        if(order.length()==0){
+                            mycart.remove(i);
+                        }
+                        break;
+                    }
                 }
             }
-            //////Log.e("error cartlen",mycart.length()+"");
+
+//            if(found){
+//                if(add){
+//                    quantity++;
+//                    cartItem.put("quantity",quantity);
+//                    mycart.put(index,cartItem);
+//                }
+//                else{
+//                    quantity--;
+//                    if(quantity>0) {
+//                        cartItem.put("quantity", quantity);
+//                        mycart.put(index, cartItem);
+//                    }
+//                    else if(quantity==0){
+//                        mycart.remove(index);
+//                    }
+//                }
+//            }
+//            else{
+//                if(add){
+//                    cartItem.put("quantity",1);
+//                    mycart.put(cartItem);
+//                }
+//            }
+//            //Log.e("error cartlen",mycart.length()+"");
 
         } catch (JSONException e) {
             e.printStackTrace();
+            Log.e("error cart",e.toString());
         }
+        Log.e("error cart",mycart.toString());
     }
     public void initializecart() throws JSONException {
         SharedPreferences prefs = getSharedPreferences("com.example.root.khanabot",Context.MODE_PRIVATE);
-        String cartstring = prefs.getString("mycart",new JSONArray().toString());
+        String cartstring = prefs.getString("mycart",(new JSONArray()).toString());
         mycart = new JSONArray(cartstring);
 
     }
@@ -321,6 +431,7 @@ public class HomePage extends AppCompatActivity {
     public void onPause() {
         super.onPause();
         addtosharedpreferences("mycart",mycart.toString());
+        refresh.removeCallbacks(runnable);
     }
     public void notifychange(){
         ((TextView)findViewById(R.id.carttext)).setText(HomePage.mycart.length()+"");
@@ -337,6 +448,7 @@ public class HomePage extends AppCompatActivity {
         selectme(1);
         notifychange();
         setmyadapters();
+        runnable.run();
     }
     public boolean notifstatusset(){
         SharedPreferences prefs = getSharedPreferences("com.example.root.khanabot",Context.MODE_PRIVATE);
@@ -388,7 +500,8 @@ public class HomePage extends AppCompatActivity {
         JSONArray hotdeals = new JSONArray();
         JSONArray toprateds = new JSONArray();
         ArrayList<String> categori = new ArrayList<String>();
-        JSONArray Offers = new JSONArray();
+        final JSONArray Offers = new JSONArray();
+
 
         for(int i=0; i<responseArray.length();i++){
             int uptime=0;
@@ -441,6 +554,10 @@ public class HomePage extends AppCompatActivity {
                     hotdeal.put("levelone","HotDeals");
                     hotdeal.put("index",0);
                     hotdeal.put("number",restaurantobj.getString("number"));
+                    if(restaurantobj.has("deliversin")){
+                        String deliversin = restaurantobj.getString("deliversin")+ "min";
+                        hotdeal.put("deliversin",deliversin);
+                    }
                     hotdeals.put(hotdeal);
                 }
                 for(int j=0;j<TopRateds.length();j++){
@@ -461,6 +578,10 @@ public class HomePage extends AppCompatActivity {
                     myTopRated.put("image",menu.getJSONObject(TopRated.
                             getString("Category")).getJSONObject(TopRated.getString("SubCategory")).
                             getString("image"));
+                    if(restaurantobj.has("deliversin")){
+                        String deliversin =restaurantobj.getString("deliversin")+ "min";
+                        myTopRated.put("deliversin",deliversin);
+                    }
                     toprateds.put(myTopRated);
                 }
                 JSONObject menu = restaurantobj.getJSONObject("menu");
@@ -515,7 +636,7 @@ public class HomePage extends AppCompatActivity {
             }
             catch (JSONException e) {
                 e.printStackTrace();
-                //Log.e("error catch",e.toString());
+                Log.e("error catch",e.toString());
                 //Log.e("category",categori.toString());
             }
         }
@@ -525,6 +646,16 @@ public class HomePage extends AppCompatActivity {
         category.setAdapter(new HorizontalCategory(context,categori));
         viewPager.setAdapter(new CustomPageAdapter(context,Offers));
         Search.responseArray = responseArray;
+        OrderHistory.responseArray = responseArray;
+        ((HomePage)context).Offers=Offers;
+        runnable.run();
     }
 
+    public void pagerlooper(){
+
+        int num = viewPager.getCurrentItem();
+        if(num+1 >= Offers.length())
+            num=-1;
+        viewPager.setCurrentItem(num+1);
+    }
 }

@@ -40,14 +40,17 @@ public class HorizontalHotDeal extends RecyclerView.Adapter<HorizontalHotDeal.My
 
         try {
             final JSONObject HotDeal = hotdeals.getJSONObject(position);
+            if(HotDeal.has("deliversin")){
+                holder.deliversin.setText(HotDeal.getString("deliversin"));
+            }
             if(HotDeal.has("image")){
                 Picasso.with(context).load(RestClient.BASE_URL+"/"+HotDeal.getString("image")).into(holder.image);
             }
             else
                 Picasso.with(context).load(RestClient.BASE_URL+"/launcher.png").into(holder.image);
 
-            holder.foodname.setText(HotDeal.getString("name"));
-            holder.nameofrest.setText(HotDeal.getString("resname"));
+            holder.foodname.setText(HotDeal.getString("name").replaceAll("_"," "));
+            holder.nameofrest.setText(HotDeal.getString("resname").replaceAll("_"," "));
             holder.price.setText("Rs "+ HotDeal.getJSONArray("price").getString(0));
             holder.add.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -56,7 +59,6 @@ public class HorizontalHotDeal extends RecyclerView.Adapter<HorizontalHotDeal.My
                     value++;
                     holder.change.setText(value.toString());
                     HomePage.updatecart(true,HotDeal);
-                    //////Log.e("error cart",HomePage.mycart.toString());
                     ((HomePage)context).notifychange();
                 }
             });
@@ -87,7 +89,7 @@ public class HorizontalHotDeal extends RecyclerView.Adapter<HorizontalHotDeal.My
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public ImageView add,remove,image;
-        public TextView change,foodname,nameofrest,price;
+        public TextView change,foodname,nameofrest,price,deliversin;
         public View view;
         public MyViewHolder(View view) {
             super(view);
@@ -99,7 +101,7 @@ public class HorizontalHotDeal extends RecyclerView.Adapter<HorizontalHotDeal.My
             foodname=(TextView)(view.findViewById(R.id.foodname));
             nameofrest=(TextView)(view.findViewById(R.id.nameofrest));
             price = (TextView)(view.findViewById(R.id.price));
-
+            deliversin = (TextView)(view.findViewById(R.id.deliversin));
         }
     }
 }

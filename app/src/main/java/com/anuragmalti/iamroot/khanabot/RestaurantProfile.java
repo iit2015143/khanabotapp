@@ -13,12 +13,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -52,26 +52,34 @@ public class RestaurantProfile extends AppCompatActivity {
                 switch(item.getItemId()){
                     case R.id.cart:
                         selectme(0);
-                        Intent intent = new Intent(context,AddtoCart.class);
+                        Intent intent = new Intent(context,Cart.class);
                         startActivity(intent);
                         break;
                     case R.id.home:
-                        selectme(0);
-                        Intent intent2 = new Intent(context,HomePage.class);
-                        startActivity(intent2);
+                        //selectme(1);
+//                        Intent intent2 = new Intent(context,HomePage.class);
+//                        startActivity(intent2);
                         break;
                     case R.id.orderstatus:
                         selectme(2);
-                        Intent intent1 = new Intent(context,UserProfile.class);
+                        Intent intent1 = new Intent(context,OrderHistory.class);
                         startActivity(intent1);
                         break;
+                    case R.id.search:
+                        selectme(3);
+                        Intent intent3 = new Intent(context,Search.class);
+                        startActivity(intent3);
+                        break;
+
 
                 }
                 return true;
             }
         });
         selectme(1);
-
+        JSONArray jarray = new JSONArray();
+        jarray.put(restaurantobj);
+        Search.responseArray=jarray;
     }
 
     public void selectme(int id){
@@ -80,8 +88,8 @@ public class RestaurantProfile extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new Overviewfrag(), "Menu");
-        adapter.addFragment(new TrueOverview(), "Overview");
+        adapter.addFragment(new RestaurantOneFrag(), "Menu");
+        adapter.addFragment(new RestaurantTwoFrag(), "Overview");
         viewPager.setAdapter(adapter);
     }
 

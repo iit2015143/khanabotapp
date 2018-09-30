@@ -1,9 +1,6 @@
 package com.anuragmalti.iamroot.khanabot;
 
-import android.app.Activity;
 import android.content.Context;
-import android.media.Image;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -46,16 +43,16 @@ public class VerticalMenuAdapter extends RecyclerView.Adapter<VerticalMenuAdapte
 
         try {
             final JSONObject nothotdeal = nothotdeals.getJSONObject(position);
-            holder.foodname.setText(nothotdeal.getString("name"));
-            holder.nameofrest.setText(nothotdeal.getString("resname"));
+            holder.foodname.setText(nothotdeal.getString("name").replaceAll("_"," "));
+            holder.nameofrest.setText(nothotdeal.getString("resname").replaceAll("_"," "));
             final JSONArray price = nothotdeal.getJSONArray("price");
             holder.price.setText("Rs "+ price.getString(price.length()-1));
             switch (decider){
-                case "AddtoCart":
+                case "Cart":
                     holder.change.setText(nothotdeal.getInt("quantity")+"");
                     holder.price.setText("Rs "+ price.getString(nothotdeal.getInt("index")));
                     break;
-                case "Menus":
+                case "ItemsByCategory":
                     nothotdeal.put("index",price.length()-1);
                     holder.radiovisible.setVisibility(View.VISIBLE);
                     if(price.length()==1){
@@ -97,17 +94,18 @@ public class VerticalMenuAdapter extends RecyclerView.Adapter<VerticalMenuAdapte
                     value++;
                     holder.change.setText(value.toString());
                     HomePage.updatecart(true,nothotdeal);
-                    ////Log.e("error nothot",nothotdeal.toString());
+                    Log.e("error cart","update cart request made");
+                    Toast.makeText(context,"why aint u printing",Toast.LENGTH_SHORT).show();
                     switch (decider){
-                        case "AddtoCart":
+                        case "Cart":
                             try {
-                                ((AddtoCart)context).notifychange();
+                                ((Cart)context).notifychange();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                             break;
-                        case "Menus":
-                            ((Menus)context).notifychange();
+                        case "ItemsByCategory":
+                            ((ItemsByCategory)context).notifychange();
                             break;
                     }
                 }
@@ -124,9 +122,9 @@ public class VerticalMenuAdapter extends RecyclerView.Adapter<VerticalMenuAdapte
                         ////Log.e("error nothot",nothotdeal.toString());
                     }
                     switch (decider){
-                        case "AddtoCart":
+                        case "Cart":
                             try {
-                                ((AddtoCart)context).notifychange();
+                                ((Cart)context).notifychange();
                                 if(value==0){
                                     //notifyDataSetChanged();
                                     notifyItemRemoved(position);
@@ -136,8 +134,8 @@ public class VerticalMenuAdapter extends RecyclerView.Adapter<VerticalMenuAdapte
                                 e.printStackTrace();
                             }
                             break;
-                        case "Menus":
-                            ((Menus)context).notifychange();
+                        case "ItemsByCategory":
+                            ((ItemsByCategory)context).notifychange();
                             break;
                     }
                 }
@@ -172,7 +170,7 @@ public class VerticalMenuAdapter extends RecyclerView.Adapter<VerticalMenuAdapte
             full = (RadioButton)(view.findViewById(R.id.full));
             radiovisible = (RadioGroup)(view.findViewById(R.id.radiovisible));
             switch (decider){
-                case "AddtoCart":
+                case "Cart":
                     radiovisible.setVisibility(View.GONE);
                     break;
             }

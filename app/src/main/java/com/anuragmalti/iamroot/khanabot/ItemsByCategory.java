@@ -9,24 +9,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.Toolbar;
-
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import cz.msebera.android.httpclient.Header;
-
-public class Menus extends AppCompatActivity {
+public class ItemsByCategory extends AppCompatActivity {
 
     public Context context;
     public static JSONArray adapterArray;
@@ -36,7 +26,7 @@ public class Menus extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menus);
+        setContentView(R.layout.activity_itembycategory);
         context = this;
         notifychange();
         String title = getIntent().getStringExtra("title");
@@ -44,7 +34,7 @@ public class Menus extends AppCompatActivity {
         textView.setText(title);
         catmenu =(RecyclerView)findViewById(R.id.catmenu);
         catmenu.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
-        catmenu.setAdapter(new VerticalMenuAdapter(this,adapterArray,"Menus"));
+        catmenu.setAdapter(new VerticalMenuAdapter(this,adapterArray,"ItemsByCategory"));
 
         bnv = (BottomNavigationView)findViewById(R.id.bnv);
         bnv.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -53,17 +43,22 @@ public class Menus extends AppCompatActivity {
                 switch(item.getItemId()){
                     case R.id.cart:
                         selectme(0);
-                        Intent intent = new Intent(context,AddtoCart.class);
+                        Intent intent = new Intent(context,Cart.class);
                         startActivity(intent);
                         break;
                     case R.id.home:
-                        Intent intent2=new Intent(context,HomePage.class);
-                        startActivity(intent2);
+//                        Intent intent2=new Intent(context,HomePage.class);
+//                        startActivity(intent2);
                         break;
                     case R.id.orderstatus:
                         selectme(2);
-                        Intent intent1 = new Intent(context,UserProfile.class);
+                        Intent intent1 = new Intent(context,OrderHistory.class);
                         startActivity(intent1);
+                        break;
+                    case R.id.search:
+                        selectme(3);
+                        Intent intent3 = new Intent(context,Search.class);
+                        startActivity(intent3);
                         break;
 
                 }
@@ -102,7 +97,7 @@ public class Menus extends AppCompatActivity {
         super.onResume();
         notifychange();
         selectme(1);
-        catmenu.setAdapter(new VerticalMenuAdapter(this,adapterArray,"Menus"));
+        catmenu.setAdapter(new VerticalMenuAdapter(this,adapterArray,"ItemsByCategory"));
 
     }
 }

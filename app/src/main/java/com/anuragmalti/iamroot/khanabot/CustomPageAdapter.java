@@ -46,8 +46,8 @@ public class CustomPageAdapter extends PagerAdapter {
             Picasso.with(context).load(RestClient.BASE_URL+"/"+offer.getString("image")).into(imagecontainer);
 
         } catch (JSONException e) {
-            e.printStackTrace();
-            //Log.e("error",e.toString());
+            //e.printStackTrace();
+            Log.e("error",e.toString());
         }
 
         container.addView(view);

@@ -6,15 +6,11 @@ package com.anuragmalti.iamroot.khanabot;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -30,10 +26,10 @@ import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
 
-public class AddtoCart extends AppCompatActivity {
+public class Cart extends AppCompatActivity {
     public RecyclerView cartItems;
     public String mode="cod";
-    public String time="";
+    public String time="45";
     public Button requestorder;
     public Context context;
     @Override
@@ -49,7 +45,7 @@ public class AddtoCart extends AppCompatActivity {
         context = this;
          cartItems = (RecyclerView)findViewById(R.id.cartItems);
         cartItems.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
-        cartItems.setAdapter(new VerticalMenuAdapter(this,HomePage.mycart,"AddtoCart"));
+        cartItems.setAdapter(new VerticalMenuAdapter(this,HomePage.mycart,"Cart"));
 
         RadioGroup radioGroup = (RadioGroup)findViewById(R.id.radiovisible);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -59,10 +55,13 @@ public class AddtoCart extends AppCompatActivity {
                     case R.id.cod:
                         ((RadioGroup)findViewById(R.id.timevisible)).setVisibility(View.INVISIBLE);
                         mode="cod";
+                        time = "45";
                         break;
                     case R.id.booktable:
                         mode="book";
+                        time = "20";
                         ((RadioGroup)findViewById(R.id.timevisible)).setVisibility(View.VISIBLE);
+                        ((RadioButton)findViewById(R.id.min20)).setChecked(true);
                         break;
                 }
             }
@@ -133,7 +132,7 @@ public class AddtoCart extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(),"Order Requested",Toast.LENGTH_SHORT).show();
                             clearorder(null);
                             requestorder.setEnabled(true);
-                            Intent intent = new Intent(context,UserProfile.class);
+                            Intent intent = new Intent(context,OrderHistory.class);
                             startActivity(intent);
                         }
                     } catch (JSONException e) {
@@ -161,6 +160,6 @@ public class AddtoCart extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        cartItems.setAdapter(new VerticalMenuAdapter(this,HomePage.mycart,"AddtoCart"));
+        cartItems.setAdapter(new VerticalMenuAdapter(this,HomePage.mycart,"Cart"));
     }
 }

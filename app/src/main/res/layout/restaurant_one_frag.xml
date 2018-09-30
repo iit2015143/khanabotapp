@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".Overviewfrag">
+    tools:context=".RestaurantOneFrag">
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -51,15 +51,17 @@
                 android:layout_alignParentBottom="true"
                 android:id="@+id/clock"
                 android:layout_margin="6dp"/></LinearLayout>
+
         <TextView
+            android:id="@+id/deliversin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="30min"
-            android:textSize="16dp"
-            android:padding="4dp"
-            android:textColor="@color/facebook"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="20dp"/>
+            android:layout_marginLeft="20dp"
+            android:padding="4dp"
+            android:text="30min"
+            android:textColor="@color/facebook"
+            android:textSize="16dp" />
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView

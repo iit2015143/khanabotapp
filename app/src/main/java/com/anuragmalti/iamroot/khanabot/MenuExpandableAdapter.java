@@ -43,7 +43,7 @@ public class MenuExpandableAdapter extends ExpandableRecyclerAdapter<MenuParentV
     @Override
     public void onBindParentViewHolder(MenuParentViewHolder menuParentViewHolder, int i, Object o) {
         Menu menu = (Menu) o;
-        menuParentViewHolder.leveltwo.setText(menu.getTitle());
+        menuParentViewHolder.leveltwo.setText(menu.getTitle().replaceAll("_"," "));
     }
 
     @Override
@@ -52,8 +52,8 @@ public class MenuExpandableAdapter extends ExpandableRecyclerAdapter<MenuParentV
         ////Log.e("childviewholder",menuChild.item.toString());
         try {
             final JSONObject nothotdeal = menuChild.item;
-            holder.foodname.setText(nothotdeal.getString("name"));
-            holder.nameofrest.setText(nothotdeal.getString("resname"));
+            holder.foodname.setText(nothotdeal.getString("name").replaceAll("_"," "));
+            holder.nameofrest.setText(nothotdeal.getString("resname").replaceAll("_"," "));
             final JSONArray price = nothotdeal.getJSONArray("price");
             holder.price.setText("Rs "+ price.getString(price.length()-1));
             nothotdeal.put("index",price.length()-1);

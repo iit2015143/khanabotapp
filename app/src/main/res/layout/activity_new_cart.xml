@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NewCart">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="?attr/actionBarSize"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+            <android.support.design.widget.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/primary">
+
+                <android.support.v7.widget.Toolbar
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/toolbartitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Delivery Address"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/bletter"
+                            android:padding="2dp"/>
+                        <View
+                            android:background="@color/iron"
+                            android:layout_height="2dp"
+                            android:layout_width="fill_parent"/>
+                    </LinearLayout>
+
+                </android.support.v7.widget.Toolbar>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:id="@+id/address"
+                    android:layout_height="wrap_content"
+                    android:text="I am a big delivery address spanning over more than two lines tell me motherfucker do you hav any problem?"
+                    android:textSize="@dimen/bletter"
+                    android:textColor="@color/iron"
+                    android:paddingLeft="@dimen/nletter"
+                    android:paddingRight="@dimen/exsletter"
+                    android:paddingBottom="0dp"
+                    android:visibility="visible"/>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:id="@+id/editAddress"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/nletter"
+                    android:layout_marginRight="@dimen/exsletter"
+                    android:hint="Enter Address"
+                    android:visibility="gone"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:paddingBottom="4dp"
+                    android:paddingRight="4dp">
+
+                    <Button
+                        android:id="@+id/changeAdd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="onClick"
+                        android:text="Change" />.
+                </LinearLayout>
+            </android.support.design.widget.AppBarLayout>
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/restaurantcont"
+                android:nestedScrollingEnabled="false">
+
+            </android.support.v7.widget.RecyclerView>
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_gravity="bottom">
+
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:gravity="right">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="3">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="total"
+                    android:id="@+id/total"
+                    android:layout_weight="2"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/bletter"
+                    android:textStyle="bold"/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/requestorder"
+                    android:layout_height="wrap_content"
+                    android:text="Request order" />
+            </LinearLayout>
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+</FrameLayout>

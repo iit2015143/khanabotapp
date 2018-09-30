@@ -24,7 +24,17 @@
     <style name="AppTheme.Dark.Dialog" parent="Theme.AppCompat.Dialog">
         <item name="colorAccent">@color/white</item>
         <item name="android:textColorPrimary">@color/iron</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:layout_height">100dp</item>
+        <item name="android:layout_width">fill_parent</item>
         <item name="android:background">@color/primary</item>
+    </style>
+
+    <style name="Theme_Dialog" parent="Theme.AppCompat.Light.Dialog">
+        <!--item name="android:windowMinWidthMajor">60%</item>
+        <item name="android:windowMinWidthMinor">60%</item-->
+        <item name="windowNoTitle">true</item>
     </style>
 
 </resources>

@@ -44,7 +44,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".Menus"
+            android:name=".ItemsByCategory"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Dark" />
         <activity
@@ -56,11 +56,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Dark" />
         <activity
-            android:name=".MenuGrid"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Dark" />
-        <activity
-            android:name=".AddtoCart"
+            android:name=".Cart"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Dark" />
         <activity
@@ -91,21 +87,21 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Dark" />
         <activity
-            android:name=".Test"
+            android:name=".OrderHistory"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Dark" />
+        <activity
+            android:name=".Search"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".UserProfile"
+            android:name=".NewCart"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Dark" />
         <activity
-            android:name=".Update"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Dark" />
-        <activity
-            android:name=".OnLocation"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Dark" />
-        <activity android:name=".Search"></activity>
+            android:name=".PopUpActivity"
+            android:theme="@style/Theme_Dialog" />
+        <activity android:name=".PopUpEditOrder"
+            android:theme="@style/Theme_Dialog"></activity>
     </application>
 
 </manifest>

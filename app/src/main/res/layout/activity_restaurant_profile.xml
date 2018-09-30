@@ -44,8 +44,7 @@
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:layout_marginBottom="?attr/actionBarSize"/>
+            android:background="@color/white" />
 
         <!--LinearLayout
             android:layout_width="match_parent"
@@ -70,7 +69,7 @@
         app:itemIconTint="@drawable/navmenucolor"
         app:itemTextColor="@drawable/navmenucolor">
         <RelativeLayout
-            android:layout_width="165dp"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
             android:padding="2dp"
@@ -84,6 +83,7 @@
                 android:gravity="center_horizontal|center_vertical"
                 android:background="@drawable/roundedcornercarttext"
                 android:id="@+id/carttext"/>
+
         </RelativeLayout>
     </android.support.design.widget.BottomNavigationView>
 

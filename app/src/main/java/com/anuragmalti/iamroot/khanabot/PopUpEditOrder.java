@@ -1,6 +1,7 @@
 package com.anuragmalti.iamroot.khanabot;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Point;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -9,12 +10,19 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.WindowManager;
 
-public class PopUpActivity extends AppCompatActivity {
+import org.json.JSONArray;
+import org.json.JSONException;
+
+public class PopUpEditOrder extends AppCompatActivity {
+    public RecyclerView restaurantcont;
+    public Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pop_up);
+        context = this;
+
         WindowManager manager = (WindowManager) getSystemService(Activity.WINDOW_SERVICE);
         int width, height;
         WindowManager.LayoutParams params;
@@ -36,8 +44,24 @@ public class PopUpActivity extends AppCompatActivity {
         this.getWindow().setAttributes(lp);
 
         this.setFinishOnTouchOutside(true);
-        RecyclerView restaurantcont = (RecyclerView)findViewById(R.id.myPopUp);
+
+
+        restaurantcont = (RecyclerView)findViewById(R.id.myPopUp);
         restaurantcont.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
-        restaurantcont.setAdapter(new NewCartAdapter(this,HomePage.mycart));
+        restaurantcont.setAdapter(new EditOrderAdapter(this,new JSONArray()));
+
+        Bundle b = getIntent().getExtras();
+        int value = -1;
+        if(b != null)
+            value = b.getInt("position");
+        try {
+            setadapter(HomePage.mycart.getJSONObject(value).getJSONArray("order"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+    public void setadapter(JSONArray array){
+        restaurantcont.setAdapter(new EditOrderAdapter(context,array));
     }
 }

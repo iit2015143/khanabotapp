@@ -1,12 +1,18 @@
 package com.anuragmalti.iamroot.khanabot;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,17 +25,21 @@ import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
 
-public class UserProfile extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class OrderHistory extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     public Context context;
     public JSONArray adapterArray=new JSONArray();
     public RecyclerView catmenu;
     public SwipeRefreshLayout swiper;
+    public BottomNavigationView bnv;
+    public static JSONArray responseArray;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_profile);
+        setContentView(R.layout.activity_orderhistory);
         context = this;
+        bnv = (BottomNavigationView)findViewById(R.id.bnv);
+
         swiper = (SwipeRefreshLayout)(findViewById(R.id.swipeme));
         swiper.setOnRefreshListener(this);
         String title = getIntent().getStringExtra("title");
@@ -41,7 +51,40 @@ public class UserProfile extends AppCompatActivity implements SwipeRefreshLayout
         catmenu.setAdapter(new OrderhistoryAdapter(context,adapterArray));
         swiper.setRefreshing(true);
         makerequest();
+
+        bnv.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch(item.getItemId()){
+                    case R.id.cart:
+                        selectme(0);
+                        Intent intent = new Intent(context,Cart.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.home:
+                        selectme(1);
+                        Intent intent2 = new Intent(context,HomePage.class);
+                        startActivity(intent2);
+                        break;
+                    case R.id.orderstatus:
+                        selectme(2);
+                        break;
+                    case R.id.search:
+                        selectme(3);
+                        Intent intent1 = new Intent(context,Search.class);
+                        startActivity(intent1);
+                        break;
+                }
+                return true;
+            }
+        });
+
     }
+
+    public void selectme(int id){
+        bnv.getMenu().getItem(id).setChecked(true);
+    }
+
 
     public void makerequest(){
         RestClient.get("/orderhistory",null,new JsonHttpResponseHandler(){
@@ -114,6 +157,22 @@ public class UserProfile extends AppCompatActivity implements SwipeRefreshLayout
         });
     }
 
+    public void notifychange(){
+        ((TextView)findViewById(R.id.carttext)).setText(HomePage.mycart.length()+"");
+
+        if(HomePage.mycart.length()==0)
+            ((RelativeLayout)findViewById(R.id.cartcontainer)).setVisibility(View.INVISIBLE);
+        else
+            ((RelativeLayout)findViewById(R.id.cartcontainer)).setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        Search.responseArray = responseArray;
+        notifychange();
+        selectme(2);
+    }
 
     @Override
     public void onRefresh() {

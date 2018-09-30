@@ -7,9 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -21,7 +19,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         ////Log.e("Message ",remoteMessage.toString());
 
-        Intent intent = new Intent(this,UserProfile.class);
+        Intent intent = new Intent(this,OrderHistory.class);
         intent.setFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
 //        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
 //                | Intent.FLAG_ACTIVITY_SINGLE_TOP);

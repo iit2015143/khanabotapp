@@ -51,6 +51,7 @@ GoogleApiClient.OnConnectionFailedListener{
     public LocationRequest locationRequest;
     public LocationCallback mLocationCallback;
     public int flag = 0;
+    public int GAC=0;
 
     final int PERMISSION_ACCESS_FINE_LOCATION = 1;
     @Override
@@ -166,6 +167,10 @@ GoogleApiClient.OnConnectionFailedListener{
                 .FusedLocationApi
                 .getLastLocation( mGoogleApiClient );
 
+        if(flag==1)
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient,mLocationCallback);
+
+
         ////Log.e("Errorcurrentlocation","ingotocurrentlocation");
         if(mCurrentLocation!=null) {
             ////Log.e("Errorcurrentlocation", mCurrentLocation.toString());
@@ -173,8 +178,7 @@ GoogleApiClient.OnConnectionFailedListener{
             location.put("lat", mCurrentLocation.getLatitude() + "");
             location.put("long", mCurrentLocation.getLongitude() + "");
             addtosharedpref("location", location.toString());
-            if(flag==1)
-            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient,mLocationCallback);
+
             String address = getAddressFromLatLng(new LatLng(mCurrentLocation.getLatitude(),mCurrentLocation.getLongitude()));
             Intent intent = new Intent(this,HomePage.class);
             HomePage.address = address;
@@ -211,7 +215,11 @@ GoogleApiClient.OnConnectionFailedListener{
     }
 
     public void connectgoogleclient(){
-        mGoogleApiClient=new GoogleApiClient.Builder(this, this,this).addApi(LocationServices.API).build();
+        //to build it only once per activity
+        if(GAC==0) {
+            GAC=1;
+            mGoogleApiClient = new GoogleApiClient.Builder(this, this, this).addApi(LocationServices.API).build();
+        }
         if(mGoogleApiClient!=null){
             mGoogleApiClient.connect();
         }
