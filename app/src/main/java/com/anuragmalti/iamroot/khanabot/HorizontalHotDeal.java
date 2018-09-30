@@ -59,7 +59,6 @@ public class HorizontalHotDeal extends RecyclerView.Adapter<HorizontalHotDeal.My
                     value++;
                     holder.change.setText(value.toString());
                     HomePage.updatecart(true,HotDeal);
-                    Log.e("error cart","updatecart request made");
                     ((HomePage)context).notifychange();
                 }
             });

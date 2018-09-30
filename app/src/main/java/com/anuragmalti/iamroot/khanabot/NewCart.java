@@ -13,6 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 public class NewCart extends AppCompatActivity {
@@ -27,12 +30,14 @@ public class NewCart extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_cart);
 
+
         context = this;
         editAddress = (EditText)findViewById(R.id.editAddress);
         address = (TextView)findViewById(R.id.address);
+        address.setText(HomePage.address);
         add = (Button)findViewById(R.id.changeAdd);
 
-        if(address.getText().toString() == null){
+        if(address.getText().toString() == null || address.getText().toString()==""){
             editAddress.setVisibility(View.VISIBLE);
             address.setVisibility(View.GONE);
             add.setText("Add");
@@ -82,16 +87,31 @@ public class NewCart extends AppCompatActivity {
 
     public void orderRequest(View view) {
 
-
     }
 
-    public void editOrder(View view) {
-        Intent intent = new Intent(context,PopUpActivity.class);
+    public void editOrder(int position) {
+        Intent intent = new Intent(context,PopUpEditOrder.class);
+        Bundle b = new Bundle();
+        b.putInt("position", position);
+        intent.putExtras(b);
         startActivity(intent);
     }
 
     public void openOffer(View view) {
         Intent intent = new Intent(context,PopUpActivity.class);
         startActivity(intent);
+    }
+
+    public void notifychange() throws JSONException {
+        int ans = 0;
+        for(int i=0;i<HomePage.mycart.length();i++){
+            JSONObject cartitem = HomePage.mycart.getJSONObject(i);
+            int price = cartitem.getInt("price");
+            int quantity = cartitem.getInt("quantity");
+            ans += price*quantity;
+            ////Log.e("in cart",cartitem.toString());
+        }
+        ////Log.e("error addtocart","I have been called");
+        ((TextView)findViewById(R.id.total)).setText("Rs "+ans);
     }
 }

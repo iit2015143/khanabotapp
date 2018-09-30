@@ -90,9 +90,17 @@
             android:name=".OrderHistory"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Dark" />
-        <activity android:name=".Search" />
-        <activity android:name=".NewCart" />
-        <activity android:name=".PopUpActivity"
+        <activity
+            android:name=".Search"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".NewCart"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Dark" />
+        <activity
+            android:name=".PopUpActivity"
+            android:theme="@style/Theme_Dialog" />
+        <activity android:name=".PopUpEditOrder"
             android:theme="@style/Theme_Dialog"></activity>
     </application>
 

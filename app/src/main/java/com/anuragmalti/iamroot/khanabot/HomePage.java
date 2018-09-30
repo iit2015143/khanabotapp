@@ -109,7 +109,7 @@ public class HomePage extends AppCompatActivity {
                 switch(item.getItemId()){
                     case R.id.cart:
                         selectme(0);
-                        Intent intent = new Intent(context,Cart.class);
+                        Intent intent = new Intent(context,NewCart.class);
                         startActivity(intent);
                         break;
                     case R.id.home:
@@ -261,16 +261,20 @@ public class HomePage extends AppCompatActivity {
 
         try {
             if(add) {
+                boolean foundrest = false;
                 for (int i = 0; i < mycart.length(); i++) {
                     JSONObject cartobject = mycart.getJSONObject(i);
 
-                    if (cartobject.getString("number").equals(cartItem.getString("number"))) {
+                    if (cartobject.getString("tonumber").equals(cartItem.getString("number"))) {
+
+                        foundrest = true;
 
                         int total = cartobject.getInt("total");
                         total += cartItem.getJSONArray("price").getInt(cartItem.getInt("index"));
                         cartobject.put("total", total);
 
                         JSONArray order = cartobject.getJSONArray("order");
+                        boolean founditem = false;
                         for (int j = 0; j < order.length(); j++) {
                             JSONObject cartObjectItem = order.getJSONObject(j);
                             if (cartObjectItem.getString("name").equals(cartItem.getString("name"))
@@ -278,40 +282,27 @@ public class HomePage extends AppCompatActivity {
                                     && cartObjectItem.getInt("price") ==
                                     cartItem.getJSONArray("price").getInt(cartItem.getInt("index"))) {
 
+                                founditem = true;
+
                                 int quantity = cartObjectItem.getInt("quantity");
                                 quantity++;
                                 cartObjectItem.put("quantity", quantity);
                                 break;
 
                             }
-                            if (j == order.length() - 1) {
-                                JSONObject item = new JSONObject();
-                                item.put("name", cartItem.getString("name"));
-                                item.put("index", cartItem.getInt("index"));
-                                item.put("length", cartItem.getJSONArray("price").length());
-                                item.put("quantity", 1);
-                                item.put("price", cartItem.getJSONArray("price").getInt(cartItem.getInt("index")));
-                                order.put(item);
-                            }
                         }
-                        break;
-                    } else if (i == mycart.length() - 1) {
-                        JSONObject restObject = new JSONObject();
-                        restObject.put("resname", cartItem.getString("resname"));
-                        restObject.put("tonumber", cartItem.getString("number"));
-                        restObject.put("total", cartItem.getJSONArray("price").getInt(cartItem.getInt("index")));
-                        JSONArray order = new JSONArray();
-                        JSONObject item = new JSONObject();
-                        item.put("name", cartItem.getString("name"));
-                        item.put("index", cartItem.getInt("index"));
-                        item.put("length", cartItem.getJSONArray("price").length());
-                        item.put("quantity", 1);
-                        item.put("price", cartItem.getJSONArray("price").getInt(cartItem.getInt("index")));
-                        order.put(item);
-                        restObject.put("order", order);
-                        mycart.put(restObject);
-                    }
+                        if(!founditem){
+                            JSONObject item = new JSONObject();
+                            item.put("name", cartItem.getString("name"));
+                            item.put("index", cartItem.getInt("index"));
+                            item.put("length", cartItem.getJSONArray("price").length());
+                            item.put("quantity", 1);
+                            item.put("price", cartItem.getJSONArray("price").getInt(cartItem.getInt("index")));
+                            order.put(item);
+                        }
 
+                        break;
+                    }
 
                     //Log.e("error in loop out if",cartobject.toString());
 //                if(cartobject.getString("number").equals(cartItem.getString("number"))
@@ -327,12 +318,28 @@ public class HomePage extends AppCompatActivity {
 //                    break;
 //                }
                 }
+                if(!foundrest){
+                    JSONObject restObject = new JSONObject();
+                    restObject.put("resname", cartItem.getString("resname"));
+                    restObject.put("tonumber", cartItem.getString("number"));
+                    restObject.put("total", cartItem.getJSONArray("price").getInt(cartItem.getInt("index")));
+                    JSONArray order = new JSONArray();
+                    JSONObject item = new JSONObject();
+                    item.put("name", cartItem.getString("name"));
+                    item.put("index", cartItem.getInt("index"));
+                    item.put("length", cartItem.getJSONArray("price").length());
+                    item.put("quantity", 1);
+                    item.put("price", cartItem.getJSONArray("price").getInt(cartItem.getInt("index")));
+                    order.put(item);
+                    restObject.put("order", order);
+                    mycart.put(restObject);
+                }
             }
             else{
                 for (int i = 0; i < mycart.length(); i++) {
                     JSONObject cartobject = mycart.getJSONObject(i);
 
-                    if (cartobject.getString("number").equals(cartItem.getString("number"))) {
+                    if (cartobject.getString("tonumber").equals(cartItem.getString("number"))) {
 
                         int total = cartobject.getInt("total");
                         total += cartItem.getJSONArray("price").getInt(cartItem.getInt("index"));
@@ -395,6 +402,7 @@ public class HomePage extends AppCompatActivity {
 
         } catch (JSONException e) {
             e.printStackTrace();
+            Log.e("error cart",e.toString());
         }
         Log.e("error cart",mycart.toString());
     }

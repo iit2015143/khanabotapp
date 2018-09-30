@@ -50,7 +50,7 @@ implements Filterable{
 
         try {
             final JSONObject nothotdeal = contactListFiltered.getJSONObject(position);
-            holder.foodname.setText(nothotdeal.getString("name"));
+            holder.foodname.setText(nothotdeal.getString("name").replaceAll("_"," "));
             holder.nameofrest.setText(nothotdeal.getString("resname"));
             final JSONArray price = nothotdeal.getJSONArray("price");
             holder.price.setText("Rs "+ price.getString(price.length()-1));

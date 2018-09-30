@@ -16,6 +16,7 @@
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/exsletter"
             android:text="Rockk Onn"
+            android:id="@+id/resname"
             android:textColor="@color/black"
             android:textSize="@dimen/bletter"
             android:textStyle="bold" />
@@ -28,16 +29,17 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="1.2"
                 android:textColor="@color/moan"
                 android:text="Summary :"/>
             <View
-                android:layout_width="2dp"
+                android:layout_width="1dp"
                 android:layout_height="fill_parent"
                 android:background="@color/monsoon"/>
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="4"
+                android:layout_weight="3.8"
+                android:id="@+id/summary"
                 android:paddingLeft="@dimen/exsletter"
                 android:textColor="@color/moan"
                 android:layout_height="wrap_content"
@@ -101,6 +103,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:text="Rs 1091"
+                android:id="@+id/totalRest"
                 android:textColor="@color/oil"
                 android:textSize="@dimen/nletter"
                 android:textStyle="bold" />
@@ -112,7 +115,6 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="1"
-                android:onClick="editOrder"
                 android:text="Edit" />
 
             <Button
