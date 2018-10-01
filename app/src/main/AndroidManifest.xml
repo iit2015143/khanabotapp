@@ -100,7 +100,10 @@
         <activity
             android:name=".PopUpActivity"
             android:theme="@style/Theme_Dialog" />
-        <activity android:name=".PopUpEditOrder"
+        <activity
+            android:name=".PopUpEditOrder"
+            android:theme="@style/Theme_Dialog" />
+        <activity android:name=".EditOfferPopUp"
             android:theme="@style/Theme_Dialog"></activity>
     </application>
 

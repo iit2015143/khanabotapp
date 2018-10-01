@@ -86,10 +86,11 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/offer"
             android:hint="Apply offer "
             android:textSize="20dp"
-            android:selectAllOnFocus="false"
             android:onClick="openOffer"
+            android:selectAllOnFocus="false"
             android:textColor="@color/moan"/>
 
         <LinearLayout

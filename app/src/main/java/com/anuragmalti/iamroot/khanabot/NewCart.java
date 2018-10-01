@@ -95,8 +95,11 @@ public class NewCart extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void openOffer(View view) {
-        Intent intent = new Intent(context,PopUpActivity.class);
+    public void openOffer(int position) {
+        Intent intent = new Intent(context,EditOfferPopUp.class);
+        Bundle b = new Bundle();
+        b.putInt("position", position);
+        intent.putExtras(b);
         startActivity(intent);
     }
 

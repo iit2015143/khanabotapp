@@ -60,6 +60,13 @@ public class NewCartAdapter extends RecyclerView.Adapter<NewCartAdapter.MyViewHo
                 ((NewCart)context).editOrder(position);
             }
         });
+
+        holder.offer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((NewCart)context).openOffer(position);
+            }
+        });
     }
 
     @Override
@@ -68,12 +75,13 @@ public class NewCartAdapter extends RecyclerView.Adapter<NewCartAdapter.MyViewHo
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView resname,summary,totalrest;
+        public TextView resname,summary,totalrest,offer;
         public Button editOrder;
         public View view;
         public MyViewHolder(View view) {
             super(view);
             this.view = view;
+            offer = view.findViewById(R.id.offer);
             resname = view.findViewById(R.id.resname);
             summary = view.findViewById(R.id.summary);
             editOrder = view.findViewById(R.id.editOrder);
