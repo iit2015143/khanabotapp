@@ -23,6 +23,7 @@ public class NewCart extends AppCompatActivity {
     public Context context;
     private EditText editAddress;
     private TextView address;
+    public RecyclerView restaurantcont;
     private Button add;
 
     @Override
@@ -43,17 +44,27 @@ public class NewCart extends AppCompatActivity {
             add.setText("Add");
         }
 
-        RecyclerView restaurantcont = (RecyclerView)findViewById(R.id.restaurantcont);
+        restaurantcont = (RecyclerView)findViewById(R.id.restaurantcont);
         restaurantcont.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         restaurantcont.setAdapter(new NewCartAdapter(this,HomePage.mycart));
-        Button requestorder = (Button)findViewById(R.id.requestorder);
-        requestorder.setOnClickListener(new View.OnClickListener() {
+        Button clearCart = (Button)findViewById(R.id.clearCart);
+        clearCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context,PopUpActivity.class);
-                startActivity(intent);
+                clearcart();
             }
         });
+
+    }
+
+    public void clearcart(){
+        HomePage.mycart = new JSONArray();
+        try {
+            notifychange();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        setadapter();
     }
 
     public void onClick(View view) {
@@ -106,12 +117,25 @@ public class NewCart extends AppCompatActivity {
         int ans = 0;
         for(int i=0;i<HomePage.mycart.length();i++){
             JSONObject cartitem = HomePage.mycart.getJSONObject(i);
-            int price = cartitem.getInt("price");
-            int quantity = cartitem.getInt("quantity");
-            ans += price*quantity;
-            ////Log.e("in cart",cartitem.toString());
+            int price = cartitem.getInt("total");
+            ans += price;
         }
-        ////Log.e("error addtocart","I have been called");
         ((TextView)findViewById(R.id.total)).setText("Rs "+ans);
     }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        setadapter();
+        try {
+            notifychange();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setadapter(){
+        restaurantcont.setAdapter(new NewCartAdapter(this,HomePage.mycart));
+    }
+
 }

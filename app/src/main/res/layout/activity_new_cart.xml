@@ -89,6 +89,33 @@
                 android:nestedScrollingEnabled="false">
 
             </android.support.v7.widget.RecyclerView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/moan"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:paddingLeft="@dimen/sletter"
+                android:text="For feedback or queries reach out to us at:\nkhanabot247@gmail.com"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/bletter"
+                android:text="7488663497"
+                android:textColorLink="@color/moan"
+                android:textColor="@color/moan"
+                android:autoLink="phone"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/bletter"
+                android:layout_marginBottom="@dimen/sletter"
+                android:text="9807666322"
+                android:textColorLink="@color/moan"
+                android:textColor="@color/moan"
+                android:autoLink="phone"/>
+
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
@@ -119,9 +146,9 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_weight="1"
-                    android:id="@+id/requestorder"
+                    android:id="@+id/clearCart"
                     android:layout_height="wrap_content"
-                    android:text="Request order" />
+                    android:text="Clear Cart" />
             </LinearLayout>
         </android.support.v7.widget.Toolbar>
 

@@ -211,9 +211,6 @@ public class HomePage extends AppCompatActivity {
                     ((ViewPager)findViewById(R.id.viewPager)).setBackground(getResources().getDrawable(R.drawable.nooffer));
 
                 setmyadapters();
-//                ////Log.e("errror category",category.toString());
-//                ////Log.e("Error hotdeal",hotdeals.toString());
-//                ////Log.e("Error toprateds",toprateds.toString());
 
             }
 
@@ -342,7 +339,7 @@ public class HomePage extends AppCompatActivity {
                     if (cartobject.getString("tonumber").equals(cartItem.getString("number"))) {
 
                         int total = cartobject.getInt("total");
-                        total += cartItem.getJSONArray("price").getInt(cartItem.getInt("index"));
+                        total -= cartItem.getJSONArray("price").getInt(cartItem.getInt("index"));
                         cartobject.put("total", total);
 
                         JSONArray order = cartobject.getJSONArray("order");
