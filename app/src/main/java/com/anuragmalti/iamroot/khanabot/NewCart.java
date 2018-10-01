@@ -12,7 +12,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,7 +29,6 @@ public class NewCart extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_cart);
-
 
         context = this;
         editAddress = (EditText)findViewById(R.id.editAddress);
@@ -108,8 +106,11 @@ public class NewCart extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void openOffer(View view) {
-        Intent intent = new Intent(context,PopUpActivity.class);
+    public void openOffer(int position) {
+        Intent intent = new Intent(context,EditOfferPopUp.class);
+        Bundle b = new Bundle();
+        b.putInt("position", position);
+        intent.putExtras(b);
         startActivity(intent);
     }
 

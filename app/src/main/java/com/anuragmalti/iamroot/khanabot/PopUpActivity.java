@@ -15,7 +15,6 @@ public class PopUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pop_up);
-
         WindowManager manager = (WindowManager) getSystemService(Activity.WINDOW_SERVICE);
         int width, height;
         WindowManager.LayoutParams params;
@@ -37,11 +36,8 @@ public class PopUpActivity extends AppCompatActivity {
         this.getWindow().setAttributes(lp);
 
         this.setFinishOnTouchOutside(true);
-
-
         RecyclerView restaurantcont = (RecyclerView)findViewById(R.id.myPopUp);
         restaurantcont.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         restaurantcont.setAdapter(new NewCartAdapter(this,HomePage.mycart));
-
     }
 }

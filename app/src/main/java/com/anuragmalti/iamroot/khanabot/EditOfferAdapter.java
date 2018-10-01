@@ -1,0 +1,111 @@
+package com.anuragmalti.iamroot.khanabot;
+
+import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
+public class EditOfferAdapter extends RecyclerView.Adapter<EditOfferAdapter.MyViewHolder> {
+
+    public Context context;
+    public JSONArray nothotdeals;
+    public String decider;
+    private EditOfferAdapter editOfferAdapter;
+    private RadioButton lastCheckedRB = null;
+
+    public EditOfferAdapter(Context context,JSONArray hot){
+        this.context = context;
+        this.nothotdeals = hot;
+        this.decider = decider;
+        editOfferAdapter = this;
+    }
+
+//    public void setNothotdeals(JSONArray nothotdeals) {
+//        this.nothotdeals = nothotdeals;
+//    }
+
+    @NonNull
+    @Override
+    public EditOfferAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.editoffer,parent,false);
+        return new EditOfferAdapter.MyViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull EditOfferAdapter.MyViewHolder holder, final int position) {
+        Log.e("error", nothotdeals.toString());
+        try {
+            if(nothotdeals.getJSONObject(position).has("name")) {
+                Toast.makeText(context,"got name", Toast.LENGTH_SHORT).show();
+                holder.name.setText(nothotdeals.getJSONObject(position).getString("name"));
+                if(nothotdeals.getJSONObject(position).getString("minValue").compareTo("-1") != 0){
+                    holder.minValue.setText("Min Value of the discount : "+nothotdeals.getJSONObject(position).getString("minValue"));
+                }
+                if(nothotdeals.getJSONObject(position).getString("minValue").compareTo("-1")!= 0){
+                    holder.maxDiscount.setText("Max Discount :  " + nothotdeals.getJSONObject(position).getString("maxDiscount"));
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        int id = (position);
+
+        RadioButton rb = new RadioButton(context);
+        rb.setId(id);
+            //rb.setText(price);
+
+        holder.radioGroup.addView(rb);
+
+
+        holder.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                RadioButton checked_rb = (RadioButton) group.findViewById(checkedId);
+                checked_rb.setChecked(true);
+                if (lastCheckedRB != null) {
+                    lastCheckedRB.setChecked(false);
+
+                }
+                //store the clicked radiobutton
+                lastCheckedRB = checked_rb;
+                //lastCheckedRB.setChecked(true);
+
+            }
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return nothotdeals.length();
+    }
+
+    public class MyViewHolder extends RecyclerView.ViewHolder{
+        public TextView name,maxDiscount,minValue;
+        public View view;
+        public RadioButton offer;
+        public RadioGroup radioGroup;
+        public MyViewHolder(View view) {
+            super(view);
+            this.view = view;
+            radioGroup = view.findViewById(R.id.offer);
+            name = view.findViewById(R.id.name);
+            maxDiscount = view.findViewById(R.id.maxDiscount);
+            minValue = view.findViewById(R.id.minOrder);
+        }
+
+    }
+
+
+
+}
