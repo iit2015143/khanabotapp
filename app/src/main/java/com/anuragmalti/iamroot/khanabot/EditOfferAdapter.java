@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 public class EditOfferAdapter extends RecyclerView.Adapter<EditOfferAdapter.MyViewHolder> {
 
@@ -22,6 +23,7 @@ public class EditOfferAdapter extends RecyclerView.Adapter<EditOfferAdapter.MyVi
     public String decider;
     private EditOfferAdapter editOfferAdapter;
     private RadioButton lastCheckedRB = null;
+    private JSONObject offer = new JSONObject();
 
     public EditOfferAdapter(Context context,JSONArray hot){
         this.context = context;
@@ -80,10 +82,21 @@ public class EditOfferAdapter extends RecyclerView.Adapter<EditOfferAdapter.MyVi
                 //store the clicked radiobutton
                 lastCheckedRB = checked_rb;
                 //lastCheckedRB.setChecked(true);
+                try {
+                    offer.put("name",nothotdeals.getJSONObject(lastCheckedRB.getId()).getString("name"));
+                    offer.put("minValue",nothotdeals.getJSONObject(lastCheckedRB.getId()).getString("minValue"));
+                    offer.put("maxDiscount",nothotdeals.getJSONObject(lastCheckedRB.getId()).getString("maxDiscount"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                Log.e("offer value",offer.toString());
+                ((EditOfferPopUp)context).setOfferValue(offer);
 
             }
         });
     }
+
 
     @Override
     public int getItemCount() {
