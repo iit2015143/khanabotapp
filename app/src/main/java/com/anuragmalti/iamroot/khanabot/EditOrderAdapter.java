@@ -23,12 +23,14 @@ public class EditOrderAdapter extends RecyclerView.Adapter<EditOrderAdapter.MyVi
     public JSONArray nothotdeals;
     public String decider;
     public EditOrderAdapter verticalMenuAdapter;
+    public String restNumber;
 
-    public EditOrderAdapter(Context context,JSONArray hot){
+    public EditOrderAdapter(Context context,JSONArray hot, String restNumber){
         this.context = context;
         nothotdeals = hot;
         this.decider = decider;
         verticalMenuAdapter = this;
+        this.restNumber = restNumber;
     }
 
     @NonNull
@@ -56,7 +58,12 @@ public class EditOrderAdapter extends RecyclerView.Adapter<EditOrderAdapter.MyVi
                     Integer value = Integer.parseInt(holder.change.getText().toString());
                     value++;
                     holder.change.setText(value.toString());
-                    HomePage.updatecart(true,nothotdeal);
+                    try {
+                        ((PopUpEditOrder)context).updatecart(true,(new JSONObject(nothotdeal.toString())).
+                                put("number",restNumber));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     Log.e("error cart","update cart request made");
                     Toast.makeText(context,"why aint u printing",Toast.LENGTH_SHORT).show();
 //                    try {
@@ -74,7 +81,12 @@ public class EditOrderAdapter extends RecyclerView.Adapter<EditOrderAdapter.MyVi
                     if(value>0) {
                         value--;
                         holder.change.setText(value.toString());
-                        HomePage.updatecart(false,nothotdeal);
+                        try {
+                            ((PopUpEditOrder)context).updatecart(false,(new JSONObject(nothotdeal.toString())).
+                                    put("number",restNumber));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         ////Log.e("error nothot",nothotdeal.toString());
                     }
 //                    try {
