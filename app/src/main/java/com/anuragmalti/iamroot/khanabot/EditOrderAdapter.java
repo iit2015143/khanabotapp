@@ -91,11 +91,11 @@ public class EditOrderAdapter extends RecyclerView.Adapter<EditOrderAdapter.MyVi
                     }
 //                    try {
 //                        ((Cart)context).notifychange();
-//                        if(value==0){
-//                            //notifyDataSetChanged();
-//                            notifyItemRemoved(position);
-//                            notifyItemRangeChanged(position,nothotdeals.length());
-//                        }
+                        if(value==0){
+                            //notifyDataSetChanged();
+                            notifyItemRemoved(position);
+                            notifyItemRangeChanged(position,nothotdeals.length());
+                        }
 //                    } catch (JSONException e) {
 //                        e.printStackTrace();
 //                    }

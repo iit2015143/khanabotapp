@@ -66,11 +66,8 @@ public class NewCart extends AppCompatActivity {
     }
 
     public void onClick(View view) {
-        //Toast.makeText(context,"button click",Toast.LENGTH_LONG).show();
-        //Toast.makeText(context,add.getText().toString(),Toast.LENGTH_LONG).show();
 
         if(add.getText().toString().compareTo("Change") == 0){
-            //Toast.makeText(context,"inside change",Toast.LENGTH_LONG).show();
             editAddress.setVisibility(View.VISIBLE);
             address.setVisibility(View.GONE);
             add.setText("Add");

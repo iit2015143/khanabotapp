@@ -9,14 +9,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginBottom="?actionBarSize">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/editOfferPopUp"
             android:layout_width="match_parent"
-            android:layout_height="553dp"
-            android:nestedScrollingEnabled="false"
-            android:paddingBottom="30dp"/>
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false" />
 
     </LinearLayout>
 
@@ -25,8 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="12dp"
-        android:text="Apply Offer" />
-
+        android:layout_margin="4dp"
+        android:text="Apply Offer"/>
 
 </RelativeLayout>

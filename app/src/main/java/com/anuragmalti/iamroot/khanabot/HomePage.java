@@ -39,7 +39,7 @@ public class HomePage extends AppCompatActivity {
     public RecyclerView toprated;
     public RecyclerView category;
     public RecyclerView restaurants;
-    public JSONArray responseArray=new JSONArray();
+    public static JSONArray responseArray=new JSONArray();
     public static JSONArray mycart;
     public static String address;
     public int currenttime;
@@ -329,6 +329,23 @@ public class HomePage extends AppCompatActivity {
                     item.put("price", cartItem.getJSONArray("price").getInt(cartItem.getInt("index")));
                     order.put(item);
                     restObject.put("order", order);
+
+                    //including mode in restaurant cart.
+                    for(int i=0; i<responseArray.length();i++){
+                        JSONObject restaurant = responseArray.getJSONObject(i);
+                        if(restaurant.getString("number").equals(cartItem.getString("number"))){
+                            if(restaurant.has("mode")){
+                                restObject.put("mode",restaurant.getJSONArray("mode"));
+                            }
+                            else{
+                                JSONArray mode = new JSONArray();
+                                mode.put("cod");
+                                mode.put("book");
+                                restObject.put("mode",mode);
+                            }
+                            break;
+                        }
+                    }
                     mycart.put(restObject);
                 }
             }

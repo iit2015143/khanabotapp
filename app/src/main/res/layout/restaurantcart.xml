@@ -52,6 +52,7 @@
             android:layout_height="match_parent"
             android:baselineAligned="false"
             android:gravity="center"
+            android:id="@+id/mode"
             android:orientation="horizontal"
             android:paddingTop="@dimen/exsletter">
 
@@ -60,13 +61,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:buttonTint="@color/monsoon"
+                android:layout_marginRight="@dimen/exsletter"
                 android:checked="true"
                 android:text="COD"
                 android:textColor="@color/moan"
                 android:textSize="@dimen/vsletter" />
 
             <RadioButton
-                android:id="@+id/booktable"
+                android:id="@+id/book"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/exsletter"
@@ -76,7 +78,7 @@
                 android:textSize="@dimen/vsletter" />
 
             <Spinner
-                android:id="@+id/spinner1"
+                android:id="@+id/spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:drawable/btn_dropdown"
@@ -87,11 +89,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/offer"
+            android:layout_marginTop="@dimen/exsletter"
             android:hint="Apply offer "
             android:textSize="20dp"
             android:onClick="openOffer"
             android:selectAllOnFocus="false"
             android:textColor="@color/moan"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/notApplicable"
+            android:text="Offer is not applicable anymore"
+            android:paddingBottom="@dimen/exsletter"
+            android:visibility="visible"
+            android:textColor="@color/primary"/>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -100,10 +112,10 @@
             android:weightSum="3">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:text="Rs 1091"
+                android:layout_weight="1"
+                android:text="Rs 1091 + Rs 450 \n = 789"
                 android:id="@+id/totalRest"
                 android:textColor="@color/oil"
                 android:textSize="@dimen/nletter"
@@ -111,20 +123,19 @@
 
             <Button
                 android:id="@+id/editOrder"
-                android:layout_width="77dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginLeft="5dp"
+                android:layout_width="0dp"
                 android:layout_weight="1"
-                android:text="Edit" />
+                android:text="Edit"
+                android:textColor="@color/primary"
+                style="?android:attr/borderlessButtonStyle" />
 
             <Button
                 android:id="@+id/orderRequest"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Request order"
-                android:onClick="orderRequest"/>
+                android:text="Request order" />
 
         </LinearLayout>
 
