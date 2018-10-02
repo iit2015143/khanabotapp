@@ -50,7 +50,12 @@ public class NewCartAdapter extends RecyclerView.Adapter<NewCartAdapter.MyViewHo
             }
             holder.resname.setText(restaurantcart.getJSONObject(position).getString("resname"));
             holder.summary.setText(summary);
-            holder.totalrest.setText("Rs "+restaurantcart.getJSONObject(position).getInt("total"));
+            holder.totalrest.setText("Rs " + restaurantcart.getJSONObject(position).getInt("total"));
+            if(HomePage.mycart.getJSONObject(position).getString("revisedTotal").compareTo("0")!= 0){
+                holder.totalrest.setText("Rs "+restaurantcart.getJSONObject(position).getInt("revisedTotal"));
+            }else {
+                holder.totalrest.setText("Rs " + restaurantcart.getJSONObject(position).getInt("total"));
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -65,6 +70,11 @@ public class NewCartAdapter extends RecyclerView.Adapter<NewCartAdapter.MyViewHo
             @Override
             public void onClick(View v) {
                 ((NewCart)context).openOffer(position);
+                try {
+                    holder.totalrest.setText("Rs " + restaurantcart.getJSONObject(position).getInt("total"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

@@ -31,6 +31,7 @@ public class EditOfferPopUp extends AppCompatActivity {
     public EditOfferAdapter editOfferAdapter;
     private JSONObject offerValue = new JSONObject();
     private Button apply;
+    int value;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +41,7 @@ public class EditOfferPopUp extends AppCompatActivity {
 
         restaurantcont = (RecyclerView)findViewById(R.id.editOfferPopUp);
         restaurantcont.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
-        restaurantcont.setAdapter(new EditOfferAdapter(this,new JSONArray()));
+        restaurantcont.setAdapter(new EditOfferAdapter(this,new JSONArray(),-1));
 
 
         WindowManager manager = (WindowManager) getSystemService(Activity.WINDOW_SERVICE);
@@ -67,7 +68,7 @@ public class EditOfferPopUp extends AppCompatActivity {
 
         makerequest();
         Bundle b = getIntent().getExtras();
-        int value = -1;
+        value = -1;
         if(b != null)
             value = b.getInt("position");
 
@@ -82,7 +83,7 @@ public class EditOfferPopUp extends AppCompatActivity {
                     intent.putExtra("offerMaxDiscount",  offerValue.getString("maxDiscount").toString());
                     intent.putExtra("offerName",  offerValue.getString("name").toString());
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                      e.printStackTrace();
                 }
                 setResult(RESULT_OK, intent);
                 finish();
@@ -127,6 +128,6 @@ public class EditOfferPopUp extends AppCompatActivity {
     }
 
     public void setMyAdapter(JSONArray offerResponse){
-        restaurantcont.setAdapter(new EditOfferAdapter(cont,offerResponse));
+        restaurantcont.setAdapter(new EditOfferAdapter(cont,offerResponse,value));
     }
 }
