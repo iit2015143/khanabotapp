@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,6 +25,7 @@ public class NewCart extends AppCompatActivity {
     private TextView address;
     public RecyclerView restaurantcont;
     private Button add;
+    private String name,offerMaxDiscount,offerMinValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,18 @@ public class NewCart extends AppCompatActivity {
             e.printStackTrace();
         }
         setadapter();
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK) {
+                name = data.getStringExtra("offerName");
+                offerMaxDiscount = data.getStringExtra("offerMaxDiscount");
+                offerMinValue = data.getStringExtra("offerMinValue");
+                Log.e("offer values", name + offerMinValue + offerMaxDiscount);
+            }
+        }
     }
 
     public void onClick(View view) {
@@ -108,7 +122,7 @@ public class NewCart extends AppCompatActivity {
         Bundle b = new Bundle();
         b.putInt("position", position);
         intent.putExtras(b);
-        startActivity(intent);
+        startActivityForResult(intent,1);
     }
 
     public void notifychange() throws JSONException {

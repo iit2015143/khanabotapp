@@ -2,14 +2,18 @@ package com.anuragmalti.iamroot.khanabot;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Build;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -25,15 +29,19 @@ public class EditOfferPopUp extends AppCompatActivity {
     public Context cont;
     public RecyclerView restaurantcont;
     public EditOfferAdapter editOfferAdapter;
+    private JSONObject offerValue = new JSONObject();
+    private Button apply;
+    int value;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_offer);
         cont = this;
+        apply = (Button)findViewById(R.id.apply);
 
         restaurantcont = (RecyclerView)findViewById(R.id.editOfferPopUp);
         restaurantcont.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
-        restaurantcont.setAdapter(new EditOfferAdapter(this,new JSONArray()));
+        restaurantcont.setAdapter(new EditOfferAdapter(this,new JSONArray(),-1));
 
 
         WindowManager manager = (WindowManager) getSystemService(Activity.WINDOW_SERVICE);
@@ -60,9 +68,27 @@ public class EditOfferPopUp extends AppCompatActivity {
 
         makerequest();
         Bundle b = getIntent().getExtras();
-        int value = -1;
+        value = -1;
         if(b != null)
             value = b.getInt("position");
+
+
+        apply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("offer value in editoffe",offerValue.toString());
+                Intent intent = new Intent();
+                try {
+                    intent.putExtra("offerMinValue",  offerValue.getString("minValue").toString());
+                    intent.putExtra("offerMaxDiscount",  offerValue.getString("maxDiscount").toString());
+                    intent.putExtra("offerName",  offerValue.getString("name").toString());
+                } catch (JSONException e) {
+                      e.printStackTrace();
+                }
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
     }
 
     public void makerequest(){
@@ -97,8 +123,11 @@ public class EditOfferPopUp extends AppCompatActivity {
         });
     }
 
+    public void setOfferValue(JSONObject offerValue) {
+        this.offerValue = offerValue;
+    }
 
     public void setMyAdapter(JSONArray offerResponse){
-        restaurantcont.setAdapter(new EditOfferAdapter(cont,offerResponse));
+        restaurantcont.setAdapter(new EditOfferAdapter(cont,offerResponse,value));
     }
 }
