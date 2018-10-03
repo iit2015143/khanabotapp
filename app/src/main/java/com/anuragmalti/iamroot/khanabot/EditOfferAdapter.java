@@ -12,6 +12,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.Api;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,9 +37,6 @@ public class EditOfferAdapter extends RecyclerView.Adapter<EditOfferAdapter.MyVi
         this.positionOfParent = value;
     }
 
-//    public void setNothotdeals(JSONArray nothotdeals) {
-//        this.nothotdeals = nothotdeals;
-//    }
 
     @NonNull
     @Override
@@ -86,6 +85,7 @@ public class EditOfferAdapter extends RecyclerView.Adapter<EditOfferAdapter.MyVi
                 lastCheckedRB = checked_rb;
                 //lastCheckedRB.setChecked(true);
                 try {
+                    //redundancy
                     offer.put("name",nothotdeals.getJSONObject(lastCheckedRB.getId()).getString("name"));
                     offer.put("minValue",nothotdeals.getJSONObject(lastCheckedRB.getId()).getString("minValue"));
                     offer.put("maxDiscount",nothotdeals.getJSONObject(lastCheckedRB.getId()).getString("maxDiscount"));
@@ -99,13 +99,24 @@ public class EditOfferAdapter extends RecyclerView.Adapter<EditOfferAdapter.MyVi
                // HomePage.mycart.put(offer);
                 if(!isApplicable(offer)){
                     holder.error.setVisibility(View.VISIBLE);
-                }
+                    try {
+                        HomePage.mycart.getJSONObject(positionOfParent).remove("revisedTotal");
+                        HomePage.mycart.getJSONObject(positionOfParent).remove("offer");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("error json",e.toString());
+                    }
 
-                revisedTotal = getDiscount(offer);
-                try {
-                    HomePage.mycart.getJSONObject(positionOfParent).put("revisedTotal",revisedTotal);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                }
+                else {
+
+                    revisedTotal = getDiscount(offer);
+                    try {
+                        HomePage.mycart.getJSONObject(positionOfParent).put("revisedTotal", revisedTotal);
+                        HomePage.mycart.getJSONObject(positionOfParent).put("offer",offer);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
 
 
@@ -115,11 +126,12 @@ public class EditOfferAdapter extends RecyclerView.Adapter<EditOfferAdapter.MyVi
 
     public boolean isApplicable(JSONObject offer){
         try {
-            if(HomePage.mycart.getJSONObject(positionOfParent).getString("total").compareTo( offer.getString("minValue")) > 0){
+            if(HomePage.mycart.getJSONObject(positionOfParent).getInt("total")>=offer.getInt("minValue")){
                 return true;
             }
         } catch (JSONException e) {
             e.printStackTrace();
+            Log.e("error json",e.toString());
         }
         return false;
     }
@@ -130,22 +142,17 @@ public class EditOfferAdapter extends RecyclerView.Adapter<EditOfferAdapter.MyVi
                 total = Integer.parseInt(HomePage.mycart.getJSONObject(positionOfParent).getString("total"));
                 String name = offer.getString("name");
                 if(name.contains("OFF")){
-                        String discount = name.substring(3,name.length());
-                        disc = Integer.parseInt(discount);
-                        if(discTotal < Integer.parseInt(offer.getString("maxDiscount")) || (Integer.parseInt(offer.getString("maxDiscount") ) == -1) ) {
-                            revisedTotal = ((100 - disc) * total) / 100;
-                            Log.e("revisedTotal", " "+ revisedTotal);
-                        }else if(discTotal > Integer.parseInt(offer.getString("maxDiscount")) && (Integer.parseInt(offer.getString("maxDiscount") ) != -1)){
-                            revisedTotal = total - Integer.parseInt(offer.getString("maxDiscount"));
-                            Log.e("revisedTotal1", " "+ revisedTotal);
-                        }
-                        discTotal = (disc*total)/100;
-
-
-
-                        Log.e("discount is","discount is "+ disc + "revised total is " + revisedTotal + "total is "+ total);
-                        return revisedTotal;
+                    String discount = name.substring(3,name.length());
+                    disc = Integer.parseInt(discount);
+                    discTotal = (disc*total)/100;
+                    if(offer.getInt("maxDiscount")!=-1 && discTotal > offer.getInt("maxDiscount")){
+                        discTotal = Integer.parseInt(offer.getString("maxDiscount"));
+                        Log.e("revisedTotal1", " "+ revisedTotal);
                     }
+                    revisedTotal = total - discTotal;
+                    Log.e("error discount","discount is "+ discTotal + "revised total is " + revisedTotal + "total is "+ total);
+                    return revisedTotal;
+                }
 
                 else if(name.contains("CASH")){
                     String cashBack = name.substring(4,name.length());

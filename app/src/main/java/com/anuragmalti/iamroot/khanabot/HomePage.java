@@ -334,6 +334,10 @@ public class HomePage extends AppCompatActivity {
                     for(int i=0; i<responseArray.length();i++){
                         JSONObject restaurant = responseArray.getJSONObject(i);
                         if(restaurant.getString("number").equals(cartItem.getString("number"))){
+                            if(restaurant.has("callnumber")){
+                                restObject.put("callnumber",restaurant.getString("callnumber"));
+
+                            }
                             if(restaurant.has("mode")){
                                 restObject.put("mode",restaurant.getJSONArray("mode"));
                             }

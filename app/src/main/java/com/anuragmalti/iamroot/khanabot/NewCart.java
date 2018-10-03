@@ -2,6 +2,8 @@ package com.anuragmalti.iamroot.khanabot;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,10 +15,16 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
+
+import cz.msebera.android.httpclient.Header;
 
 public class NewCart extends AppCompatActivity {
 
@@ -40,6 +48,7 @@ public class NewCart extends AppCompatActivity {
 
         if(address.getText().toString() == null || address.getText().toString()==""){
             editAddress.setVisibility(View.VISIBLE);
+            editAddress.requestFocus();
             address.setVisibility(View.GONE);
             add.setText("Add");
         }
@@ -52,6 +61,12 @@ public class NewCart extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 clearcart();
+            }
+        });
+        ((Button)findViewById(R.id.changeAdd)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switchaddchange();
             }
         });
 
@@ -79,10 +94,11 @@ public class NewCart extends AppCompatActivity {
         }
     }
 
-    public void onClick(View view) {
+    public void switchaddchange() {
 
         if(add.getText().toString().compareTo("Change") == 0){
             editAddress.setVisibility(View.VISIBLE);
+            editAddress.requestFocus();
             address.setVisibility(View.GONE);
             add.setText("Add");
             return;
@@ -148,6 +164,62 @@ public class NewCart extends AppCompatActivity {
 
     public void setadapter(){
         restaurantcont.setAdapter(new NewCartAdapter(this,HomePage.mycart));
+    }
+
+    protected void onPause() {
+        super.onPause();
+        Log.e("error in on", "in resume right now");
+        addtosharedpreferences(HomePage.mycart.toString());
+    }
+
+    public void addtosharedpreferences(String cartstring){
+        SharedPreferences prefs = getSharedPreferences("com.example.root.khanabot", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("mycart", cartstring);
+        editor.commit();
+    }
+
+    public void makeRequest(final int position){
+        Log.e("error req","error in making request");
+        if(address.getText().toString() == null || address.getText().toString()==""){
+            editAddress.setVisibility(View.VISIBLE);
+            address.setVisibility(View.GONE);
+            add.setText("Add");
+            editAddress.requestFocus();
+        }
+        else{
+            JSONObject restaurantobject=new JSONObject();
+            try {
+                restaurantobject = HomePage.mycart.getJSONObject(position);
+                restaurantobject.put("address",address.getText().toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            RequestParams params = new RequestParams();
+            params.put("order",restaurantobject);
+            RestClient.post("/newplaceorder", params, new JsonHttpResponseHandler(){
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    if(response.has("status")) {
+                        try {
+                            if(response.getString("status").equals("success"))
+                            HomePage.mycart.remove(position);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFinish() {
+                    //onLoginSuccess();
+                }
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
+                    Log.e("error request","request failed");
+                }
+            });
+        }
     }
 
 }

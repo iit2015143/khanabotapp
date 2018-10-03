@@ -92,7 +92,6 @@
             android:layout_marginTop="@dimen/exsletter"
             android:hint="Apply offer "
             android:textSize="20dp"
-            android:onClick="openOffer"
             android:selectAllOnFocus="false"
             android:textColor="@color/moan"/>
         <TextView
@@ -101,7 +100,7 @@
             android:id="@+id/notApplicable"
             android:text="Offer is not applicable anymore"
             android:paddingBottom="@dimen/exsletter"
-            android:visibility="visible"
+            android:visibility="gone"
             android:textColor="@color/primary"/>
 
 
