@@ -77,6 +77,7 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(context,response.toString(),Toast.LENGTH_SHORT).show();
                 try {
                     String value = response.getString("otp");
+                    progressDialog.hide();
                     if(value.equals("sent")){
                         onLoginSuccess();
                     }
@@ -89,7 +90,6 @@ public class LoginActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                progressDialog.hide();
             }
 
             @Override

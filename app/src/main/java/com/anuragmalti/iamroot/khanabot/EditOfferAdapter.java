@@ -50,7 +50,7 @@ public class EditOfferAdapter extends RecyclerView.Adapter<EditOfferAdapter.MyVi
         Log.e("error", nothotdeals.toString());
         try {
             if(nothotdeals.getJSONObject(position).has("name")) {
-                Toast.makeText(context,"got name", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context,"got name", Toast.LENGTH_SHORT).show();
                 holder.name.setText(nothotdeals.getJSONObject(position).getString("name"));
                 if(nothotdeals.getJSONObject(position).getString("minValue").compareTo("-1") != 0){
                     holder.minValue.setText("Min Value of the discount : "+nothotdeals.getJSONObject(position).getString("minValue"));

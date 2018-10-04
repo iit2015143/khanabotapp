@@ -336,16 +336,15 @@ public class HomePage extends AppCompatActivity {
                         if(restaurant.getString("number").equals(cartItem.getString("number"))){
                             if(restaurant.has("callnumber")){
                                 restObject.put("callnumber",restaurant.getString("callnumber"));
-
                             }
                             if(restaurant.has("mode")){
-                                restObject.put("mode",restaurant.getJSONArray("mode"));
+                                restObject.put("restmode",restaurant.getJSONArray("mode"));
                             }
                             else{
                                 JSONArray mode = new JSONArray();
                                 mode.put("cod");
                                 mode.put("book");
-                                restObject.put("mode",mode);
+                                restObject.put("restmode",mode);
                             }
                             break;
                         }

@@ -81,7 +81,7 @@ public class CustomAdapter extends BaseAdapter {
 //                    String message = mess.toString();
 //                    intent.putExtra("message", message);
 //                    context.startActivity(intent);
-                    Toast.makeText(context,"I am position num "+position , Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context,"I am position num "+position , Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -50,24 +50,28 @@ public class NewCartAdapter extends RecyclerView.Adapter<NewCartAdapter.MyViewHo
             JSONArray order = restaurantobject.getJSONArray("order");
             String summary = "";
             for(int i =0; i<order.length(); i++){
-                summary += order.getJSONObject(i).getString("name") + " x " +
+                summary += order.getJSONObject(i).getString("name").replaceAll("_"," ") + " x " +
                         order.getJSONObject(i).getInt("quantity") + " = " +
                         order.getJSONObject(i).getInt("quantity")*
-                                order.getJSONObject(i).getInt("price")+ ", ";
+                                order.getJSONObject(i).getInt("price")+ "\n";
             }
             holder.resname.setText(restaurantobject.getString("resname"));
             holder.summary.setText(summary);
 
             holder.totalrest.setText("Rs "+restaurantobject.getInt("total"));
-            JSONArray mode = restaurantobject.getJSONArray("mode");
+            JSONArray mode = restaurantobject.getJSONArray("restmode");
             holder.cod.setVisibility(View.GONE);
             holder.book.setVisibility(View.GONE);
+            holder.orderRequest.setEnabled(true);
             for(int i =0; i<mode.length(); i++){
                 if(mode.getString(i).equals("cod")){
                     holder.cod.setVisibility(View.VISIBLE);
                 }
                 else{
                     holder.book.setVisibility(View.VISIBLE);
+                    if(i==0){
+                        holder.book.setChecked(true);
+                    }
                 }
             }
             if(restaurantobject.has("offer")){
@@ -124,9 +128,10 @@ public class NewCartAdapter extends RecyclerView.Adapter<NewCartAdapter.MyViewHo
                 holder.spinner.getSelectedItem().toString());
                 try {
                     restaurantobject.put("time",holder.spinner.getSelectedItem().toString());
-                    restaurantobject.put("ordermode",holder.cod.isChecked()?"cod":"book");
+                    restaurantobject.put("mode",holder.cod.isChecked()?"cod":"book");
                     restaurantobject.put("status","Pending");
                     ((NewCart)context).makeRequest(position);
+                    holder.orderRequest.setEnabled(false);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -177,7 +182,6 @@ public class NewCartAdapter extends RecyclerView.Adapter<NewCartAdapter.MyViewHo
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
         return 0;
     }
 

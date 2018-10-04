@@ -88,7 +88,7 @@ public class Fill_address extends AppCompatActivity {
     }
 
     public void skip(View view){
-        Toast.makeText(context,"skipped",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context,"skipped",Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this,HomePage.class);
         intent.putExtra("address",address);
         startActivity(intent);
@@ -113,7 +113,7 @@ public class Fill_address extends AppCompatActivity {
         RestClient.get("/savelocation", params, new JsonHttpResponseHandler(){
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                Toast.makeText(context,response.toString(),Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context,response.toString(),Toast.LENGTH_SHORT).show();
                 ////Log.e("Error makerequest","request completed");
             }
 

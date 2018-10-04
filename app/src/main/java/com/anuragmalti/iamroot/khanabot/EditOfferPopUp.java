@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -92,11 +93,15 @@ public class EditOfferPopUp extends AppCompatActivity {
     }
 
     public void makerequest(){
-        //RequestParams params = new RequestParams();
-        //params.put("number","8574418045");
+        RequestParams params = new RequestParams();
+        try {
+            params.put("number",HomePage.mycart.getJSONObject(value).getString("tonumber"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         // Toast.makeText(getBaseContext(),"inside make request",Toast.LENGTH_SHORT).show();
         Log.e("request","inside make request");
-        RestClient.get("/getoffers",null,new JsonHttpResponseHandler(){
+        RestClient.get("/getoffers",params,new JsonHttpResponseHandler(){
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {

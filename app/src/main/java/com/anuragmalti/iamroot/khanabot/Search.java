@@ -51,7 +51,7 @@ public class Search extends Activity {
                 switch(item.getItemId()){
                     case R.id.cart:
                         selectme(0);
-                        Intent intent = new Intent(context,Cart.class);
+                        Intent intent = new Intent(context,NewCart.class);
                         startActivity(intent);
                         break;
                     case R.id.home:

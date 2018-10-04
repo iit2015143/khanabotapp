@@ -106,9 +106,9 @@ public class NewCart extends AppCompatActivity {
 
 
         if(add.getText().toString().compareTo("Add") == 0){
-            Toast.makeText(context,"inside add",Toast.LENGTH_LONG).show();
+            //Toast.makeText(context,"inside add",Toast.LENGTH_LONG).show();
             if(editAddress.getText().toString().compareTo("") != 0) {
-                Toast.makeText(context,"inside if add",Toast.LENGTH_LONG).show();
+                //Toast.makeText(context,"inside if add",Toast.LENGTH_LONG).show();
                 address.setText(editAddress.getText().toString());
                 editAddress.setVisibility(View.GONE);
                 address.setVisibility(View.VISIBLE);
@@ -197,13 +197,17 @@ public class NewCart extends AppCompatActivity {
             }
             RequestParams params = new RequestParams();
             params.put("order",restaurantobject);
-            RestClient.post("/newplaceorder", params, new JsonHttpResponseHandler(){
+            RestClient.post("/requestordernew", params, new JsonHttpResponseHandler(){
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    if(response.has("status")) {
+                    if(response.has("orders")) {
                         try {
-                            if(response.getString("status").equals("success"))
+                            if(response.getString("orders").equals("requested"))
                             HomePage.mycart.remove(position);
+                            setadapter();
+                            notifychange();
+                            Intent intent = new Intent(context,OrderHistory.class);
+                            startActivity(intent);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -221,5 +225,4 @@ public class NewCart extends AppCompatActivity {
             });
         }
     }
-
 }

@@ -1,6 +1,7 @@
 package com.anuragmalti.iamroot.khanabot;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -86,10 +87,14 @@ public class OrderhistoryAdapter extends RecyclerView.Adapter<OrderhistoryAdapte
                     }
                 });
             }
+            if(perorder.has("revisedTotal")){
+                holder.total.setPaintFlags(holder.total.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                holder.revisedTotal.setText(perorder.getString("revisedTotal"));
+            }
             holder.summary.setText(perorder.getString("summary"));
             holder.orderid.setText(perorder.getString("id"));
             holder.total.setText(perorder.getString("total"));
-            holder.number.setText(perorder.getString("tonumber"));
+            holder.number.setText(perorder.has("callnumber")?perorder.getString("callnumber"):perorder.getString("tonumber"));
             holder.resname.setText(perorder.getJSONArray("order").getJSONObject(0).getString("resname"));
             holder.time.setText(dateFormatted);
         } catch (JSONException e) {
@@ -103,7 +108,7 @@ public class OrderhistoryAdapter extends RecyclerView.Adapter<OrderhistoryAdapte
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView orderid,summary,total,status,number,resname,time;
+        public TextView orderid,summary,total,status,number,resname,time,revisedTotal;
         public View view;
         public Button cancelorder;
         public MyViewHolder(View view) {
@@ -117,7 +122,7 @@ public class OrderhistoryAdapter extends RecyclerView.Adapter<OrderhistoryAdapte
             resname = (TextView)(view.findViewById(R.id.resname));
             time = (TextView)(view.findViewById(R.id.time));
             cancelorder = (Button)(view.findViewById(R.id.cancel));
+            revisedTotal = (TextView)(view.findViewById(R.id.revisedTotal));
         }
-
     }
 }

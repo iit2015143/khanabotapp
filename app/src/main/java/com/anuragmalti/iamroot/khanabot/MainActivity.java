@@ -68,8 +68,6 @@ GoogleApiClient.OnConnectionFailedListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         context = this;
-
-        chekappversion();
     }
 
     public void chekappversion(){
@@ -123,6 +121,7 @@ GoogleApiClient.OnConnectionFailedListener{
         String uuid = getprefsvalue("uuid");
         if(number.equals("") || uuid.equals("")){
             Intent intent = new Intent(context,LoginActivity.class);
+            Log.e("error", "in checkuuidand number");
             startActivity(intent);
             finish();
         }
@@ -153,6 +152,8 @@ GoogleApiClient.OnConnectionFailedListener{
                         else{
                             Toast.makeText(context,"This account is logged in on other device, log in again",Toast.LENGTH_LONG).show();
                             ((MainActivity)context).addtosharedpref("notificationstatus","notupdated");
+                            Log.e("error", "in dologin");
+
                             Intent intent = new Intent(context,LoginActivity.class);
                             startActivity(intent);
                             finish();
@@ -372,6 +373,6 @@ GoogleApiClient.OnConnectionFailedListener{
     @Override
     public void onResume(){
         super.onResume();
-        checkuuidandnumber();
+        chekappversion();
     }
 }

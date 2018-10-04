@@ -176,10 +176,10 @@ public class MapFragment extends FragmentActivity implements GoogleMap.OnCameraI
     @Override
     public void onMapReady(GoogleMap gMap) {
         if(gMap==null){
-            Toast.makeText(this, "How is it null", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "How is it null", Toast.LENGTH_SHORT).show();
         }
         else {
-            Toast.makeText(this, "Map is ready", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Map is ready", Toast.LENGTH_SHORT).show();
             ////Log.e("Error: ", "Why the hell this does not get called");
             googleMap = gMap;
             initListeners();
@@ -430,7 +430,7 @@ public class MapFragment extends FragmentActivity implements GoogleMap.OnCameraI
 
     @Override
     public boolean onMyLocationButtonClick() {
-        Toast.makeText(context,"gps button clicked",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context,"gps button clicked",Toast.LENGTH_SHORT).show();
         //////Log.e("Error : ", "gps butto clicked");
         //animatelowbar(0);
         //animateupbar(0);

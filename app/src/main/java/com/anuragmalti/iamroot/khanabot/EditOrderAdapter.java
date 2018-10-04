@@ -65,7 +65,7 @@ public class EditOrderAdapter extends RecyclerView.Adapter<EditOrderAdapter.MyVi
                         e.printStackTrace();
                     }
                     Log.e("error cart","update cart request made");
-                    Toast.makeText(context,"why aint u printing",Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context,"why aint u printing",Toast.LENGTH_SHORT).show();
 //                    try {
 //                        ((Cart)context).notifychange();
 //                    } catch (JSONException e) {

@@ -80,12 +80,22 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="4"
+            android:layout_weight="1"
             android:layout_marginLeft="4dp"
             android:text="Rs 275"
             android:id="@+id/total"
             android:textColor="@color/moan"
             android:textSize="@dimen/sletter" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:layout_marginLeft="4dp"
+            android:text=""
+            android:id="@+id/revisedTotal"
+            android:textColor="@color/moan"
+            android:textSize="@dimen/sletter" />
+
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"

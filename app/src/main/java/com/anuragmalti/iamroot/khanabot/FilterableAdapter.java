@@ -97,7 +97,7 @@ public class FilterableAdapter extends BaseAdapter implements Filterable {
         holder.llContainer.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                Toast.makeText(context, mDisplayedValues.get(position).category, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(context, mDisplayedValues.get(position).category, Toast.LENGTH_SHORT).show();
             }
         });
 

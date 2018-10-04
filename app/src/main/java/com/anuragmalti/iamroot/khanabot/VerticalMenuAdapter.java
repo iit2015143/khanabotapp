@@ -95,7 +95,7 @@ public class VerticalMenuAdapter extends RecyclerView.Adapter<VerticalMenuAdapte
                     holder.change.setText(value.toString());
                     HomePage.updatecart(true,nothotdeal);
                     Log.e("error cart","update cart request made");
-                    Toast.makeText(context,"why aint u printing",Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context,"why aint u printing",Toast.LENGTH_SHORT).show();
                     switch (decider){
                         case "Cart":
                             try {
