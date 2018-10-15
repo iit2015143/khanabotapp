@@ -39,51 +39,11 @@ public class HorizontalCategory extends RecyclerView.Adapter<HorizontalCategory.
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                JSONArray responseArray = ((HomePage)context).responseArray;
-                JSONArray catmenu=new JSONArray();
-                ////Log.e("error category",responseArray.toString());
-                for(int i=0; i<responseArray.length();i++){
-                    try {
-                        JSONObject restaurantobj = responseArray.getJSONObject(i);
-                        JSONObject menu = restaurantobj.getJSONObject("menu");
-                        JSONArray menunames = menu.names();
-                        for(int j=0; j<menunames.length();j++){
-                            JSONObject leveltwo = menu.getJSONObject(menunames.getString(j));
-                            if(leveltwo.length()==0)
-                                continue;
-                            //Log.e("leveltwo",leveltwo.toString());
-                            JSONArray leveltwonames = leveltwo.names();
-                            for(int l=0; l<leveltwonames.length();l++){
-                                JSONObject item = new JSONObject(leveltwo.getJSONObject(leveltwonames.getString(l)).toString());
-                                JSONArray Category = item.getJSONArray("category");
-                                for(int k=0; k<Category.length();k++){
-                                    if(Category.getString(k).equals(category.get(position))){
-
-                                        item.put("name",leveltwonames.getString(l));
-                                        item.put("resname",restaurantobj.getString("name"));
-                                        item.put("number",restaurantobj.getString("number"));
-                                        item.put("levelone","menu");
-                                        item.put("leveltwo",menunames.getString(j));
-                                        catmenu.put(item);
-                                    }
-                                }
-                            }
-                        }
-
-                    }
-                    catch (JSONException e) {
-                        e.printStackTrace();
-                        ////Log.e("error catch",e.toString());
-                    }
-                }
-                ////Log.e("error cat",catmenu.toString());
-                ItemsByCategory.adapterArray=catmenu;
-                ((HomePage)context).categoryclicked(category.get(position));
+           ((HomePage)context).categoryclicked(category.get(position),position);
             }
         });
         holder.category.setText(category.get(position));
         Picasso.with(context).load(RestClient.BASE_URL+"/"+category.get(position)+".jpg").into(holder.image);
-
     }
 
     @Override
