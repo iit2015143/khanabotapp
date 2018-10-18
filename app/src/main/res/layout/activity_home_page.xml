@@ -7,284 +7,300 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".HomePage">
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/facebook"
-    android:elevation="12dp"
-    android:id="@+id/rootview">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-
-    </android.support.design.widget.AppBarLayout>
-
-    <android.support.v4.widget.NestedScrollView
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/rootview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="?attr/actionBarSize">
+        android:background="@color/facebook"
+        android:elevation="12dp">
 
-        <LinearLayout
+        <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <android.support.v7.widget.Toolbar
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:id="@+id/topToolbar"
-                android:background="@color/primary">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:id="@+id/locationbar">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_marginRight="8dp"
-                        android:src="@drawable/location" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="18dp"
-                        android:text="Selected Location"
-                        android:id="@+id/location"
-                        android:textSize="@dimen/nletter"/>
-                </LinearLayout>
-            </android.support.v7.widget.Toolbar>
-
-            <android.support.v4.view.ViewPager
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:background="@drawable/loading"
-                android:id="@+id/viewPager">
-
-            </android.support.v4.view.ViewPager>
-            <com.viewpagerindicator.CirclePageIndicator
-                android:id="@+id/indicator"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:gravity="bottom"
-                android:padding="5dp"
-                app:centered="true"
-                app:fillColor="#df0623"
-                app:pageColor="#ddc2c0c0"
-                android:background="@color/white"
-                app:snap="false" />
-
-            <LinearLayout
-                style="@style/ParentLinearLayout">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="24dp"
-                    android:layout_marginBottom="8dp"
-                    android:weightSum="2">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:paddingLeft="8dp"
-                        android:text="Hot Deals"
-                        android:textColor="@color/primary_dark"
-                        android:textStyle="bold" />
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="right">
-
-                        <TextView
-                            android:id="@+id/viewHotDeal"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingRight="8dp"
-                            android:visibility="invisible"
-                            android:text="View All"
-                            android:textColor="@color/primary_dark" />
-                    </LinearLayout>
-                </LinearLayout>
-                <com.facebook.shimmer.ShimmerFrameLayout
-                    android:id="@+id/shimmer_hot_deals"
-                    android:layout_width="match_parent"
-                    android:layout_height="220dp"
-                    android:layout_gravity="center"
-                    android:orientation="horizontal"
-                    shimmer:duration="800">
-                    <!-- Adding 3 rows of placeholders -->
-                    <LinearLayout
-                        android:layout_width="384dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <include layout="@layout/dummy_item" />
-                        <include layout="@layout/dummy_item" />
-                    </LinearLayout>
-
-                </com.facebook.shimmer.ShimmerFrameLayout>
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/hotdeals"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout
-                style="@style/ParentLinearLayout">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="24dp"
-                    android:layout_marginBottom="8dp"
-                    android:weightSum="2">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:paddingLeft="8dp"
-                        android:text="Top Rated"
-                        android:textColor="@color/primary_dark"
-                        android:textStyle="bold"/>
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="right">
-
-                        <TextView
-                            android:id="@+id/viewTopRated"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingRight="8dp"
-                            android:text="View All"
-                            android:visibility="invisible"
-                            android:textColor="@color/primary_dark" />
-                    </LinearLayout>
-                </LinearLayout>
-                <com.facebook.shimmer.ShimmerFrameLayout
-                    android:id="@+id/shimmer_top_rated"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:orientation="horizontal"
-                    shimmer:duration="800">
-                    <!-- Adding 3 rows of placeholders -->
-                    <LinearLayout
-                        android:layout_width="384dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <include layout="@layout/dummy_item" />
-                        <include layout="@layout/dummy_item" />
-                    </LinearLayout>
-
-                </com.facebook.shimmer.ShimmerFrameLayout>
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/toprated"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
 
-            <LinearLayout
-                style="@style/ParentLinearLayout">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="24dp"
-                    android:layout_marginBottom="8dp"
-                    android:weightSum="2">
+        </android.support.design.widget.AppBarLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:paddingLeft="8dp"
-                        android:text="Category"
-                        android:textColor="@color/primary_dark"
-                        android:textStyle="bold"/>
-                </LinearLayout>
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/category"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout
-                style="@style/ParentLinearLayout"
-                android:layout_marginBottom="8dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="24dp"
-                    android:layout_marginBottom="8dp"
-                    android:weightSum="2">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:paddingLeft="8dp"
-                        android:text="Restaurants"
-                        android:textColor="@color/primary_dark"
-                        android:textStyle="bold"/>
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="right">
-
-                        <TextView
-                            android:id="@+id/viewRestaurants"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingRight="8dp"
-                            android:visibility="invisible"
-                            android:text="View All"
-                            android:textColor="@color/primary_dark" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/viewRestaurant"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-        </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
-
-    <android.support.design.widget.BottomNavigationView
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_gravity="bottom"
-        android:background="@color/primary"
-        android:id="@+id/bnv"
-        app:menu="@menu/nav_menu"
-        app:itemIconTint="@drawable/navmenucolor"
-        app:itemTextColor="@drawable/navmenucolor">
-        <RelativeLayout
-            android:layout_width="100dp"
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:padding="2dp"
-            android:id="@+id/cartcontainer">
-            <TextView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:text="10"
-                android:textSize="@dimen/exsletter"
-                android:textColor="@color/white"
-                android:gravity="center_horizontal|center_vertical"
-                android:background="@drawable/roundedcornercarttext"
-                android:id="@+id/carttext"/>
-        </RelativeLayout>
+            android:layout_marginBottom="?attr/actionBarSize">
 
-    </android.support.design.widget.BottomNavigationView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-</android.support.design.widget.CoordinatorLayout>
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/topToolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@color/primary">
+
+                    <LinearLayout
+                        android:id="@+id/locationbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginRight="8dp"
+                            android:src="@drawable/location" />
+
+                        <TextView
+                            android:id="@+id/location"
+                            android:layout_width="wrap_content"
+                            android:layout_height="18dp"
+                            android:text="Selected Location"
+                            android:textSize="@dimen/nletter" />
+                    </LinearLayout>
+                </android.support.v7.widget.Toolbar>
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/viewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:background="@drawable/loading">
+
+                </android.support.v4.view.ViewPager>
+
+                <com.viewpagerindicator.CirclePageIndicator
+                    android:id="@+id/indicator"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/white"
+                    android:gravity="bottom"
+                    android:padding="5dp"
+                    app:centered="true"
+                    app:fillColor="#df0623"
+                    app:pageColor="#ddc2c0c0"
+                    app:snap="false" />
+
+                <LinearLayout style="@style/ParentLinearLayout"
+                    android:layout_marginTop="0dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="24dp"
+                        android:layout_marginBottom="8dp"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingLeft="8dp"
+                            android:text="Hot Deals"
+                            android:textColor="@color/primary_dark"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right">
+
+                            <TextView
+                                android:id="@+id/viewHotDeal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingRight="8dp"
+                                android:text="View All"
+                                android:textColor="@color/primary_dark"
+                                android:visibility="invisible" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <com.facebook.shimmer.ShimmerFrameLayout
+                        android:id="@+id/shimmer_hot_deals"
+                        android:layout_width="match_parent"
+                        android:layout_height="220dp"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal"
+                        shimmer:duration="800">
+                        <!-- Adding 3 rows of placeholders -->
+                        <LinearLayout
+                            android:layout_width="384dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <include layout="@layout/dummy_item" />
+
+                            <include layout="@layout/dummy_item" />
+                        </LinearLayout>
+
+                    </com.facebook.shimmer.ShimmerFrameLayout>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/hotdeals"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout style="@style/ParentLinearLayout">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="24dp"
+                        android:layout_marginBottom="8dp"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingLeft="8dp"
+                            android:text="Top Rated"
+                            android:textColor="@color/primary_dark"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right">
+
+                            <TextView
+                                android:id="@+id/viewTopRated"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingRight="8dp"
+                                android:text="View All"
+                                android:textColor="@color/primary_dark"
+                                android:visibility="invisible" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <com.facebook.shimmer.ShimmerFrameLayout
+                        android:id="@+id/shimmer_top_rated"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal"
+                        shimmer:duration="800">
+                        <!-- Adding 3 rows of placeholders -->
+                        <LinearLayout
+                            android:layout_width="384dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <include layout="@layout/dummy_item" />
+
+                            <include layout="@layout/dummy_item" />
+                        </LinearLayout>
+
+                    </com.facebook.shimmer.ShimmerFrameLayout>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/toprated"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+
+                <LinearLayout style="@style/ParentLinearLayout">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="24dp"
+                        android:layout_marginBottom="8dp"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingLeft="8dp"
+                            android:text="Category"
+                            android:textColor="@color/primary_dark"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/category"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/ParentLinearLayout"
+                    android:layout_marginBottom="8dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="24dp"
+                        android:layout_marginBottom="8dp"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingLeft="8dp"
+                            android:text="Restaurants"
+                            android:textColor="@color/primary_dark"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right">
+
+                            <TextView
+                                android:id="@+id/viewRestaurants"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingRight="8dp"
+                                android:text="View All"
+                                android:textColor="@color/primary_dark"
+                                android:visibility="invisible" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/viewRestaurant"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/bnv"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_gravity="bottom"
+            android:background="@color/primary"
+            app:itemIconTint="@drawable/navmenucolor"
+            app:itemTextColor="@drawable/navmenucolor"
+            app:menu="@menu/nav_menu">
+
+            <RelativeLayout
+                android:id="@+id/cartcontainer"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:padding="2dp">
+
+                <TextView
+                    android:id="@+id/carttext"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/roundedcornercarttext"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="10"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/exsletter" />
+            </RelativeLayout>
+
+        </android.support.design.widget.BottomNavigationView>
+
+    </android.support.design.widget.CoordinatorLayout>
 </LinearLayout>
