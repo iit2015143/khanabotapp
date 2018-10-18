@@ -17,4 +17,9 @@
   <color name="facebook">#e6ebee</color>
   <color name ="searchbg">#88ffffff</color>
   <color name="white">#FFFFFF</color>
+  <color name="placeholder_bg">#dddddd</color>
+  <color name="item_name">#0c0c0c</color>
+  <color name="description">#1a1a1a</color>
+  <color name="chef">#777</color>
+  <color name="timestamp">#777</color>
 </resources>

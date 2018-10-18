@@ -230,9 +230,10 @@ public class HomePage extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void categoryclicked(String str){
+    public void categoryclicked(String str,int position){
         Intent intent=new Intent(context,ItemsByCategory.class);
         intent.putExtra("title",str);
+        intent.putExtra("position",position);
         startActivity(intent);
     }
 
