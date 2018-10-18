@@ -41,6 +41,8 @@ dependencies {
     implementation 'com.bignerdranch.android:expandablerecyclerview:1.0.3'
     implementation 'com.squareup.picasso:picasso:2.5.0'
     implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
+    implementation 'com.github.JakeWharton:ViewPagerIndicator:2.4.1'
+
 }
 
 apply plugin: 'com.google.gms.google-services'
