@@ -2,6 +2,7 @@
 <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:shimmer="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -96,10 +97,28 @@
                             android:textColor="@color/primary_dark" />
                     </LinearLayout>
                 </LinearLayout>
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/shimmer_hot_deals"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    shimmer:duration="800">
+                    <!-- Adding 3 rows of placeholders -->
+                    <LinearLayout
+                        android:layout_width="384dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <include layout="@layout/dummy_item" />
+                        <include layout="@layout/dummy_item" />
+                    </LinearLayout>
+
+                </com.facebook.shimmer.ShimmerFrameLayout>
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/hotdeals"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <LinearLayout
@@ -134,10 +153,28 @@
                             android:textColor="@color/primary_dark" />
                     </LinearLayout>
                 </LinearLayout>
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/toprated"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/shimmer_top_rated"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    shimmer:duration="800">
+                    <!-- Adding 3 rows of placeholders -->
+                    <LinearLayout
+                        android:layout_width="384dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <include layout="@layout/dummy_item" />
+                        <include layout="@layout/dummy_item" />
+                    </LinearLayout>
+
+                </com.facebook.shimmer.ShimmerFrameLayout>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/toprated"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
 
@@ -158,10 +195,11 @@
                         android:textColor="@color/primary_dark"
                         android:textStyle="bold"/>
                 </LinearLayout>
+
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/category"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <LinearLayout
@@ -197,10 +235,11 @@
                             android:textColor="@color/primary_dark" />
                     </LinearLayout>
                 </LinearLayout>
+
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/viewRestaurant"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+                    android:layout_height="wrap_content" />
             </LinearLayout>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
