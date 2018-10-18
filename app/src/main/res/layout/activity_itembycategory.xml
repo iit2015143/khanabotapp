@@ -8,22 +8,24 @@
     android:orientation="vertical"
     android:background="@color/facebook"
     tools:context=".ItemsByCategory">
+
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:focusableInTouchMode="true">
+        android:focusableInTouchMode="true"
+        android:layout_marginBottom="?attr/actionBarSize"
+        android:orientation="vertical">
+
         <TextView
+            android:id="@+id/topToolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:id="@+id/topToolbar"
-            android:text="Title"
-            android:textColor="@color/white"
-            android:textSize="@dimen/bletter"
             android:background="@color/primary"
             android:gravity="center_vertical"
-            android:paddingLeft="8dp">
-        </TextView>
+            android:paddingLeft="8dp"
+            android:text="Title"
+            android:textColor="@color/white"
+            android:textSize="@dimen/bletter" />
 
         <com.facebook.shimmer.ShimmerFrameLayout
             android:id="@+id/shimmer_view_container"
@@ -37,14 +39,14 @@
                 android:layout_width="384dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
+                
                 <include layout="@layout/dummy_menuchild" />
                 <include layout="@layout/dummy_menuchild" />
                 <include layout="@layout/dummy_menuchild" />
                 <include layout="@layout/dummy_menuchild" />
                 <include layout="@layout/dummy_menuchild" />
                 <include layout="@layout/dummy_menuchild" />
-
+                <include layout="@layout/dummy_menuchild" />
             </LinearLayout>
 
         </com.facebook.shimmer.ShimmerFrameLayout>
@@ -52,7 +54,7 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/catmenu"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:nestedScrollingEnabled="false">
 
         </android.support.v7.widget.RecyclerView>
