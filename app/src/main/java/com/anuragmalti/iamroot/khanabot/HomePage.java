@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,15 +19,19 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.gms.maps.model.LatLng;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.viewpagerindicator.CirclePageIndicator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -43,9 +48,11 @@ public class HomePage extends AppCompatActivity {
     public static JSONArray mycart;
     public static String address;
     public int currenttime;
-    public Runnable runnable;
-    public Handler refresh;
     public JSONArray Offers;
+    private ShimmerFrameLayout mShimmerHotDeals;
+    private ShimmerFrameLayout mShimmerTopRated;
+    private static int NUM_PAGES = 0;
+    private static int currentPage = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +83,13 @@ public class HomePage extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        viewPager = (ViewPager)findViewById(R.id.viewPager);
-        viewPager.setAdapter(new CustomPageAdapter(context,new JSONArray()));
+
+        //setupSlider();
+
+        mShimmerHotDeals=findViewById(R.id.shimmer_hot_deals);
+        mShimmerHotDeals.startShimmerAnimation();
+        mShimmerTopRated=findViewById(R.id.shimmer_top_rated);
+        mShimmerTopRated.startShimmerAnimation();
 
 
         hotdeal = (RecyclerView)findViewById(R.id.hotdeals);
@@ -139,18 +151,39 @@ public class HomePage extends AppCompatActivity {
         });
 
         checknotificationstatus();
-
-        refresh = new Handler();
-        runnable = new Runnable() {
-            @Override
-            public void run() {
-                refresh.postDelayed(runnable,3000);
-                pagerlooper();
-            }
-        };
         //for null pointer exception
         Search.responseArray = responseArray;
     }
+
+    private void setupSlider() {
+        viewPager = (ViewPager)findViewById(R.id.viewPager);
+        viewPager.setAdapter(new CustomPageAdapter(context,Offers));
+        CirclePageIndicator indicator = (CirclePageIndicator)
+                findViewById(R.id.indicator);
+        indicator.setViewPager(viewPager);
+        final float density = getResources().getDisplayMetrics().density;
+//Set circle indicator radius
+        indicator.setRadius(5 * density);
+        NUM_PAGES =Offers.length();
+        // Auto start of viewpager
+        final Handler handler = new Handler();
+        final Runnable Update = new Runnable() {
+            public void run() {
+                if (currentPage == NUM_PAGES) {
+                    currentPage = 0;
+                }
+                viewPager.setCurrentItem(currentPage++, true);
+            }
+        };
+        Timer swipeTimer = new Timer();
+        swipeTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(Update);
+            }
+        }, 5000, 5000);
+    }
+
     public void addtocart(JSONObject jsonObject){
         Integer value = 1;
         String valuestr = bnv.getMenu().getItem(0).getTitle().toString();
@@ -449,7 +482,8 @@ public class HomePage extends AppCompatActivity {
     public void onPause() {
         super.onPause();
         addtosharedpreferences("mycart",mycart.toString());
-        refresh.removeCallbacks(runnable);
+        mShimmerHotDeals.stopShimmerAnimation();
+        mShimmerTopRated.stopShimmerAnimation();
     }
     public void notifychange(){
         ((TextView)findViewById(R.id.carttext)).setText(HomePage.mycart.length()+"");
@@ -465,8 +499,7 @@ public class HomePage extends AppCompatActivity {
         super.onResume();
         selectme(1);
         notifychange();
-        setmyadapters();
-        runnable.run();
+        //setmyadapters();
     }
     public boolean notifstatusset(){
         SharedPreferences prefs = getSharedPreferences("com.example.root.khanabot",Context.MODE_PRIVATE);
@@ -662,18 +695,13 @@ public class HomePage extends AppCompatActivity {
         toprated.setAdapter(new HorizontalHotDeal(context,toprateds));
         restaurants.setAdapter(new HorizontalRestaurants(context,responseArray));
         category.setAdapter(new HorizontalCategory(context,categori));
-        viewPager.setAdapter(new CustomPageAdapter(context,Offers));
         Search.responseArray = responseArray;
         OrderHistory.responseArray = responseArray;
         ((HomePage)context).Offers=Offers;
-        runnable.run();
-    }
-
-    public void pagerlooper(){
-
-        int num = viewPager.getCurrentItem();
-        if(num+1 >= Offers.length())
-            num=-1;
-        viewPager.setCurrentItem(num+1);
+        setupSlider();
+        mShimmerTopRated.stopShimmerAnimation();
+        mShimmerHotDeals.stopShimmerAnimation();
+        mShimmerHotDeals.setVisibility(View.GONE);
+        mShimmerTopRated.setVisibility(View.GONE);
     }
 }
