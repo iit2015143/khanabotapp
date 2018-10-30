@@ -80,6 +80,7 @@
             android:theme="@style/AppTheme.Dark" />
         <activity
             android:name=".HomePage"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Dark" />
         <activity

@@ -96,6 +96,7 @@
                 android:textColor="@color/moan"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/bletter"
                 android:paddingLeft="@dimen/sletter"
                 android:text="For feedback or queries reach out to us at:\nkhanabot247@gmail.com"/>
             <TextView

@@ -158,8 +158,7 @@ public class HomePage extends AppCompatActivity {
     private void setupSlider() {
         viewPager = (ViewPager)findViewById(R.id.viewPager);
         viewPager.setAdapter(new CustomPageAdapter(context,Offers));
-        CirclePageIndicator indicator = (CirclePageIndicator)
-                findViewById(R.id.indicator);
+        CirclePageIndicator indicator = (CirclePageIndicator)findViewById(R.id.indicator);
         indicator.setViewPager(viewPager);
         final float density = getResources().getDisplayMetrics().density;
 //Set circle indicator radius
@@ -335,19 +334,6 @@ public class HomePage extends AppCompatActivity {
                         break;
                     }
 
-                    //Log.e("error in loop out if",cartobject.toString());
-//                if(cartobject.getString("number").equals(cartItem.getString("number"))
-//                        && cartobject.getString("name").equals(cartItem.getString("name"))
-//                        && cartobject.getString("index").equals(cartItem.getString("index"))
-//                        && cartobject.getString("levelone").equals(cartItem.getString("levelone"))){
-//                    //Log.e("error in loop in if",cartobject.toString());
-//                    found = true;
-//                    index = i;
-//                    quantity = Integer.parseInt(cartobject.getString("quantity"));
-//                    //Log.e("error cartobject",cartobject.toString());
-//                    //Log.e("error cartItem",cartItem.toString());
-//                    break;
-//                }
                 }
                 if(!foundrest){
                     JSONObject restObject = new JSONObject();
@@ -425,31 +411,6 @@ public class HomePage extends AppCompatActivity {
                     }
                 }
             }
-
-//            if(found){
-//                if(add){
-//                    quantity++;
-//                    cartItem.put("quantity",quantity);
-//                    mycart.put(index,cartItem);
-//                }
-//                else{
-//                    quantity--;
-//                    if(quantity>0) {
-//                        cartItem.put("quantity", quantity);
-//                        mycart.put(index, cartItem);
-//                    }
-//                    else if(quantity==0){
-//                        mycart.remove(index);
-//                    }
-//                }
-//            }
-//            else{
-//                if(add){
-//                    cartItem.put("quantity",1);
-//                    mycart.put(cartItem);
-//                }
-//            }
-//            //Log.e("error cartlen",mycart.length()+"");
 
         } catch (JSONException e) {
             e.printStackTrace();

@@ -56,9 +56,9 @@ public class RestaurantProfile extends AppCompatActivity {
                         startActivity(intent);
                         break;
                     case R.id.home:
-                        //selectme(1);
-//                        Intent intent2 = new Intent(context,HomePage.class);
-//                        startActivity(intent2);
+                        selectme(1);
+                        Intent intent2 = new Intent(context,HomePage.class);
+                        startActivity(intent2);
                         break;
                     case R.id.orderstatus:
                         selectme(2);

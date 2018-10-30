@@ -57,8 +57,8 @@ public class ItemsByCategory extends AppCompatActivity {
                         startActivity(intent);
                         break;
                     case R.id.home:
-//                        Intent intent2=new Intent(context,HomePage.class);
-//                        startActivity(intent2);
+                        Intent intent2=new Intent(context,HomePage.class);
+                        startActivity(intent2);
                         break;
                     case R.id.orderstatus:
                         selectme(2);
