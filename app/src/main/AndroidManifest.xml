@@ -104,8 +104,9 @@
         <activity
             android:name=".PopUpEditOrder"
             android:theme="@style/Theme_Dialog" />
-        <activity android:name=".EditOfferPopUp"
-            android:theme="@style/Theme_Dialog"></activity>
+        <activity
+            android:name=".EditOfferPopUp"
+            android:theme="@style/Theme_Dialog" />
     </application>
 
 </manifest>

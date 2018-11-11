@@ -280,7 +280,6 @@ public class HomePage extends AppCompatActivity {
     public static void updatecart(Boolean add, JSONObject cart){
 
         Log.e("error cart","update cart processed");
-
         JSONObject cartItem  = null;
         try {
             cartItem = new JSONObject(cart.toString());
