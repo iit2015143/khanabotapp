@@ -56,6 +56,7 @@ public class MenuExpandableAdapter extends ExpandableRecyclerAdapter<MenuParentV
             holder.nameofrest.setText(nothotdeal.getString("resname").replaceAll("_"," "));
             final JSONArray price = nothotdeal.getJSONArray("price");
             holder.price.setText("Rs "+ price.getString(price.length()-1));
+            holder.change.setText(nothotdeal.getInt("quantity"));
             nothotdeal.put("index",price.length()-1);
             if(price.length()==1){
                 holder.radiovisible.setVisibility(View.GONE);
@@ -90,18 +91,29 @@ public class MenuExpandableAdapter extends ExpandableRecyclerAdapter<MenuParentV
             holder.add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Integer value = Integer.parseInt(holder.change.getText().toString());
-                    value++;
-                    holder.change.setText(value.toString());
-                    HomePage.updatecart(true,nothotdeal);
-                    ((RestaurantProfile)context).notifychange();
+                    Integer value = 0;
+                    try {
+                        value = nothotdeal.getInt("quantity");
+                        value++;
+                        holder.change.setText(value.toString());
+                        HomePage.updatecart(true,nothotdeal);
+                        ((RestaurantProfile)context).notifychange();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
                 }
             });
 
             holder.remove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Integer value = Integer.parseInt(holder.change.getText().toString());
+                    Integer value = null;
+                    try {
+                        value = nothotdeal.getInt("quantity");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     if(value>0) {
                         value--;
                         holder.change.setText(value.toString());

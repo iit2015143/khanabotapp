@@ -377,9 +377,6 @@ public class HomePage extends AppCompatActivity {
 
                     if (cartobject.getString("tonumber").equals(cartItem.getString("number"))) {
 
-                        int total = cartobject.getInt("total");
-                        total -= cartItem.getJSONArray("price").getInt(cartItem.getInt("index"));
-                        cartobject.put("total", total);
 
                         JSONArray order = cartobject.getJSONArray("order");
                         for (int j = 0; j < order.length(); j++) {
@@ -391,6 +388,12 @@ public class HomePage extends AppCompatActivity {
 
                                 int quantity = cartObjectItem.getInt("quantity");
                                 quantity--;
+                                //if found then decrease cart total value
+
+                                int total = cartobject.getInt("total");
+                                total -= cartItem.getJSONArray("price").getInt(cartItem.getInt("index"));
+                                cartobject.put("total", total);
+
                                 //condition if quantity == 0 remove item
 
                                 if(quantity == 0){
@@ -459,7 +462,7 @@ public class HomePage extends AppCompatActivity {
         super.onResume();
         selectme(1);
         notifychange();
-        //setmyadapters();
+        setmyadapters();
     }
     public boolean notifstatusset(){
         SharedPreferences prefs = getSharedPreferences("com.example.root.khanabot",Context.MODE_PRIVATE);
@@ -648,7 +651,6 @@ public class HomePage extends AppCompatActivity {
             catch (JSONException e) {
                 e.printStackTrace();
                 Log.e("error catch",e.toString());
-                //Log.e("category",categori.toString());
             }
         }
         hotdeal.setAdapter(new HorizontalHotDeal(context,hotdeals));

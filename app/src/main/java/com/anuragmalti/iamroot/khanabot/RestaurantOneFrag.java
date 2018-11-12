@@ -37,8 +37,7 @@ public class RestaurantOneFrag extends Fragment {
 
         try {
             if(RestaurantProfile.restaurantobj.has("deliversin")){
-                String deliversin = RestaurantProfile.restaurantobj.getString("deliversin")+
-                        "min";
+                String deliversin = RestaurantProfile.restaurantobj.getString("deliversin")+"min";
                 ((TextView)rootView.findViewById(R.id.deliversin)).setText(deliversin);
             }
             String resname = RestaurantProfile.restaurantobj.getString("name");
@@ -84,6 +83,7 @@ public class RestaurantOneFrag extends Fragment {
                         item.put("number",restaurantobj.getString("number"));
                         item.put("levelone","menu");
                         item.put("leveltwo",menunames.getString(j));
+                        item.put("quantity",0);
                         //item.put("leveltwo",leveltwonames.getString(l));
                         childList.add(new MenuChild(item));
                     //}

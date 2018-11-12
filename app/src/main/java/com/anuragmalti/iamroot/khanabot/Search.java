@@ -111,6 +111,7 @@ public class Search extends Activity {
                         item.put("number",restaurantobj.getString("number"));
                         item.put("levelone","menu");
                         item.put("leveltwo",menunames.getString(j));
+                        item.put("quantity",0);
                         entiremenu.put(item);
                     }
                 }

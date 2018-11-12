@@ -54,6 +54,7 @@ implements Filterable{
             holder.nameofrest.setText(nothotdeal.getString("resname"));
             final JSONArray price = nothotdeal.getJSONArray("price");
             holder.price.setText("Rs "+ price.getString(price.length()-1));
+            holder.change.setText(nothotdeal.getInt("quantity")+"");
 
             nothotdeal.put("index",price.length()-1);
             holder.radiovisible.setVisibility(View.VISIBLE);
@@ -91,26 +92,36 @@ implements Filterable{
             holder.add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Integer value = Integer.parseInt(holder.change.getText().toString());
-                    value++;
-                    holder.change.setText(value.toString());
-                    HomePage.updatecart(true,nothotdeal);
-                    ////Log.e("error nothot",nothotdeal.toString());
-                    ((Search)context).notifychange();
+                    try {
+                        Integer quantity = nothotdeal.getInt("quantity");
+                        quantity++;
+                        holder.change.setText(quantity.toString());
+                        HomePage.updatecart(true,nothotdeal);
+                        ////Log.e("error nothot",nothotdeal.toString());
+                        ((Search)context).notifychange();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
 
             holder.remove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Integer value = Integer.parseInt(holder.change.getText().toString());
-                    if(value>0) {
-                        value--;
-                        holder.change.setText(value.toString());
-                        HomePage.updatecart(false,nothotdeal);
-                        ////Log.e("error nothot",nothotdeal.toString());
+
+
+                    try {
+                        Integer quantity = nothotdeal.getInt("quantity");
+                        if(quantity>0) {
+                            quantity--;
+                            holder.change.setText(quantity.toString());
+                            HomePage.updatecart(false,nothotdeal);
+                            ////Log.e("error nothot",nothotdeal.toString());
+                        }
+                        ((Search)context).notifychange();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                    ((Search)context).notifychange();
 
                 }
             });

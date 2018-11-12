@@ -47,9 +47,9 @@ public class VerticalMenuAdapter extends RecyclerView.Adapter<VerticalMenuAdapte
             holder.nameofrest.setText(nothotdeal.getString("resname").replaceAll("_"," "));
             final JSONArray price = nothotdeal.getJSONArray("price");
             holder.price.setText("Rs "+ price.getString(price.length()-1));
+            holder.change.setText(nothotdeal.getInt("quantity")+"");
             switch (decider){
                 case "Cart":
-                    holder.change.setText(nothotdeal.getInt("quantity")+"");
                     holder.price.setText("Rs "+ price.getString(nothotdeal.getInt("index")));
                     break;
                 case "ItemsByCategory":

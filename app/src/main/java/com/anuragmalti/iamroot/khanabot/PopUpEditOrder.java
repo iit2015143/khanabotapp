@@ -139,10 +139,6 @@ public class PopUpEditOrder extends AppCompatActivity {
 
                     if (cartobject.getString("tonumber").equals(cartItem.getString("number"))) {
 
-                        int total = cartobject.getInt("total");
-                        total -= cartItem.getInt("price");
-                        cartobject.put("total", total);
-
                         JSONArray order = cartobject.getJSONArray("order");
                         for (int j = 0; j < order.length(); j++) {
                             JSONObject cartObjectItem = order.getJSONObject(j);
@@ -153,6 +149,11 @@ public class PopUpEditOrder extends AppCompatActivity {
 
                                 int quantity = cartObjectItem.getInt("quantity");
                                 quantity--;
+
+                                int total = cartobject.getInt("total");
+                                total -= cartItem.getInt("price");
+                                cartobject.put("total", total);
+
                                 //condition if quantity == 0 remove item
 
                                 if(quantity == 0){
