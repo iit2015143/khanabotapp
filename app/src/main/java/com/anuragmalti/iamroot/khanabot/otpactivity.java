@@ -1,6 +1,5 @@
 package com.anuragmalti.iamroot.khanabot;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,18 +7,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.chaos.view.PinView;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import cz.msebera.android.httpclient.Header;
+import java.util.HashMap;
+import java.util.Map;
 
 public class otpactivity extends AppCompatActivity {
 
@@ -49,13 +51,15 @@ public class otpactivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(s.length()==5){
-                    RequestParams params = new RequestParams();
+                    Map<String, String> params = new HashMap<String,String>();
                     params.put("otp",pinView.getText().toString());
-                    RestClient.post("/otp",params,new JsonHttpResponseHandler(){
+
+                    CustomObjectRequest customRequest = new CustomObjectRequest(Request.Method.POST,MySingleton.BASE_URL+"/otp",params,new Response.Listener<JSONObject>() {
 
                         @Override
-                        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                            //Toast.makeText(context,response.toString(),Toast.LENGTH_SHORT).show();
+                        public void onResponse(JSONObject response) {
+
+                            Log.e("Response: " , response.toString());
                             try {
                                 if(response.has("otp")) {
                                     String value = response.getString("otp");
@@ -77,20 +81,58 @@ public class otpactivity extends AppCompatActivity {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
                         }
+                    }, new Response.ErrorListener() {
 
                         @Override
-                        public void onFinish() {
-                            //onLoginSuccess();
+                        public void onErrorResponse(VolleyError error) {
+                            // TODO: Handle error
+                            Log.e("Response: " , error.toString());
+                            Toast.makeText(context,"Internet Connection Failed",Toast.LENGTH_LONG).show();
                         }
-                        @Override
-                        public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
-                            show("Request failed");
-                            //Toast.makeText(context,throwable.toString(),Toast.LENGTH_LONG).show();
-                        }
-
                     });
+                    MySingleton.getInstance(context).addToRequestQueue(customRequest);
+
+//                    RestClient.post("/otp",params,new JsonHttpResponseHandler(){
+//
+//                        @Override
+//                        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//                            //Toast.makeText(context,response.toString(),Toast.LENGTH_SHORT).show();
+//                            try {
+//                                if(response.has("otp")) {
+//                                    String value = response.getString("otp");
+//                                    if (value.equals("sent")) {
+//                                        show("otp sent");
+//                                    } else if (value.equals("timeout")) {
+//                                        show("OTP timeout");
+//                                    } else if (value.equals("invalid"))
+//                                        show("Invalid otp");
+//                                }
+//                                else if(response.has("uuid")){
+//                                    addtosharedpref("uuid",response.getString("uuid"));
+//                                    addtosharedpref("number",number);
+//                                    Intent intent = new Intent(context,AllowPermission.class);
+//                                    startActivity(intent);
+//                                    finish();
+//                                }
+//
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+//
+//                        }
+//
+//                        @Override
+//                        public void onFinish() {
+//                            //onLoginSuccess();
+//                        }
+//                        @Override
+//                        public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
+//                            show("Request failed");
+//                            //Toast.makeText(context,throwable.toString(),Toast.LENGTH_LONG).show();
+//                        }
+//
+//                    });
                 }
             }
 
@@ -108,25 +150,47 @@ public class otpactivity extends AppCompatActivity {
 
     public void resendotp(View view){
         //to be implemented
-        RequestParams params = new RequestParams();
+        Map<String, String> params = new HashMap<String,String>();
         params.put("number",number);
-        RestClient.post("/number", params, new JsonHttpResponseHandler(){
+
+        CustomObjectRequest customRequest = new CustomObjectRequest(Request.Method.POST,MySingleton.BASE_URL+"/number",params,new Response.Listener<JSONObject>() {
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+            public void onResponse(JSONObject response) {
+
+                Log.e("Response: " , response.toString());
+
                 Toast.makeText(context,response.toString(),Toast.LENGTH_SHORT).show();
             }
+        }, new Response.ErrorListener() {
 
             @Override
-            public void onFinish() {
-                //onLoginSuccess();
+            public void onErrorResponse(VolleyError error) {
+                // TODO: Handle error
+                Log.e("Response: " , error.toString());
+                Toast.makeText(context,"Internet Connection Failed",Toast.LENGTH_LONG).show();
             }
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
-                //Toast.makeText(context,throwable.toString(),Toast.LENGTH_LONG).show();
-            }
-
         });
+        MySingleton.getInstance(this).addToRequestQueue(customRequest);
+
+
+//        RestClient.post("/number", params, new JsonHttpResponseHandler(){
+//
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//                Toast.makeText(context,response.toString(),Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onFinish() {
+//                //onLoginSuccess();
+//            }
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
+//                //Toast.makeText(context,throwable.toString(),Toast.LENGTH_LONG).show();
+//            }
+//
+//        });
     }
     public void addtosharedpref(String key,String value){
         SharedPreferences prefs = getSharedPreferences("com.example.root.khanabot",Context.MODE_PRIVATE);

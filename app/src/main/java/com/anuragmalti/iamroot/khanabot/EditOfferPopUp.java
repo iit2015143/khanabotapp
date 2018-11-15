@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Parcelable;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,13 +15,20 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -93,7 +101,7 @@ public class EditOfferPopUp extends AppCompatActivity {
     }
 
     public void makerequest(){
-        RequestParams params = new RequestParams();
+        Map<String, String> params = new HashMap<String, String>();
         try {
             params.put("number",HomePage.mycart.getJSONObject(value).getString("tonumber"));
         } catch (JSONException e) {
@@ -101,31 +109,58 @@ public class EditOfferPopUp extends AppCompatActivity {
         }
         // Toast.makeText(getBaseContext(),"inside make request",Toast.LENGTH_SHORT).show();
         Log.e("request","inside make request");
-        RestClient.get("/getoffers",params,new JsonHttpResponseHandler(){
+        CustomArrayRequest customRequest = new CustomArrayRequest(Request.Method.POST,MySingleton.BASE_URL+"/getoffers",params,new Response.Listener<JSONArray>() {
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                //Toast.makeText(context,"inside success",Toast.LENGTH_LONG).show();
+            public void onResponse(JSONArray response) {
+
+                Log.e("Response: " , "array came again bro");
+
                 offerResponse = response;
                 // notifychange();
                 Log.e("response",response.toString());
                 Log.e("offerresponse",offerResponse.toString());
                 //Toast.makeText(context,"got offers",Toast.LENGTH_SHORT).show();
                 setMyAdapter(offerResponse);
+
             }
+        }, new Response.ErrorListener() {
 
             @Override
-            public void onFinish() {
-                //onLoginSuccess();
+            public void onErrorResponse(VolleyError error) {
+                // TODO: Handle error
+                Log.e("Response: " , error.toString());
+                Toast.makeText(cont,"Internet Connection Failed",Toast.LENGTH_LONG).show();
             }
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
-                Log.e("error failure","connection failed in orderhistory");
-
-                //Toast.makeText(context,"Internet connection failed",Toast.LENGTH_SHORT).show();
-            }
-
         });
+
+        MySingleton.getInstance(this).addToRequestQueue(customRequest);
+
+//        RestClient.get("/getoffers",params,new JsonHttpResponseHandler(){
+//
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+//                //Toast.makeText(context,"inside success",Toast.LENGTH_LONG).show();
+//                offerResponse = response;
+//                // notifychange();
+//                Log.e("response",response.toString());
+//                Log.e("offerresponse",offerResponse.toString());
+//                //Toast.makeText(context,"got offers",Toast.LENGTH_SHORT).show();
+//                setMyAdapter(offerResponse);
+//            }
+//
+//            @Override
+//            public void onFinish() {
+//                //onLoginSuccess();
+//            }
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
+//                Log.e("error failure","connection failed in orderhistory");
+//
+//                //Toast.makeText(context,"Internet connection failed",Toast.LENGTH_SHORT).show();
+//            }
+//
+//        });
     }
 
     public void setOfferValue(JSONObject offerValue) {

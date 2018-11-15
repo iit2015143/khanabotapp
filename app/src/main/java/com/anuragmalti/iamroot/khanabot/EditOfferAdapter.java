@@ -55,8 +55,14 @@ public class EditOfferAdapter extends RecyclerView.Adapter<EditOfferAdapter.MyVi
                 if(nothotdeals.getJSONObject(position).getString("minValue").compareTo("-1") != 0){
                     holder.minValue.setText("Min Value of the discount : "+nothotdeals.getJSONObject(position).getString("minValue"));
                 }
+                else{
+                    holder.minValue.setText("no limit");
+                }
                 if(nothotdeals.getJSONObject(position).getString("minValue").compareTo("-1")!= 0){
                     holder.maxDiscount.setText("Max Discount :  " + nothotdeals.getJSONObject(position).getString("maxDiscount"));
+                }
+                else{
+                    holder.maxDiscount.setText("no limit");
                 }
             }
         } catch (JSONException e) {

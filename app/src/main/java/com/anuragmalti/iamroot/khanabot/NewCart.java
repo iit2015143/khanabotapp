@@ -16,6 +16,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -23,6 +26,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -195,15 +201,20 @@ public class NewCart extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            RequestParams params = new RequestParams();
-            params.put("order",restaurantobject);
-            RestClient.post("/requestordernew", params, new JsonHttpResponseHandler(){
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("order",restaurantobject.toString());
+
+            CustomObjectRequest customRequest = new CustomObjectRequest(Request.Method.POST,MySingleton.BASE_URL+"/requestordernew",params,new Response.Listener<JSONObject>() {
+
                 @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                public void onResponse(JSONObject response) {
+
+                    Log.e("Response: " , response.toString());
+
                     if(response.has("orders")) {
                         try {
                             if(response.getString("orders").equals("requested"))
-                            HomePage.mycart.remove(position);
+                                HomePage.mycart.remove(position);
                             setadapter();
                             notifychange();
                             Intent intent = new Intent(context,OrderHistory.class);
@@ -213,16 +224,43 @@ public class NewCart extends AppCompatActivity {
                         }
                     }
                 }
+            }, new Response.ErrorListener() {
 
                 @Override
-                public void onFinish() {
-                    //onLoginSuccess();
-                }
-                @Override
-                public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
-                    Log.e("error request","request failed");
+                public void onErrorResponse(VolleyError error) {
+                    // TODO: Handle error
+                    Log.e("Response: " , error.toString());
+                    Toast.makeText(context,"Internet Connection Failed",Toast.LENGTH_LONG).show();
                 }
             });
+            MySingleton.getInstance(this).addToRequestQueue(customRequest);
+
+//            RestClient.post("/requestordernew", params, new JsonHttpResponseHandler(){
+//                @Override
+//                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//                    if(response.has("orders")) {
+//                        try {
+//                            if(response.getString("orders").equals("requested"))
+//                            HomePage.mycart.remove(position);
+//                            setadapter();
+//                            notifychange();
+//                            Intent intent = new Intent(context,OrderHistory.class);
+//                            startActivity(intent);
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }
+//
+//                @Override
+//                public void onFinish() {
+//                    //onLoginSuccess();
+//                }
+//                @Override
+//                public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
+//                    Log.e("error request","request failed");
+//                }
+//            });
         }
     }
 }
