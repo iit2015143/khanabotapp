@@ -3,10 +3,10 @@ package com.anuragmalti.iamroot.khanabot;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,7 +18,13 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.gms.maps.model.LatLng;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -30,6 +36,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -198,43 +206,76 @@ public class HomePage extends AppCompatActivity {
     public void getcurrenttime(final double lat, final double longitude){
 
 
-        RestClient.get("/currenttime", null, new JsonHttpResponseHandler(){
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                if(response.has("currenttime")){
-                    try {
-                        currenttime = response.getInt("currenttime");
-                        //Log.e("currenttime",currenttime+"");
-                        makerequest(new LatLng(lat,longitude));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, MySingleton.BASE_URL+"/currenttime", null, new Response.Listener<JSONObject>() {
 
-            @Override
-            public void onFinish() {
-                //onLoginSuccess();
-            }
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
-                //Toast.makeText(context,throwable.toString(),Toast.LENGTH_LONG).show();
-            }
-        });
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.e("Response: " , response.toString());
+                        if(response.has("currenttime")){
+                            try {
+                                currenttime = response.getInt("currenttime");
+                                //Log.e("currenttime",currenttime+"");
+                                makerequest(new LatLng(lat,longitude));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+                        Log.e("Response: " , error.toString());
+                        Toast.makeText(context,"Internet Connection Failed",Toast.LENGTH_LONG).show();
+                    }
+                });
+
+// Access the RequestQueue through your singleton class.
+        MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+//        RestClient.get("/currenttime", null, new JsonHttpResponseHandler(){
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//                if(response.has("currenttime")){
+//                    try {
+//                        currenttime = response.getInt("currenttime");
+//                        //Log.e("currenttime",currenttime+"");
+//                        makerequest(new LatLng(lat,longitude));
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFinish() {
+//                //onLoginSuccess();
+//            }
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
+//                //Toast.makeText(context,throwable.toString(),Toast.LENGTH_LONG).show();
+//            }
+//        });
 
     }
 
-    public void makerequest(LatLng latLng){
+    public void makerequest(final LatLng latLng){
 
         //////Log.e("Error ",""+latLng.latitude+ " "+latLng.longitude);
 
-        RequestParams params = new RequestParams();
+        Map<String, String> params = new HashMap<String, String>();
         params.put("lat",latLng.latitude + "");
         params.put("long",latLng.longitude + "");
         params.put("gLocation",address);
-        RestClient.post("/sharelocation", params, new JsonHttpResponseHandler(){
+
+        CustomArrayRequest customRequest = new CustomArrayRequest(Request.Method.POST,MySingleton.BASE_URL+"/sharelocation",params,new Response.Listener<JSONArray>() {
+
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+            public void onResponse(JSONArray response) {
+
+                Log.e("Response: " , "array came again bro");
+
                 responseArray = response;
                 if(responseArray.length()==0){
                     ((ViewPager)findViewById(R.id.viewPager)).setBackground(getResources().getDrawable(R.drawable.notavailable));
@@ -245,16 +286,69 @@ public class HomePage extends AppCompatActivity {
                 setmyadapters();
 
             }
+        }, new Response.ErrorListener() {
 
             @Override
-            public void onFinish() {
-                //onLoginSuccess();
-            }
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
-                //Toast.makeText(context,throwable.toString(),Toast.LENGTH_LONG).show();
+            public void onErrorResponse(VolleyError error) {
+                // TODO: Handle error
+                Log.e("Response: " , error.toString());
             }
         });
+
+        MySingleton.getInstance(this).addToRequestQueue(customRequest);
+
+
+
+//        StringRequest req = new StringRequest(Request.Method.POST, MySingleton.BASE_URL+"/sharelocation",
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        Log.e("Response","array came bro");
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        Log.e("Response","failed");
+//                    }
+//                })
+//        {
+//            @Override
+//            protected Map<String, String> getParams() {
+//                Map<String, String> params = new HashMap<String, String>();
+//                params.put("lat",latLng.latitude + "");
+//                params.put("long",latLng.longitude + "");
+//                params.put("gLocation",address);
+//                return params;
+//            }
+//        };
+//        MySingleton.getInstance(this).addToRequestQueue(req);
+
+
+
+//        RestClient.post("/sharelocation", params, new JsonHttpResponseHandler(){
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+//                responseArray = response;
+//                if(responseArray.length()==0){
+//                    ((ViewPager)findViewById(R.id.viewPager)).setBackground(getResources().getDrawable(R.drawable.notavailable));
+//                }
+//                else
+//                    ((ViewPager)findViewById(R.id.viewPager)).setBackground(getResources().getDrawable(R.drawable.nooffer));
+//
+//                setmyadapters();
+//
+//            }
+//
+//            @Override
+//            public void onFinish() {
+//                //onLoginSuccess();
+//            }
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
+//                //Toast.makeText(context,throwable.toString(),Toast.LENGTH_LONG).show();
+//            }
+//        });
 
     }
     public void locationBarClicked(){
@@ -352,6 +446,9 @@ public class HomePage extends AppCompatActivity {
                     //including mode in restaurant cart.
                     for(int i=0; i<responseArray.length();i++){
                         JSONObject restaurant = responseArray.getJSONObject(i);
+                        if(restaurant.has("minorder")){
+                            restObject.put("minorder",restaurant.getInt("minorder"));
+                        }
                         if(restaurant.getString("number").equals(cartItem.getString("number"))){
                             if(restaurant.has("callnumber")){
                                 restObject.put("callnumber",restaurant.getString("callnumber"));
@@ -431,7 +528,7 @@ public class HomePage extends AppCompatActivity {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(key,cartstring);
         editor.commit();
-        //////Log.e("preferences",key+cartstring);
+        //Log.e("preferences",key+cartstring);
     }
 
     public void checknotificationstatus(){
@@ -472,13 +569,16 @@ public class HomePage extends AppCompatActivity {
         return false;
     }
     public void addtoserver(String token){
-        RequestParams params = new RequestParams();
+        Map<String, String> params = new HashMap<String, String>();
         params.put("notificationid",token);
-        RestClient.get("/savenotificationid",params,new JsonHttpResponseHandler(){
+
+        CustomObjectRequest customRequest = new CustomObjectRequest(Request.Method.GET,MySingleton.BASE_URL+"/savenotificationid",params,new Response.Listener<JSONObject>() {
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                //Toast.makeText(context,response.toString(),Toast.LENGTH_SHORT).show();
+            public void onResponse(JSONObject response) {
+
+                Log.e("Response: " , response.toString());
+
                 try {
                     if(response.has("notificationid")) {
                         String value = response.getString("notificationid");
@@ -493,17 +593,47 @@ public class HomePage extends AppCompatActivity {
                 }
 
             }
+        }, new Response.ErrorListener() {
 
             @Override
-            public void onFinish() {
-                //onLoginSuccess();
+            public void onErrorResponse(VolleyError error) {
+                // TODO: Handle error
+                Log.e("Response: " , error.toString());
+                Toast.makeText(context,"Internet Connection Failed",Toast.LENGTH_LONG).show();
             }
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
-                //////Log.e("error failure","connection failed in notificationid updation");
-            }
-
         });
+        MySingleton.getInstance(this).addToRequestQueue(customRequest);
+
+//        RestClient.get("/savenotificationid",params,new JsonHttpResponseHandler(){
+//
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//                //Toast.makeText(context,response.toString(),Toast.LENGTH_SHORT).show();
+//                try {
+//                    if(response.has("notificationid")) {
+//                        String value = response.getString("notificationid");
+//                        if (value.equals("updated")) {
+//                            ((HomePage)context).addtosharedpreferences("notificationstatus","updated");
+//                            //////Log.e("Sent ","notificationid sent to server");
+//                        }
+//                    }
+//
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onFinish() {
+//                //onLoginSuccess();
+//            }
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
+//                //////Log.e("error failure","connection failed in notificationid updation");
+//            }
+//
+//        });
     }
 
     public String getprefsvalue(String key){

@@ -3,7 +3,6 @@ package com.anuragmalti.iamroot.khanabot;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -12,18 +11,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.PersistentCookieStore;
-import com.loopj.android.http.RequestParams;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cz.msebera.android.httpclient.Header;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
@@ -66,14 +66,18 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.show();
 
         String number = mobile_number.getText().toString();
-        RequestParams params = new RequestParams();
+        Map<String, String> params = new HashMap<String, String>();
         params.put("number",number);
 
-        RestClient.setCookieStore(new PersistentCookieStore(getApplicationContext()));
-        RestClient.post("/number", params, new JsonHttpResponseHandler(){
+        //RestClient.setCookieStore(new PersistentCookieStore(getApplicationContext()));
+
+        CustomObjectRequest customRequest = new CustomObjectRequest(Request.Method.POST,MySingleton.BASE_URL+"/number",params,new Response.Listener<JSONObject>() {
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+            public void onResponse(JSONObject response) {
+
+                Log.e("Response: " , response.toString());
+
                 Toast.makeText(context,response.toString(),Toast.LENGTH_SHORT).show();
                 try {
                     String value = response.getString("otp");
@@ -90,20 +94,54 @@ public class LoginActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
             }
+        }, new Response.ErrorListener() {
 
             @Override
-            public void onFinish() {
-                //onLoginSuccess();
+            public void onErrorResponse(VolleyError error) {
+                // TODO: Handle error
+                Log.e("Response: " , error.toString());
+                Toast.makeText(context,"Internet Connection Failed",Toast.LENGTH_LONG).show();
             }
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
-                onLoginFailed("Request failed");
-                //Toast.makeText(context,throwable.toString(),Toast.LENGTH_LONG).show();
-                progressDialog.hide();
-            }
-
         });
+        MySingleton.getInstance(this).addToRequestQueue(customRequest);
+
+
+//        RestClient.post("/number", params, new JsonHttpResponseHandler(){
+//
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//                Toast.makeText(context,response.toString(),Toast.LENGTH_SHORT).show();
+//                try {
+//                    String value = response.getString("otp");
+//                    progressDialog.hide();
+//                    if(value.equals("sent")){
+//                        onLoginSuccess();
+//                    }
+//                    else if(value.equals("timeout")){
+//                        onLoginFailed("OTP timeout");
+//                    }
+//                    else
+//                        onLoginFailed("Invalid otp");
+//
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            public void onFinish() {
+//                //onLoginSuccess();
+//            }
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
+//                onLoginFailed("Request failed");
+//                //Toast.makeText(context,throwable.toString(),Toast.LENGTH_LONG).show();
+//                progressDialog.hide();
+//            }
+//
+//        });
     }
 
     public void onLoginSuccess() {

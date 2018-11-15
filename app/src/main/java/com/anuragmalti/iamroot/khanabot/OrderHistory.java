@@ -16,12 +16,21 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.gms.maps.model.LatLng;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -87,47 +96,84 @@ public class OrderHistory extends AppCompatActivity implements SwipeRefreshLayou
 
 
     public void makerequest(){
-        RestClient.get("/orderhistory",null,new JsonHttpResponseHandler(){
 
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                //Toast.makeText(context,response.toString(),Toast.LENGTH_SHORT).show();
-                try {
-                    swiper.setRefreshing(false);
+        Log.e("entered","inside makerequest");
+        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest
+                (Request.Method.GET, MySingleton.BASE_URL+"/orderhistory", null, new Response.Listener<JSONArray>() {
+
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.e("Response: " , response.toString());
+                        try {
+                            swiper.setRefreshing(false);
 //                    for(int i=0;i<response.length();i++){
 //                        JSONObject perorder = response.getJSONObject(i);
 //                        ////Log.e("orderhistory",perorder.toString());
 //                    }
-                    catmenu.setAdapter(new OrderhistoryAdapter(context,response));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                            catmenu.setAdapter(new OrderhistoryAdapter(context,response));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
 
-            }
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //TODO: Handle error
+                        Log.e("Response: " , error.toString());
+                        Toast.makeText(context,"Internet Connection Failed",Toast.LENGTH_LONG).show();
+                    }
+                });
 
-            @Override
-            public void onFinish() {
-                //onLoginSuccess();
-            }
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
-                ////Log.e("error failure","connection failed in orderhistory");
-            }
+// Access the RequestQueue through your singleton class.
+        MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
 
-        });
+//        RestClient.get("/orderhistory",null,new JsonHttpResponseHandler(){
+//
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+//                //Toast.makeText(context,response.toString(),Toast.LENGTH_SHORT).show();
+//                try {
+//                    swiper.setRefreshing(false);
+////                    for(int i=0;i<response.length();i++){
+////                        JSONObject perorder = response.getJSONObject(i);
+////                        ////Log.e("orderhistory",perorder.toString());
+////                    }
+//                    catmenu.setAdapter(new OrderhistoryAdapter(context,response));
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onFinish() {
+//                //onLoginSuccess();
+//            }
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
+//                ////Log.e("error failure","connection failed in orderhistory");
+//            }
+//
+//        });
     }
 
     public void sendrequest(final String orderid, final String status, String fromnumber,String tonumber){
-        RequestParams params = new RequestParams();
+
+        Map<String, String> params = new HashMap<String, String>();
         params.put("id",orderid);
         params.put("status",status);
         params.put("fromnumber",fromnumber);
         params.put("tonumber",tonumber);
+        Log.e("params",params.toString());
 
-        RestClient.get("/changeorderstatuscustomer",params,new JsonHttpResponseHandler(){
+        CustomObjectRequest customRequest = new CustomObjectRequest(Request.Method.GET,MySingleton.BASE_URL+"/changeorderstatuscustomer",params,new Response.Listener<JSONObject>() {
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+            public void onResponse(JSONObject response) {
+
+                Log.e("Response: " , response.toString());
+
                 if(response.has("status")){
                     try {
                         if(response.getString("status").equals("changed")){
@@ -142,19 +188,49 @@ public class OrderHistory extends AppCompatActivity implements SwipeRefreshLayou
                         e.printStackTrace();
                     }
                 }
-
             }
+        }, new Response.ErrorListener() {
 
             @Override
-            public void onFinish() {
-                //onLoginSuccess();
+            public void onErrorResponse(VolleyError error) {
+                // TODO: Handle error
+                Log.e("Response: " , error.toString());
+                Toast.makeText(context,"Internet Connection Failed",Toast.LENGTH_LONG).show();
             }
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
-                Log.e("error failure","connection failed in orderhistory");
-            }
-
         });
+        MySingleton.getInstance(context).addToRequestQueue(customRequest);
+
+//        RestClient.get("/changeorderstatuscustomer",params,new JsonHttpResponseHandler(){
+//
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//                if(response.has("status")){
+//                    try {
+//                        if(response.getString("status").equals("changed")){
+//
+//                        }
+//                        else{
+//                            Toast.makeText(context,response.getString("status"),Toast.LENGTH_LONG).show();
+//                        }
+//                        swiper.setRefreshing(true);
+//                        makerequest();
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onFinish() {
+//                //onLoginSuccess();
+//            }
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
+//                Log.e("error failure","connection failed in orderhistory");
+//            }
+//
+//        });
     }
 
     public void notifychange(){

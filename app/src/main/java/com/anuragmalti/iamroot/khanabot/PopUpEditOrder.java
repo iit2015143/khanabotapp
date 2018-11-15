@@ -81,7 +81,6 @@ public class PopUpEditOrder extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
         try {
             if(add) {
                 boolean foundrest = false;

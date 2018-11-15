@@ -74,6 +74,14 @@ public class NewCartAdapter extends RecyclerView.Adapter<NewCartAdapter.MyViewHo
                     }
                 }
             }
+            if(restaurantobject.has("minorder")){
+                int minorder = restaurantobject.getInt("minorder");
+                if(minorder>restaurantobject.getInt("total")){
+                    holder.orderRequest.setEnabled(false);
+                    holder.notApplicable.setVisibility(View.VISIBLE);
+                    holder.notApplicable.setText("The order is below minimumorder of Rs " + restaurantobject.getString("minorder"));
+                }
+            }
             if(restaurantobject.has("offer")){
                 holder.offer.setText(restaurantobject.getJSONObject("offer").getString("name"));
                 if(isApplicable(restaurantobject.getJSONObject("offer"),restaurantobject)){
