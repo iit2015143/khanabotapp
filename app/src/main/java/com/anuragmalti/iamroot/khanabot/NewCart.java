@@ -45,6 +45,7 @@ public class NewCart extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_cart);
+        Log.e("error cart",HomePage.mycart.toString());
 
         context = this;
         editAddress = (EditText)findViewById(R.id.editAddress);
@@ -170,6 +171,7 @@ public class NewCart extends AppCompatActivity {
 
     public void setadapter(){
         restaurantcont.setAdapter(new NewCartAdapter(this,HomePage.mycart));
+        Log.e("error cart",HomePage.mycart.toString());
     }
 
     protected void onPause() {

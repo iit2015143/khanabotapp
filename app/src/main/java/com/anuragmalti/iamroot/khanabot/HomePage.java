@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.facebook.shimmer.ShimmerFrameLayout;
@@ -374,7 +375,7 @@ public class HomePage extends AppCompatActivity {
     public static void updatecart(Boolean add, JSONObject cart){
 
         Log.e("error cart","update cart processed");
-        JSONObject cartItem  = null;
+        JSONObject cartItem = null;
         try {
             cartItem = new JSONObject(cart.toString());
         } catch (JSONException e) {
@@ -406,7 +407,6 @@ public class HomePage extends AppCompatActivity {
                                     cartItem.getJSONArray("price").getInt(cartItem.getInt("index"))) {
 
                                 founditem = true;
-
                                 int quantity = cartObjectItem.getInt("quantity");
                                 quantity++;
                                 cartObjectItem.put("quantity", quantity);
@@ -517,12 +517,15 @@ public class HomePage extends AppCompatActivity {
         }
         Log.e("error cart",mycart.toString());
     }
+
     public void initializecart() throws JSONException {
+
         SharedPreferences prefs = getSharedPreferences("com.example.root.khanabot",Context.MODE_PRIVATE);
         String cartstring = prefs.getString("mycart",(new JSONArray()).toString());
         mycart = new JSONArray(cartstring);
 
     }
+
     public void addtosharedpreferences(String key,String cartstring){
         SharedPreferences prefs = getSharedPreferences("com.example.root.khanabot",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -542,11 +545,25 @@ public class HomePage extends AppCompatActivity {
     public void onPause() {
         super.onPause();
         addtosharedpreferences("mycart",mycart.toString());
+        Log.e("error cart",HomePage.mycart.toString());
         mShimmerHotDeals.stopShimmerAnimation();
         mShimmerTopRated.stopShimmerAnimation();
     }
+
     public void notifychange(){
-        ((TextView)findViewById(R.id.carttext)).setText(HomePage.mycart.length()+"");
+        int total = 0;
+        for(int i=0; i<HomePage.mycart.length(); i++){
+            try {
+                JSONObject cartobject = mycart.getJSONObject(i);
+                JSONArray order = cartobject.getJSONArray("order");
+                for(int j=0; j<order.length();j++){
+                    total +=order.getJSONObject(j).getInt("quantity");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        ((TextView)findViewById(R.id.carttext)).setText(total+"");
         if(HomePage.mycart.length()==0)
             ((RelativeLayout)findViewById(R.id.cartcontainer)).setVisibility(View.INVISIBLE);
         else

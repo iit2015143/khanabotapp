@@ -56,7 +56,7 @@ public class MenuExpandableAdapter extends ExpandableRecyclerAdapter<MenuParentV
             holder.nameofrest.setText(nothotdeal.getString("resname").replaceAll("_"," "));
             final JSONArray price = nothotdeal.getJSONArray("price");
             holder.price.setText("Rs "+ price.getString(price.length()-1));
-            holder.change.setText(nothotdeal.getInt("quantity"));
+            holder.change.setText(nothotdeal.getInt("quantity")+"");
             nothotdeal.put("index",price.length()-1);
             if(price.length()==1){
                 holder.radiovisible.setVisibility(View.GONE);
@@ -95,6 +95,7 @@ public class MenuExpandableAdapter extends ExpandableRecyclerAdapter<MenuParentV
                     try {
                         value = nothotdeal.getInt("quantity");
                         value++;
+                        nothotdeal.put("quantity",value);
                         holder.change.setText(value.toString());
                         HomePage.updatecart(true,nothotdeal);
                         ((RestaurantProfile)context).notifychange();
@@ -111,16 +112,19 @@ public class MenuExpandableAdapter extends ExpandableRecyclerAdapter<MenuParentV
                     Integer value = null;
                     try {
                         value = nothotdeal.getInt("quantity");
+                        if(value>0) {
+                            value--;
+                            holder.change.setText(value.toString());
+                            nothotdeal.put("quantity",value);
+                            HomePage.updatecart(false,nothotdeal);
+                            ////Log.e("error nothot",nothotdeal.toString());
+                            ((RestaurantProfile)context).notifychange();
+                        }
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    if(value>0) {
-                        value--;
-                        holder.change.setText(value.toString());
-                        HomePage.updatecart(false,nothotdeal);
-                        ////Log.e("error nothot",nothotdeal.toString());
-                        ((RestaurantProfile)context).notifychange();
-                    }
+
                 }
             });
         } catch (JSONException e) {

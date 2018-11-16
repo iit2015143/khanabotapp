@@ -70,6 +70,7 @@ implements Filterable{
                                 holder.price.setText("Rs "+ price.getString(price.length()-1));
                                 nothotdeal.put("index",price.length()-1);
                                 holder.change.setText(0+"");
+                                nothotdeal.put("quantity",0);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -79,6 +80,7 @@ implements Filterable{
                                 holder.price.setText("Rs "+ price.getString(0));
                                 nothotdeal.put("index",0);
                                 holder.change.setText(0+"");
+                                nothotdeal.put("quantity",0);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -95,6 +97,7 @@ implements Filterable{
                     try {
                         Integer quantity = nothotdeal.getInt("quantity");
                         quantity++;
+                        nothotdeal.put("quantity",quantity);
                         holder.change.setText(quantity.toString());
                         HomePage.updatecart(true,nothotdeal);
                         ////Log.e("error nothot",nothotdeal.toString());
@@ -114,6 +117,7 @@ implements Filterable{
                         Integer quantity = nothotdeal.getInt("quantity");
                         if(quantity>0) {
                             quantity--;
+                            nothotdeal.put("quantity",quantity);
                             holder.change.setText(quantity.toString());
                             HomePage.updatecart(false,nothotdeal);
                             ////Log.e("error nothot",nothotdeal.toString());

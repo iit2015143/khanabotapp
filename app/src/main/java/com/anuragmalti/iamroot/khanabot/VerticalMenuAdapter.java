@@ -90,8 +90,15 @@ public class VerticalMenuAdapter extends RecyclerView.Adapter<VerticalMenuAdapte
             holder.add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Integer value = Integer.parseInt(holder.change.getText().toString());
-                    value++;
+                    Integer value = null;
+                    try {
+                        value = nothotdeal.getInt("quantity");
+                        value++;
+                        nothotdeal.put("quantity",value);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
                     holder.change.setText(value.toString());
                     HomePage.updatecart(true,nothotdeal);
                     Log.e("error cart","update cart request made");
@@ -114,13 +121,20 @@ public class VerticalMenuAdapter extends RecyclerView.Adapter<VerticalMenuAdapte
             holder.remove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Integer value = Integer.parseInt(holder.change.getText().toString());
-                    if(value>0) {
-                        value--;
-                        holder.change.setText(value.toString());
-                        HomePage.updatecart(false,nothotdeal);
-                        ////Log.e("error nothot",nothotdeal.toString());
+                    Integer value = null;
+                    try {
+                        value = nothotdeal.getInt("quantity");
+                        if(value>0) {
+                            value--;
+                            nothotdeal.put("quantity",value);
+                            holder.change.setText(value.toString());
+                            HomePage.updatecart(false,nothotdeal);
+                            ////Log.e("error nothot",nothotdeal.toString());
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
+
                     switch (decider){
                         case "Cart":
                             try {
