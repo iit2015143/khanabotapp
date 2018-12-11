@@ -53,16 +53,16 @@ public class EditOfferAdapter extends RecyclerView.Adapter<EditOfferAdapter.MyVi
                 //Toast.makeText(context,"got name", Toast.LENGTH_SHORT).show();
                 holder.name.setText(nothotdeals.getJSONObject(position).getString("name"));
                 if(nothotdeals.getJSONObject(position).getString("minValue").compareTo("-1") != 0){
-                    holder.minValue.setText("Min Value of the discount : "+nothotdeals.getJSONObject(position).getString("minValue"));
+                    holder.minValue.setText("Minimum bill for discount: "+nothotdeals.getJSONObject(position).getString("minValue"));
                 }
                 else{
-                    holder.minValue.setText("no limit");
+                    holder.minValue.setText("Minimumn bill");
                 }
-                if(nothotdeals.getJSONObject(position).getString("minValue").compareTo("-1")!= 0){
-                    holder.maxDiscount.setText("Max Discount :  " + nothotdeals.getJSONObject(position).getString("maxDiscount"));
+                if(nothotdeals.getJSONObject(position).getString("maxDiscount").compareTo("-1")!= 0){
+                    holder.maxDiscount.setText("Maximum Discount :  " + nothotdeals.getJSONObject(position).getString("maxDiscount"));
                 }
                 else{
-                    holder.maxDiscount.setText("no limit");
+                    holder.maxDiscount.setText("Maximum Discount : no limit");
                 }
             }
         } catch (JSONException e) {
@@ -95,6 +95,7 @@ public class EditOfferAdapter extends RecyclerView.Adapter<EditOfferAdapter.MyVi
                     offer.put("name",nothotdeals.getJSONObject(lastCheckedRB.getId()).getString("name"));
                     offer.put("minValue",nothotdeals.getJSONObject(lastCheckedRB.getId()).getString("minValue"));
                     offer.put("maxDiscount",nothotdeals.getJSONObject(lastCheckedRB.getId()).getString("maxDiscount"));
+                    offer = nothotdeals.getJSONObject(lastCheckedRB.getId());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -103,8 +104,8 @@ public class EditOfferAdapter extends RecyclerView.Adapter<EditOfferAdapter.MyVi
                 ((EditOfferPopUp)context).setOfferValue(offer);
 
                // HomePage.mycart.put(offer);
-                if(!isApplicable(offer)){
-                    holder.error.setVisibility(View.VISIBLE);
+                if(!isApplicable(offer,holder)){
+
                     try {
                         HomePage.mycart.getJSONObject(positionOfParent).remove("revisedTotal");
                         HomePage.mycart.getJSONObject(positionOfParent).remove("offer");
@@ -116,7 +117,7 @@ public class EditOfferAdapter extends RecyclerView.Adapter<EditOfferAdapter.MyVi
                 }
                 else {
 
-                    revisedTotal = getDiscount(offer);
+                    revisedTotal = getDiscount(offer,holder);
                     try {
                         HomePage.mycart.getJSONObject(positionOfParent).put("revisedTotal", revisedTotal);
                         HomePage.mycart.getJSONObject(positionOfParent).put("offer",offer);
@@ -130,11 +131,27 @@ public class EditOfferAdapter extends RecyclerView.Adapter<EditOfferAdapter.MyVi
         });
     }
 
-    public boolean isApplicable(JSONObject offer){
+    public boolean isApplicable(JSONObject offer, MyViewHolder holder){
         try {
-            if(HomePage.mycart.getJSONObject(positionOfParent).getInt("total")>=offer.getInt("minValue")){
+            JSONObject restaurant = HomePage.mycart.getJSONObject(positionOfParent);
+            if(restaurant.getInt("total")>=offer.getInt("minValue")){
+                if(offer.has("mode")){
+                    if(offer.getJSONArray("mode").length()==2)
+                        return true;
+                    else{
+                        Log.e("offer error",offer.getJSONArray("mode").getString(0)+ " "+restaurant.getString("mode"));
+                        if(offer.getJSONArray("mode").getString(0).equals(restaurant.getString("mode")))
+                            return true;
+
+                        holder.error.setVisibility(View.VISIBLE);
+                        holder.error.setText("Offer not applicable on " + restaurant.getString("mode"));
+                        return false;
+                    }
+                }
                 return true;
             }
+            holder.error.setVisibility(View.VISIBLE);
+            holder.error.setText("Your bill does not reach minimum amount of Rs "+offer.getString("minValue"));
         } catch (JSONException e) {
             e.printStackTrace();
             Log.e("error json",e.toString());
@@ -142,8 +159,8 @@ public class EditOfferAdapter extends RecyclerView.Adapter<EditOfferAdapter.MyVi
         return false;
     }
 
-    public int getDiscount(JSONObject offer){
-        if(isApplicable(offer)){
+    public int getDiscount(JSONObject offer, MyViewHolder holder){
+        if(isApplicable(offer,holder)){
             try {
                 total = Integer.parseInt(HomePage.mycart.getJSONObject(positionOfParent).getString("total"));
                 String name = offer.getString("name");

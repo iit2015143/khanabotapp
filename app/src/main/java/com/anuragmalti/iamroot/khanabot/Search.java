@@ -8,11 +8,14 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.android.volley.toolbox.JsonArrayRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -91,7 +94,7 @@ public class Search extends Activity {
 //        });
 
         JSONArray entiremenu=new JSONArray();
-        ////Log.e("error category",responseArray.toString());
+        Log.e("quantity","filling data");
         for(int i=0; i<responseArray.length();i++){
             try {
                 JSONObject restaurantobj = responseArray.getJSONObject(i);
@@ -105,13 +108,25 @@ public class Search extends Activity {
                     JSONArray leveltwonames = leveltwo.names();
                     for(int l=0; l<leveltwonames.length();l++){
                         JSONObject item = new JSONObject(leveltwo.getJSONObject(leveltwonames.getString(l)).toString());
-
                         item.put("name",leveltwonames.getString(l));
                         item.put("resname",restaurantobj.getString("name"));
                         item.put("number",restaurantobj.getString("number"));
                         item.put("levelone","menu");
                         item.put("leveltwo",menunames.getString(j));
-                        item.put("quantity",0);
+                        if(leveltwo.getJSONObject(leveltwonames.getString(l)).getJSONArray("price").length()==1){
+                            JSONArray quantity = new JSONArray();
+                            quantity.put(0);
+                            item.put("quantity",quantity);
+                            item.put("index",0);
+                        }
+                        else{
+                            JSONArray quantity = new JSONArray();
+                            quantity.put(0);
+                            quantity.put(0);
+                            item.put("quantity",quantity);
+                            item.put("index",1);
+                        }
+                        Log.e("search error",item.toString());
                         entiremenu.put(item);
                     }
                 }
@@ -143,7 +158,19 @@ public class Search extends Activity {
     }
 
     public void notifychange(){
-        ((TextView)findViewById(R.id.carttext)).setText(HomePage.mycart.length()+"");
+        int total = 0;
+        for(int i=0; i<HomePage.mycart.length(); i++){
+            try {
+                JSONObject cartobject = HomePage.mycart.getJSONObject(i);
+                JSONArray order = cartobject.getJSONArray("order");
+                for(int j=0; j<order.length();j++){
+                    total +=order.getJSONObject(j).getInt("quantity");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        ((TextView)findViewById(R.id.carttext)).setText(total+"");
         if(HomePage.mycart.length()==0)
             ((RelativeLayout)findViewById(R.id.cartcontainer)).setVisibility(View.INVISIBLE);
         else

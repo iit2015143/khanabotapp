@@ -11,6 +11,16 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_marginBottom="?actionBarSize">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No offers available"
+            android:textSize="@dimen/bletter"
+            android:gravity="center"
+            android:textColor="@color/primary"
+            android:padding="8dp"
+            android:id="@+id/nooffer"
+            android:visibility="gone"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/editOfferPopUp"

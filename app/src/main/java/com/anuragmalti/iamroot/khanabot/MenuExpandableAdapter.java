@@ -56,21 +56,32 @@ public class MenuExpandableAdapter extends ExpandableRecyclerAdapter<MenuParentV
             holder.nameofrest.setText(nothotdeal.getString("resname").replaceAll("_"," "));
             final JSONArray price = nothotdeal.getJSONArray("price");
             holder.price.setText("Rs "+ price.getString(price.length()-1));
-            holder.change.setText(nothotdeal.getInt("quantity")+"");
             nothotdeal.put("index",price.length()-1);
+
             if(price.length()==1){
                 holder.radiovisible.setVisibility(View.GONE);
+                holder.change.setText(""+nothotdeal.getJSONArray("quantity").getInt(0));
             }
             else{
                 holder.radiovisible.setVisibility(View.VISIBLE);
+                if(nothotdeal.getInt("index")==0) {
+                    holder.half.setChecked(true);
+                    holder.change.setText("" + nothotdeal.getJSONArray("quantity").getInt(0));
+                }
+                else {
+
+                    holder.full.setChecked(true);
+                    holder.price.setText("Rs "+ price.getString(1));
+                    holder.change.setText("" + nothotdeal.getJSONArray("quantity").getInt(1));
+                }
                 holder.radiovisible.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(RadioGroup group, int checkedId) {
                         if(checkedId==R.id.full) {
                             try {
-                                holder.price.setText("Rs "+ price.getString(price.length()-1));
-                                nothotdeal.put("index",price.length()-1);
-                                holder.change.setText(0+"");
+                                holder.price.setText("Rs "+ price.getString(1));
+                                nothotdeal.put("index",1);
+                                holder.change.setText("" + nothotdeal.getJSONArray("quantity").getInt(1));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -79,7 +90,7 @@ public class MenuExpandableAdapter extends ExpandableRecyclerAdapter<MenuParentV
                             try {
                                 holder.price.setText("Rs "+ price.getString(0));
                                 nothotdeal.put("index",0);
-                                holder.change.setText(0+"");
+                                holder.change.setText("" + nothotdeal.getJSONArray("quantity").getInt(0));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -91,11 +102,12 @@ public class MenuExpandableAdapter extends ExpandableRecyclerAdapter<MenuParentV
             holder.add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Integer value = 0;
                     try {
-                        value = nothotdeal.getInt("quantity");
+                        int index = nothotdeal.getInt("index");
+                        JSONArray quantity = nothotdeal.getJSONArray("quantity");
+                        Integer value = quantity.getInt(index);
                         value++;
-                        nothotdeal.put("quantity",value);
+                        quantity.put(index,value);
                         holder.change.setText(value.toString());
                         HomePage.updatecart(true,nothotdeal);
                         ((RestaurantProfile)context).notifychange();
@@ -109,13 +121,14 @@ public class MenuExpandableAdapter extends ExpandableRecyclerAdapter<MenuParentV
             holder.remove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Integer value = null;
                     try {
-                        value = nothotdeal.getInt("quantity");
+                        int index = nothotdeal.getInt("index");
+                        JSONArray quantity = nothotdeal.getJSONArray("quantity");
+                        Integer value = quantity.getInt(index);
                         if(value>0) {
                             value--;
+                            quantity.put(index,value);
                             holder.change.setText(value.toString());
-                            nothotdeal.put("quantity",value);
                             HomePage.updatecart(false,nothotdeal);
                             ////Log.e("error nothot",nothotdeal.toString());
                             ((RestaurantProfile)context).notifychange();

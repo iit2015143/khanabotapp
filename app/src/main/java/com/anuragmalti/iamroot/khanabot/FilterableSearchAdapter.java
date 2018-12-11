@@ -31,11 +31,7 @@ implements Filterable{
         this.context = context;
         nothotdeals = hot;
         FilterableSearchAdapter = this;
-        try {
-            contactListFiltered = new JSONArray(nothotdeals.toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        contactListFiltered = nothotdeals;
     }
 
     @NonNull
@@ -50,27 +46,38 @@ implements Filterable{
 
         try {
             final JSONObject nothotdeal = contactListFiltered.getJSONObject(position);
+            Log.e("quantity", nothotdeals.getJSONObject(0).toString());
             holder.foodname.setText(nothotdeal.getString("name").replaceAll("_"," "));
             holder.nameofrest.setText(nothotdeal.getString("resname"));
             final JSONArray price = nothotdeal.getJSONArray("price");
             holder.price.setText("Rs "+ price.getString(price.length()-1));
-            holder.change.setText(nothotdeal.getInt("quantity")+"");
 
-            nothotdeal.put("index",price.length()-1);
             holder.radiovisible.setVisibility(View.VISIBLE);
             if(price.length()==1){
                 holder.radiovisible.setVisibility(View.GONE);
+                holder.change.setText(""+nothotdeal.getJSONArray("quantity").getInt(0));
             }
             else{
+
+                if(nothotdeal.getInt("index")==0) {
+                    holder.half.setChecked(true);
+                    holder.change.setText("" + nothotdeal.getJSONArray("quantity").getInt(0));
+                }
+                else {
+
+                    holder.full.setChecked(true);
+                    holder.price.setText("Rs "+ price.getString(1));
+                    holder.change.setText("" + nothotdeal.getJSONArray("quantity").getInt(1));
+                }
+
                 holder.radiovisible.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(RadioGroup group, int checkedId) {
-                        if(checkedId==R.id.full) {
+                        if(checkedId == R.id.full) {
                             try {
-                                holder.price.setText("Rs "+ price.getString(price.length()-1));
-                                nothotdeal.put("index",price.length()-1);
-                                holder.change.setText(0+"");
-                                nothotdeal.put("quantity",0);
+                                holder.price.setText("Rs "+ price.getString(1));
+                                nothotdeal.put("index",1);
+                                holder.change.setText("" + nothotdeal.getJSONArray("quantity").getInt(1));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -79,8 +86,7 @@ implements Filterable{
                             try {
                                 holder.price.setText("Rs "+ price.getString(0));
                                 nothotdeal.put("index",0);
-                                holder.change.setText(0+"");
-                                nothotdeal.put("quantity",0);
+                                holder.change.setText("" + nothotdeal.getJSONArray("quantity").getInt(0));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -95,13 +101,16 @@ implements Filterable{
                 @Override
                 public void onClick(View v) {
                     try {
-                        Integer quantity = nothotdeal.getInt("quantity");
-                        quantity++;
-                        nothotdeal.put("quantity",quantity);
-                        holder.change.setText(quantity.toString());
-                        HomePage.updatecart(true,nothotdeal);
-                        ////Log.e("error nothot",nothotdeal.toString());
-                        ((Search)context).notifychange();
+                            int index = nothotdeal.getInt("index");
+                            JSONArray quantity = nothotdeal.getJSONArray("quantity");
+                            Integer value = quantity.getInt(index);
+                            value++;
+                            quantity.put(index,value);
+                            holder.change.setText(value.toString());
+                            HomePage.updatecart(true,nothotdeal);
+                            Log.e("quantity",nothotdeal.toString());
+                            ((Search)context).notifychange();
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -114,12 +123,15 @@ implements Filterable{
 
 
                     try {
-                        Integer quantity = nothotdeal.getInt("quantity");
-                        if(quantity>0) {
-                            quantity--;
-                            nothotdeal.put("quantity",quantity);
-                            holder.change.setText(quantity.toString());
+                        int index = nothotdeal.getInt("index");
+                        JSONArray quantity = nothotdeal.getJSONArray("quantity");
+                        Integer value = quantity.getInt(index);
+                        if(value>0) {
+                            value--;
+                            quantity.put(index,value);
+                            holder.change.setText(value.toString());
                             HomePage.updatecart(false,nothotdeal);
+                            Log.e("quantity",nothotdeal.toString());
                             ////Log.e("error nothot",nothotdeal.toString());
                         }
                         ((Search)context).notifychange();
@@ -131,6 +143,7 @@ implements Filterable{
             });
         } catch (JSONException e) {
             e.printStackTrace();
+            Log.e("exception", e.toString());
         }
 
     }
@@ -206,7 +219,6 @@ implements Filterable{
             full = (RadioButton)(view.findViewById(R.id.full));
             radiovisible = (RadioGroup)(view.findViewById(R.id.radiovisible));
         }
-
     }
 }
 

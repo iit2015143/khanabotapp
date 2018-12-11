@@ -62,11 +62,22 @@ public class HomePage extends AppCompatActivity {
     private ShimmerFrameLayout mShimmerTopRated;
     private static int NUM_PAGES = 0;
     private static int currentPage = 0;
+    public int responseFlag = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        responseFlag = 0;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
+
+        mShimmerHotDeals=findViewById(R.id.shimmer_hot_deals);
+        mShimmerHotDeals.startShimmerAnimation();
+        mShimmerTopRated=findViewById(R.id.shimmer_top_rated);
+        mShimmerTopRated.startShimmerAnimation();
+        Log.e("shimmer","started");
+
+
+
         try {
             initializecart();
         } catch (JSONException e) {
@@ -74,9 +85,11 @@ public class HomePage extends AppCompatActivity {
         }
         context = this;
 
+
         //address = getIntent().getStringExtra("address");
         ((TextView)findViewById(R.id.location)).setText(address);
         notifychange();
+
 
         String location = getprefsvalue("location");
         if(location.equals("")){
@@ -91,15 +104,6 @@ public class HomePage extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
-        //setupSlider();
-
-        mShimmerHotDeals=findViewById(R.id.shimmer_hot_deals);
-        mShimmerHotDeals.startShimmerAnimation();
-        mShimmerTopRated=findViewById(R.id.shimmer_top_rated);
-        mShimmerTopRated.startShimmerAnimation();
-
 
         hotdeal = (RecyclerView)findViewById(R.id.hotdeals);
         hotdeal.setAdapter(new HorizontalHotDeal(this,new JSONArray()));
@@ -235,29 +239,6 @@ public class HomePage extends AppCompatActivity {
 
 // Access the RequestQueue through your singleton class.
         MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
-//        RestClient.get("/currenttime", null, new JsonHttpResponseHandler(){
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                if(response.has("currenttime")){
-//                    try {
-//                        currenttime = response.getInt("currenttime");
-//                        //Log.e("currenttime",currenttime+"");
-//                        makerequest(new LatLng(lat,longitude));
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onFinish() {
-//                //onLoginSuccess();
-//            }
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
-//                //Toast.makeText(context,throwable.toString(),Toast.LENGTH_LONG).show();
-//            }
-//        });
 
     }
 
@@ -285,6 +266,7 @@ public class HomePage extends AppCompatActivity {
                     ((ViewPager)findViewById(R.id.viewPager)).setBackground(getResources().getDrawable(R.drawable.nooffer));
 
                 setmyadapters();
+                responseFlag = 1;
 
             }
         }, new Response.ErrorListener() {
@@ -297,59 +279,6 @@ public class HomePage extends AppCompatActivity {
         });
 
         MySingleton.getInstance(this).addToRequestQueue(customRequest);
-
-
-
-//        StringRequest req = new StringRequest(Request.Method.POST, MySingleton.BASE_URL+"/sharelocation",
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        Log.e("Response","array came bro");
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Log.e("Response","failed");
-//                    }
-//                })
-//        {
-//            @Override
-//            protected Map<String, String> getParams() {
-//                Map<String, String> params = new HashMap<String, String>();
-//                params.put("lat",latLng.latitude + "");
-//                params.put("long",latLng.longitude + "");
-//                params.put("gLocation",address);
-//                return params;
-//            }
-//        };
-//        MySingleton.getInstance(this).addToRequestQueue(req);
-
-
-
-//        RestClient.post("/sharelocation", params, new JsonHttpResponseHandler(){
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-//                responseArray = response;
-//                if(responseArray.length()==0){
-//                    ((ViewPager)findViewById(R.id.viewPager)).setBackground(getResources().getDrawable(R.drawable.notavailable));
-//                }
-//                else
-//                    ((ViewPager)findViewById(R.id.viewPager)).setBackground(getResources().getDrawable(R.drawable.nooffer));
-//
-//                setmyadapters();
-//
-//            }
-//
-//            @Override
-//            public void onFinish() {
-//                //onLoginSuccess();
-//            }
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
-//                //Toast.makeText(context,throwable.toString(),Toast.LENGTH_LONG).show();
-//            }
-//        });
 
     }
     public void locationBarClicked(){
@@ -446,21 +375,26 @@ public class HomePage extends AppCompatActivity {
                     //including mode in restaurant cart.
                     for(int i=0; i<responseArray.length();i++){
                         JSONObject restaurant = responseArray.getJSONObject(i);
-                        if(restaurant.has("minorder")){
-                            restObject.put("minorder",restaurant.getInt("minorder"));
-                        }
+
                         if(restaurant.getString("number").equals(cartItem.getString("number"))){
+
+                            if(restaurant.has("minorder")){
+                                restObject.put("minorder",restaurant.getInt("minorder"));
+                            }
+
                             if(restaurant.has("callnumber")){
                                 restObject.put("callnumber",restaurant.getString("callnumber"));
                             }
                             if(restaurant.has("mode")){
                                 restObject.put("restmode",restaurant.getJSONArray("mode"));
+                                restObject.put("mode",restaurant.getJSONArray("mode").getString(0));
                             }
                             else{
                                 JSONArray mode = new JSONArray();
                                 mode.put("cod");
                                 mode.put("book");
                                 restObject.put("restmode",mode);
+                                restObject.put("mode","cod");
                             }
                             break;
                         }
@@ -511,21 +445,19 @@ public class HomePage extends AppCompatActivity {
                 }
             }
 
-        } catch (JSONException e) {
+        }
+        catch (JSONException e) {
             e.printStackTrace();
             Log.e("error cart",e.toString());
         }
         Log.e("error cart",mycart.toString());
     }
-
     public void initializecart() throws JSONException {
-
         SharedPreferences prefs = getSharedPreferences("com.example.root.khanabot",Context.MODE_PRIVATE);
         String cartstring = prefs.getString("mycart",(new JSONArray()).toString());
         mycart = new JSONArray(cartstring);
 
     }
-
     public void addtosharedpreferences(String key,String cartstring){
         SharedPreferences prefs = getSharedPreferences("com.example.root.khanabot",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -545,7 +477,6 @@ public class HomePage extends AppCompatActivity {
     public void onPause() {
         super.onPause();
         addtosharedpreferences("mycart",mycart.toString());
-        Log.e("error cart",HomePage.mycart.toString());
         mShimmerHotDeals.stopShimmerAnimation();
         mShimmerTopRated.stopShimmerAnimation();
     }
@@ -576,7 +507,8 @@ public class HomePage extends AppCompatActivity {
         super.onResume();
         selectme(1);
         notifychange();
-        setmyadapters();
+        if(responseFlag == 1)
+            setmyadapters();
     }
     public boolean notifstatusset(){
         SharedPreferences prefs = getSharedPreferences("com.example.root.khanabot",Context.MODE_PRIVATE);
@@ -621,36 +553,6 @@ public class HomePage extends AppCompatActivity {
         });
         MySingleton.getInstance(this).addToRequestQueue(customRequest);
 
-//        RestClient.get("/savenotificationid",params,new JsonHttpResponseHandler(){
-//
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                //Toast.makeText(context,response.toString(),Toast.LENGTH_SHORT).show();
-//                try {
-//                    if(response.has("notificationid")) {
-//                        String value = response.getString("notificationid");
-//                        if (value.equals("updated")) {
-//                            ((HomePage)context).addtosharedpreferences("notificationstatus","updated");
-//                            //////Log.e("Sent ","notificationid sent to server");
-//                        }
-//                    }
-//
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onFinish() {
-//                //onLoginSuccess();
-//            }
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
-//                //////Log.e("error failure","connection failed in notificationid updation");
-//            }
-//
-//        });
     }
 
     public String getprefsvalue(String key){
@@ -715,6 +617,7 @@ public class HomePage extends AppCompatActivity {
                     hotdeal.put("levelone","HotDeals");
                     hotdeal.put("index",0);
                     hotdeal.put("number",restaurantobj.getString("number"));
+                    hotdeal.put("rating",restaurantobj.getString("rating"));
                     if(restaurantobj.has("deliversin")){
                         String deliversin = restaurantobj.getString("deliversin")+ "min";
                         hotdeal.put("deliversin",deliversin);
@@ -736,6 +639,7 @@ public class HomePage extends AppCompatActivity {
                     myTopRated.put("levelone","menu");
                     myTopRated.put("leveltwo",TopRated.getString("Category"));
                     myTopRated.put("index",index);
+                    myTopRated.put("rating",restaurantobj.getString("rating"));
                     myTopRated.put("image",menu.getJSONObject(TopRated.
                             getString("Category")).getJSONObject(TopRated.getString("SubCategory")).
                             getString("image"));
@@ -760,12 +664,12 @@ public class HomePage extends AppCompatActivity {
                             downtime = item.getJSONObject("availability").getInt("downtime");
 
                             if(uptime<downtime){
-                                if(currenttime>=uptime && currenttime<downtime){
+                                if(currenttime >= uptime && currenttime < downtime){
 
                                 }
                                 else{
                                     leveltwo.remove(leveltwonames.getString(k));
-                                    //Log.e("leveltwolength",leveltwo.length()+"");
+                                    //Log.e( "leveltwolength" , leveltwo.length() + " " );
                                     continue;
                                 }
                             }
@@ -812,5 +716,6 @@ public class HomePage extends AppCompatActivity {
         mShimmerHotDeals.stopShimmerAnimation();
         mShimmerHotDeals.setVisibility(View.GONE);
         mShimmerTopRated.setVisibility(View.GONE);
+        Log.e("shimmer","stopped");
     }
 }

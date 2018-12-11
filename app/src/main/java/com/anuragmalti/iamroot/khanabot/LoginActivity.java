@@ -107,41 +107,6 @@ public class LoginActivity extends AppCompatActivity {
         });
         MySingleton.getInstance(this).addToRequestQueue(customRequest);
 
-
-//        RestClient.post("/number", params, new JsonHttpResponseHandler(){
-//
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                Toast.makeText(context,response.toString(),Toast.LENGTH_SHORT).show();
-//                try {
-//                    String value = response.getString("otp");
-//                    progressDialog.hide();
-//                    if(value.equals("sent")){
-//                        onLoginSuccess();
-//                    }
-//                    else if(value.equals("timeout")){
-//                        onLoginFailed("OTP timeout");
-//                    }
-//                    else
-//                        onLoginFailed("Invalid otp");
-//
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//
-//            @Override
-//            public void onFinish() {
-//                //onLoginSuccess();
-//            }
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
-//                onLoginFailed("Request failed");
-//                //Toast.makeText(context,throwable.toString(),Toast.LENGTH_LONG).show();
-//                progressDialog.hide();
-//            }
-//
-//        });
     }
 
     public void onLoginSuccess() {

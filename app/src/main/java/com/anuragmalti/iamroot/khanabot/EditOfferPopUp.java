@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -109,7 +110,7 @@ public class EditOfferPopUp extends AppCompatActivity {
         }
         // Toast.makeText(getBaseContext(),"inside make request",Toast.LENGTH_SHORT).show();
         Log.e("request","inside make request");
-        CustomArrayRequest customRequest = new CustomArrayRequest(Request.Method.POST,MySingleton.BASE_URL+"/getoffers",params,new Response.Listener<JSONArray>() {
+        CustomArrayRequest customRequest = new CustomArrayRequest(Request.Method.GET,MySingleton.BASE_URL+"/getoffers",params,new Response.Listener<JSONArray>() {
 
             @Override
             public void onResponse(JSONArray response) {
@@ -136,31 +137,6 @@ public class EditOfferPopUp extends AppCompatActivity {
 
         MySingleton.getInstance(this).addToRequestQueue(customRequest);
 
-//        RestClient.get("/getoffers",params,new JsonHttpResponseHandler(){
-//
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-//                //Toast.makeText(context,"inside success",Toast.LENGTH_LONG).show();
-//                offerResponse = response;
-//                // notifychange();
-//                Log.e("response",response.toString());
-//                Log.e("offerresponse",offerResponse.toString());
-//                //Toast.makeText(context,"got offers",Toast.LENGTH_SHORT).show();
-//                setMyAdapter(offerResponse);
-//            }
-//
-//            @Override
-//            public void onFinish() {
-//                //onLoginSuccess();
-//            }
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
-//                Log.e("error failure","connection failed in orderhistory");
-//
-//                //Toast.makeText(context,"Internet connection failed",Toast.LENGTH_SHORT).show();
-//            }
-//
-//        });
     }
 
     public void setOfferValue(JSONObject offerValue) {
@@ -168,6 +144,9 @@ public class EditOfferPopUp extends AppCompatActivity {
     }
 
     public void setMyAdapter(JSONArray offerResponse){
+        if(offerResponse.length()==0){
+            ((TextView)findViewById(R.id.nooffer)).setVisibility(View.VISIBLE);
+        }
         restaurantcont.setAdapter(new EditOfferAdapter(cont,offerResponse,value));
     }
 }

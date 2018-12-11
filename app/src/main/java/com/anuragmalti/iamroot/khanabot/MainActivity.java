@@ -113,52 +113,6 @@ GoogleApiClient.OnConnectionFailedListener{
 // Access the RequestQueue through your singleton class.
         MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
 
-
-
-
-//        RequestParams param = new RequestParams();
-//        param = null;
-//        RestClient.get("/appversion",param,new JsonHttpResponseHandler(){
-//
-//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                //Toast.makeText(context,response.toString(),Toast.LENGTH_SHORT).show();
-//                    if(response.has("version")){
-//                        try {
-//                            String sversion = response.getString("version");
-//                            if(sversion.equals(getResources().getString(R.string.appversion))){
-//                                checkuuidandnumber();
-//                            }
-//                            else{
-////                                Intent intent = new Intent(context,Update.class);
-////                                startActivity(intent);
-////                                finish();
-//                                final String appPackageName = getPackageName();
-//                                try {
-//                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-//                                } catch (android.content.ActivityNotFoundException anfe) {
-//                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-//                                }
-//                                finish();
-//                            }
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//
-//                    }
-//            }
-//
-//            @Override
-//            public void onFinish() {
-//                //onLoginSuccess();
-//            }
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
-//                show("Request failed");
-//                Log.e("error internet",throwable.toString());
-//                //Toast.makeText(context,throwable.toString(),Toast.LENGTH_LONG).show();
-//            }
-//    });
-
     }
 
     public void checkuuidandnumber(){
@@ -220,45 +174,6 @@ GoogleApiClient.OnConnectionFailedListener{
         });
 
         MySingleton.getInstance(this).addToRequestQueue(customRequest);
-//        RestClient.setCookieStore(new PersistentCookieStore(getApplicationContext()));
-//        RestClient.post("/login", params, new JsonHttpResponseHandler(){
-//
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                //Toast.makeText(context,response.toString(),Toast.LENGTH_SHORT).show();
-//                try {
-//                    if(response.has("loggedin")){
-//                        if(response.getBoolean("loggedin")){
-//                            trylocation();
-////                            Intent intent = new Intent(context,HomePage.class);
-////                            startActivity(intent);
-////                            finish();
-//                        }
-//                        else{
-//                            Toast.makeText(context,"This account is logged in on other device, log in again",Toast.LENGTH_LONG).show();
-//                            ((MainActivity)context).addtosharedpref("notificationstatus","notupdated");
-//                            Log.e("error", "in dologin");
-//
-//                            Intent intent = new Intent(context,LoginActivity.class);
-//                            startActivity(intent);
-//                            finish();
-//                        }
-//                    }
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//
-//            @Override
-//            public void onFinish() {
-//                //onLoginSuccess();
-//            }
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
-//                Toast.makeText(context,"Internet connection failed",Toast.LENGTH_SHORT).show();
-//            }
-//
-//        });
 
     }
 

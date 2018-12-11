@@ -50,6 +50,7 @@ public class HorizontalHotDeal extends RecyclerView.Adapter<HorizontalHotDeal.My
                 Picasso.with(context).load(RestClient.BASE_URL+"/launcher.png").into(holder.image);
 
             holder.foodname.setText(HotDeal.getString("name").replaceAll("_"," "));
+            holder.rating.setText(HotDeal.getString("rating"));
             holder.nameofrest.setText(HotDeal.getString("resname").replaceAll("_"," "));
             holder.price.setText("Rs "+ HotDeal.getJSONArray("price").getString(0));
             holder.add.setOnClickListener(new View.OnClickListener() {
@@ -89,12 +90,13 @@ public class HorizontalHotDeal extends RecyclerView.Adapter<HorizontalHotDeal.My
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public ImageView add,remove,image;
-        public TextView change,foodname,nameofrest,price,deliversin;
+        public TextView change,foodname,nameofrest,price,deliversin,rating;
         public View view;
         public MyViewHolder(View view) {
             super(view);
             this.view = view;
             image = (ImageView)(view.findViewById(R.id.image));
+            rating = (TextView)(view.findViewById(R.id.rating));
             change = (TextView)(view.findViewById(R.id.change));
             add = (ImageView)(view.findViewById(R.id.add));
             remove = (ImageView)(view.findViewById(R.id.remove));

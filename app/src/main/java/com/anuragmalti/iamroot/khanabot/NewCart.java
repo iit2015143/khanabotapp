@@ -237,32 +237,6 @@ public class NewCart extends AppCompatActivity {
             });
             MySingleton.getInstance(this).addToRequestQueue(customRequest);
 
-//            RestClient.post("/requestordernew", params, new JsonHttpResponseHandler(){
-//                @Override
-//                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                    if(response.has("orders")) {
-//                        try {
-//                            if(response.getString("orders").equals("requested"))
-//                            HomePage.mycart.remove(position);
-//                            setadapter();
-//                            notifychange();
-//                            Intent intent = new Intent(context,OrderHistory.class);
-//                            startActivity(intent);
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }
-//
-//                @Override
-//                public void onFinish() {
-//                    //onLoginSuccess();
-//                }
-//                @Override
-//                public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
-//                    Log.e("error request","request failed");
-//                }
-//            });
         }
     }
 }

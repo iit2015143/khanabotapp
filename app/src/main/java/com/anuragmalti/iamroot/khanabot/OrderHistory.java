@@ -128,34 +128,6 @@ public class OrderHistory extends AppCompatActivity implements SwipeRefreshLayou
 // Access the RequestQueue through your singleton class.
         MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
 
-//        RestClient.get("/orderhistory",null,new JsonHttpResponseHandler(){
-//
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-//                //Toast.makeText(context,response.toString(),Toast.LENGTH_SHORT).show();
-//                try {
-//                    swiper.setRefreshing(false);
-////                    for(int i=0;i<response.length();i++){
-////                        JSONObject perorder = response.getJSONObject(i);
-////                        ////Log.e("orderhistory",perorder.toString());
-////                    }
-//                    catmenu.setAdapter(new OrderhistoryAdapter(context,response));
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onFinish() {
-//                //onLoginSuccess();
-//            }
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
-//                ////Log.e("error failure","connection failed in orderhistory");
-//            }
-//
-//        });
     }
 
     public void sendrequest(final String orderid, final String status, String fromnumber,String tonumber){
@@ -200,42 +172,22 @@ public class OrderHistory extends AppCompatActivity implements SwipeRefreshLayou
         });
         MySingleton.getInstance(context).addToRequestQueue(customRequest);
 
-//        RestClient.get("/changeorderstatuscustomer",params,new JsonHttpResponseHandler(){
-//
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                if(response.has("status")){
-//                    try {
-//                        if(response.getString("status").equals("changed")){
-//
-//                        }
-//                        else{
-//                            Toast.makeText(context,response.getString("status"),Toast.LENGTH_LONG).show();
-//                        }
-//                        swiper.setRefreshing(true);
-//                        makerequest();
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onFinish() {
-//                //onLoginSuccess();
-//            }
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
-//                Log.e("error failure","connection failed in orderhistory");
-//            }
-//
-//        });
     }
 
     public void notifychange(){
-        ((TextView)findViewById(R.id.carttext)).setText(HomePage.mycart.length()+"");
-
+        int total = 0;
+        for(int i=0; i<HomePage.mycart.length(); i++){
+            try {
+                JSONObject cartobject = HomePage.mycart.getJSONObject(i);
+                JSONArray order = cartobject.getJSONArray("order");
+                for(int j=0; j<order.length();j++){
+                    total +=order.getJSONObject(j).getInt("quantity");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        ((TextView)findViewById(R.id.carttext)).setText(total+"");
         if(HomePage.mycart.length()==0)
             ((RelativeLayout)findViewById(R.id.cartcontainer)).setVisibility(View.INVISIBLE);
         else

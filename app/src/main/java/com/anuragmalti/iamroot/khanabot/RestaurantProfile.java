@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -136,8 +137,19 @@ public class RestaurantProfile extends AppCompatActivity {
     }
 
     public void notifychange(){
-        ((TextView)findViewById(R.id.carttext)).setText(HomePage.mycart.length()+"");
-
+        int total = 0;
+        for(int i=0; i<HomePage.mycart.length(); i++){
+            try {
+                JSONObject cartobject = HomePage.mycart.getJSONObject(i);
+                JSONArray order = cartobject.getJSONArray("order");
+                for(int j=0; j<order.length();j++){
+                    total +=order.getJSONObject(j).getInt("quantity");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        ((TextView)findViewById(R.id.carttext)).setText(total+"");
         if(HomePage.mycart.length()==0)
             ((RelativeLayout)findViewById(R.id.cartcontainer)).setVisibility(View.INVISIBLE);
         else

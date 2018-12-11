@@ -93,46 +93,6 @@ public class otpactivity extends AppCompatActivity {
                     });
                     MySingleton.getInstance(context).addToRequestQueue(customRequest);
 
-//                    RestClient.post("/otp",params,new JsonHttpResponseHandler(){
-//
-//                        @Override
-//                        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                            //Toast.makeText(context,response.toString(),Toast.LENGTH_SHORT).show();
-//                            try {
-//                                if(response.has("otp")) {
-//                                    String value = response.getString("otp");
-//                                    if (value.equals("sent")) {
-//                                        show("otp sent");
-//                                    } else if (value.equals("timeout")) {
-//                                        show("OTP timeout");
-//                                    } else if (value.equals("invalid"))
-//                                        show("Invalid otp");
-//                                }
-//                                else if(response.has("uuid")){
-//                                    addtosharedpref("uuid",response.getString("uuid"));
-//                                    addtosharedpref("number",number);
-//                                    Intent intent = new Intent(context,AllowPermission.class);
-//                                    startActivity(intent);
-//                                    finish();
-//                                }
-//
-//                            } catch (JSONException e) {
-//                                e.printStackTrace();
-//                            }
-//
-//                        }
-//
-//                        @Override
-//                        public void onFinish() {
-//                            //onLoginSuccess();
-//                        }
-//                        @Override
-//                        public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
-//                            show("Request failed");
-//                            //Toast.makeText(context,throwable.toString(),Toast.LENGTH_LONG).show();
-//                        }
-//
-//                    });
                 }
             }
 
@@ -173,24 +133,6 @@ public class otpactivity extends AppCompatActivity {
         });
         MySingleton.getInstance(this).addToRequestQueue(customRequest);
 
-
-//        RestClient.post("/number", params, new JsonHttpResponseHandler(){
-//
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                Toast.makeText(context,response.toString(),Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onFinish() {
-//                //onLoginSuccess();
-//            }
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
-//                //Toast.makeText(context,throwable.toString(),Toast.LENGTH_LONG).show();
-//            }
-//
-//        });
     }
     public void addtosharedpref(String key,String value){
         SharedPreferences prefs = getSharedPreferences("com.example.root.khanabot",Context.MODE_PRIVATE);

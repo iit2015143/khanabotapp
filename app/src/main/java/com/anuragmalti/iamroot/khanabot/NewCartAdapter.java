@@ -69,22 +69,27 @@ public class NewCartAdapter extends RecyclerView.Adapter<NewCartAdapter.MyViewHo
                 }
                 else{
                     holder.book.setVisibility(View.VISIBLE);
-                    if(i==0){
-                        holder.book.setChecked(true);
-                    }
                 }
             }
-            if(restaurantobject.has("minorder")){
+            if (restaurantobject.getString("mode").equals("cod")) {
+                holder.cod.setChecked(true);
+            } else {
+                holder.book.setChecked(true);
+            }
+            if(restaurantobject.has("minorder") && holder.cod.isChecked()){
                 int minorder = restaurantobject.getInt("minorder");
                 if(minorder>restaurantobject.getInt("total")){
                     holder.orderRequest.setEnabled(false);
-                    holder.notApplicable.setVisibility(View.VISIBLE);
-                    holder.notApplicable.setText("The order is below minimumorder of Rs " + restaurantobject.getString("minorder"));
+                    holder.minordererror.setVisibility(View.VISIBLE);
+                    holder.minordererror.setText("The order is below minimum order of Rs " + restaurantobject.getString("minorder") + " in COD mode");
+                }
+                else{
+                    holder.minordererror.setVisibility(View.GONE);
                 }
             }
             if(restaurantobject.has("offer")){
                 holder.offer.setText(restaurantobject.getJSONObject("offer").getString("name"));
-                if(isApplicable(restaurantobject.getJSONObject("offer"),restaurantobject)){
+                if(isApplicable(restaurantobject.getJSONObject("offer"),restaurantobject,holder)){
                     holder.notApplicable.setVisibility(View.GONE);
                     revisedTotal = getDiscount(restaurantobject.getJSONObject("offer"),restaurantobject);
                     restaurantobject.put("revisedTotal",revisedTotal);
@@ -93,7 +98,7 @@ public class NewCartAdapter extends RecyclerView.Adapter<NewCartAdapter.MyViewHo
                     "Rs "+restaurantobject.getString("revisedTotal")));
                 }
                 else{
-                    holder.notApplicable.setVisibility(View.VISIBLE);
+                    holder.offer.setText("Apply Offer");
                     restaurantobject.remove("offer");
                     restaurantobject.remove("revisedTotal");
                 }
@@ -106,61 +111,132 @@ public class NewCartAdapter extends RecyclerView.Adapter<NewCartAdapter.MyViewHo
 //                holder.totalrest.setText("Rs " + restaurantcart.getJSONObject(position).getInt("total"));
 //            }
 
-        String[] items = new String[]{"Usual", "40mins", "1hour","2hour"};
+            String[] items = new String[]{"Usual", "40mins", "1hour","2hour"};
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, R.layout.layout_spinner_item, items);
-        holder.spinner.setAdapter(adapter);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, R.layout.layout_spinner_item, items);
+            holder.spinner.setAdapter(adapter);
 
-        holder.editOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((NewCart)context).editOrder(position);
-            }
-        });
-
-        holder.offer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((NewCart)context).openOffer(position);
-                try {
-                    holder.totalrest.setText("Rs " + restaurantcart.getJSONObject(position).getInt("total"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
+            holder.editOrder.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((NewCart)context).editOrder(position);
                 }
-            }
-        });
-        holder.orderRequest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e("error arguments",holder.cod.isChecked() +
-                holder.spinner.getSelectedItem().toString());
-                try {
-                    restaurantobject.put("time",holder.spinner.getSelectedItem().toString());
-                    restaurantobject.put("mode",holder.cod.isChecked()?"cod":"book");
-                    restaurantobject.put("status","Pending");
-                    ((NewCart)context).makeRequest(position);
-                    holder.orderRequest.setEnabled(false);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            });
 
-            }
-        });
+            holder.offer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((NewCart)context).openOffer(position);
+                    try {
+                        holder.totalrest.setText("Rs " + restaurantcart.getJSONObject(position).getInt("total"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            holder.orderRequest.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.e("error arguments",holder.cod.isChecked() +
+                    holder.spinner.getSelectedItem().toString());
+                    try {
+                        restaurantobject.put("time",holder.spinner.getSelectedItem().toString());
+                        restaurantobject.put("mode",holder.cod.isChecked()?"cod":"book");
+                        restaurantobject.put("status","Pending");
+                        ((NewCart)context).makeRequest(position);
+                        holder.orderRequest.setEnabled(false);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            });
+
+            holder.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                    Log.e("offer error", group + " " + checkedId + " cod id " + R.id.cod);
+                        try {
+                            if(checkedId == R.id.cod) {
+                                restaurantobject.put("mode", "cod");
+                                Log.e("offer error","cod clicked");
+                                Log.e("offer error",restaurantobject.toString());
+                                if(restaurantobject.has("offer")){
+                                    if(isApplicable(restaurantobject.getJSONObject("offer"),restaurantobject,holder)){
+                                        Log.e("offer errror","isApplicable passed");
+                                        holder.notApplicable.setVisibility(View.GONE);
+                                    }
+                                    else{
+                                        holder.offer.setText("Apply Offer");
+                                        restaurantobject.remove("offer");
+                                        restaurantobject.remove("revisedTotal");
+                                    }
+                                }
+                                if(restaurantobject.has("minorder")) {
+                                    int minorder = restaurantobject.getInt("minorder");
+                                    if (minorder > restaurantobject.getInt("total")) {
+                                        holder.orderRequest.setEnabled(false);
+                                        holder.minordererror.setVisibility(View.VISIBLE);
+                                        holder.minordererror.setText("The order is below minimumorder of Rs " + restaurantobject.getString("minorder") + " in COD mode");
+                                    } else {
+                                        holder.minordererror.setVisibility(View.GONE);
+                                    }
+                                }
+                            }
+                            else if(checkedId == R.id.book){
+                                restaurantobject.put("mode","book");
+                                holder.minordererror.setVisibility(View.GONE);
+                                if(restaurantobject.has("offer")){
+                                    if(isApplicable(restaurantobject.getJSONObject("offer"),restaurantobject,holder)){
+                                        holder.notApplicable.setVisibility(View.GONE);
+                                    }
+                                    else{
+                                        holder.offer.setText("Apply Offer");
+                                        restaurantobject.remove("offer");
+                                        restaurantobject.remove("revisedTotal");
+                                    }
+                                }
+                            }
+                        } catch (JSONException e){
+                                e.printStackTrace();
+                        }
+                }
+            });
+
         } catch (JSONException e) {
             Log.e("error json",e.toString());
             e.printStackTrace();
         }
+
     }
 
-    public boolean isApplicable(JSONObject offer, JSONObject restaurant){
+    public boolean isApplicable(JSONObject offer, JSONObject restaurant,MyViewHolder holder){
         try {
+            Log.e("offer error",restaurant.getInt("total")+ " "+offer.getInt("minValue"));
             if(restaurant.getInt("total")>=offer.getInt("minValue")){
+                if(offer.has("mode")){
+                    if(offer.getJSONArray("mode").length()==2)
+                        return true;
+                    else{
+                        Log.e("offer error",offer.getJSONArray("mode").getString(0)+ " "+restaurant.getString("mode"));
+                        if(offer.getJSONArray("mode").getString(0).equals(restaurant.getString("mode")))
+                            return true;
+
+                        holder.notApplicable.setVisibility(View.VISIBLE);
+                        holder.notApplicable.setText("Offer not applicable on " + restaurant.getString("mode"));
+                        return false;
+                    }
+                }
                 return true;
             }
+            holder.notApplicable.setVisibility(View.VISIBLE);
+            holder.notApplicable.setText("Your bill does not reach minimum amount of Rs "+offer.getString("minValue")+" required for the offer");
         } catch (JSONException e) {
             e.printStackTrace();
             Log.e("error json",e.toString());
         }
+
         return false;
     }
 
@@ -200,7 +276,7 @@ public class NewCartAdapter extends RecyclerView.Adapter<NewCartAdapter.MyViewHo
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView resname,summary,totalrest,offer,notApplicable;
+        public TextView resname,summary,totalrest,offer,notApplicable,minordererror;
         public RadioButton cod, book;
         public Spinner spinner;
         public Button editOrder,orderRequest;
@@ -220,6 +296,8 @@ public class NewCartAdapter extends RecyclerView.Adapter<NewCartAdapter.MyViewHo
             editOrder = view.findViewById(R.id.editOrder);
             totalrest = view.findViewById(R.id.totalRest);
             notApplicable = view.findViewById(R.id.notApplicable);
+            minordererror = view.findViewById(R.id.minordererror);
+
         }
 
     }

@@ -5,6 +5,7 @@ import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,6 +63,9 @@ public class OrderhistoryAdapter extends RecyclerView.Adapter<OrderhistoryAdapte
                 case "Outfordelivery":
                     holder.view.setBackground(ContextCompat.getDrawable(context, R.drawable.orderbackgrounddarkgreen));
                     break;
+                case "Ready":
+                    holder.view.setBackground(ContextCompat.getDrawable(context, R.drawable.orderbackgrounddarkgreen));
+                    break;
                 case "Declined":
                     holder.view.setBackground(ContextCompat.getDrawable(context, R.drawable.orderbackgroundred));
                     break;
@@ -91,14 +95,19 @@ public class OrderhistoryAdapter extends RecyclerView.Adapter<OrderhistoryAdapte
                 holder.total.setPaintFlags(holder.total.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 holder.revisedTotal.setText(perorder.getString("revisedTotal"));
             }
+            else{
+                holder.total.setPaintFlags(holder.total.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                holder.revisedTotal.setText("");
+            }
             holder.summary.setText(perorder.getString("summary"));
             holder.orderid.setText(perorder.getString("id"));
             holder.total.setText(perorder.getString("total"));
             holder.number.setText(perorder.has("callnumber")?perorder.getString("callnumber"):perorder.getString("tonumber"));
-            holder.resname.setText(perorder.getJSONArray("order").getJSONObject(0).getString("resname"));
+            holder.resname.setText(perorder.getString("resname"));
             holder.time.setText(dateFormatted);
         } catch (JSONException e) {
             e.printStackTrace();
+            Log.e("orderhistory",e.toString());
         }
     }
 

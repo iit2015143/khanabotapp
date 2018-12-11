@@ -83,7 +83,19 @@ public class RestaurantOneFrag extends Fragment {
                         item.put("number",restaurantobj.getString("number"));
                         item.put("levelone","menu");
                         item.put("leveltwo",menunames.getString(j));
-                        item.put("quantity",0);
+                    if(leveltwo.getJSONObject(leveltwonames.getString(l)).getJSONArray("price").length()==1){
+                        JSONArray quantity = new JSONArray();
+                        quantity.put(0);
+                        item.put("quantity",quantity);
+                        item.put("index",0);
+                    }
+                    else{
+                        JSONArray quantity = new JSONArray();
+                        quantity.put(0);
+                        quantity.put(0);
+                        item.put("quantity",quantity);
+                        item.put("index",1);
+                    }
                         //item.put("leveltwo",leveltwonames.getString(l));
                         childList.add(new MenuChild(item));
                     //}

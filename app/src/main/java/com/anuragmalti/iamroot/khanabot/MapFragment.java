@@ -146,33 +146,6 @@ public class MapFragment extends FragmentActivity implements GoogleMap.OnCameraI
         //settoastmsgtoall();
     }
 
-//    public void settoastmsgtoall(){
-//        premium.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(context,"Not available at your location",Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        valueformoney.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(context,"Not available at your location",Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        pocketfriendly.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(context,"Not available at your location",Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        luxury.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(context,"Not available at your location",Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
-
     @Override
     public void onMapReady(GoogleMap gMap) {
         if(gMap==null){
@@ -309,21 +282,6 @@ public class MapFragment extends FragmentActivity implements GoogleMap.OnCameraI
                 .draggable(true).visible(true));
 
         ((EditText)autocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input)).setText(address);
-        //marker.showInfoWindow();
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                if(lowbar.getVisibility()==View.INVISIBLE) {
-//                    lowbar.setAlpha(0.0f);
-//                    ////Log.e("error",lowbar.getHeight()+"");
-//                    ////Log.e("error in transy",lowbar.getTranslationY()+"");
-//                    lowbar.setTranslationY(lowbar.getHeight());
-//                    ////Log.e("error in transy",lowbar.getTranslationY()+"");
-//                    lowbar.setVisibility(View.VISIBLE);
-//                }
-//                animatelowbar(1);
-//            }
-//        },4000);
         rqstsync++;
         int temp = rqstsync;
 
@@ -333,83 +291,6 @@ public class MapFragment extends FragmentActivity implements GoogleMap.OnCameraI
         initCamera(latLng);
     }
 
-//    public void handleresponse(JSONArray response) throws JSONException {
-//        for(int i =0; i<response.length();i++){
-//            final String str;
-//            str = response.getString(i);
-//            switch(str){
-//                case "Pocket_friendly":
-//                    pocketfriendly.findViewWithTag("pocketfriendly").setBackground(getResources().getDrawable(R.drawable.shape_circle));
-//                    pocketfriendly.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            processreq(str);
-////                            Intent intent = new Intent(context,MenuGrid.class);
-////                            startActivity(intent);
-//                        }
-//                    });
-//                    break;
-//                case "Luxury":
-//                    luxury.findViewWithTag("luxury").setBackground(getResources().getDrawable(R.drawable.shape_circle));
-//                    luxury.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            processreq(str);
-////                            Intent intent = new Intent(context,MenuGrid.class);
-////                            startActivity(intent);
-//                        }
-//                    });
-//                    break;
-//                case "Premium":
-//                    premium.findViewWithTag("premium").setBackground(getResources().getDrawable(R.drawable.shape_circle));
-//                    premium.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            processreq(str);
-////                            Intent intent = new Intent(context,MenuGrid.class);
-////                            startActivity(intent);
-//                        }
-//                    });
-//                    break;
-//                case "Value_for_money":
-//                    valueformoney.findViewWithTag("valueformoney").setBackground(getResources().getDrawable(R.drawable.shape_circle));
-//                    valueformoney.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            processreq(str);
-////                            Intent intent = new Intent(context,MenuGrid.class);
-////                            startActivity(intent);
-//                        }
-//                    });
-//                    break;
-//            }
-//        }
-//    }
-
-//    public void processreq(String str){
-//
-//        RequestParams params = null;
-//        rqstsync++;
-//        final int temp = rqstsync;
-//        RestClient.get("/category/"+str, params, new JsonHttpResponseHandler(){
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                //Toast.makeText(context,response.toString(),Toast.LENGTH_SHORT).show();
-//                MenuGrid.data = response;
-//                Intent intent  = new Intent(context,MenuGrid.class);
-//                startActivity(intent);
-//            }
-//
-//            @Override
-//            public void onFinish() {
-//                //onLoginSuccess();
-//            }
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject errorResponse){
-//                Toast.makeText(context,throwable.toString(),Toast.LENGTH_LONG).show();
-//            }
-//        });
-//    }
 
     @Override
     public void onCameraIdle() {

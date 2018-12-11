@@ -99,7 +99,19 @@ public class ItemsByCategory extends AppCompatActivity {
        // mShimmerViewContainer.stopShimmerAnimation();
     }
     public void notifychange(){
-        ((TextView)findViewById(R.id.carttext)).setText(HomePage.mycart.length()+"");
+        int total = 0;
+        for(int i=0; i<HomePage.mycart.length(); i++){
+            try {
+                JSONObject cartobject = HomePage.mycart.getJSONObject(i);
+                JSONArray order = cartobject.getJSONArray("order");
+                for(int j=0; j<order.length();j++){
+                    total +=order.getJSONObject(j).getInt("quantity");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        ((TextView)findViewById(R.id.carttext)).setText(total+"");
         if(HomePage.mycart.length()==0)
             ((RelativeLayout)findViewById(R.id.cartcontainer)).setVisibility(View.INVISIBLE);
         else
